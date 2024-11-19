@@ -1,0 +1,181 @@
+@startuml
+class Interface {
+  - desenhaTelaInicial()
+  + desenhaMesa()
+  + desenhaMenu()
+  - desenhaConfig()
+}
+
+class Jogo {
+  + numJogadores: int
+  - verificarVencedor(): Jogador
+  - encerrarJogo(vencedor: Jogador)
+}
+
+class Dado {
+  + rolar(): int
+}
+
+class Jogador {
+  - nome: String
+  - nivel: int
+  - efeitosAtivos: Carta[]
+  - jogarCarta(carta: Carta)
+  - equiparItem(item: Item)
+  - desequiparItem(item: Item)
+  - morrer()
+}
+
+class GerenciadorDeTurno {
+  + jogadorAtual: Jogador
+  + etapa: Etapa
+  + contagem: int
+  + terminarTurno()
+  + saquearSala(): Carta
+  + fazerCaridade()
+}
+
+class Mao {
+  + usarCarta(carta : Carta)
+  + descartar(carta: Carta)
+  + verificarCartas()
+}
+
+class Inventario {
+  + cabeca: Equipamento
+  + corpo: Equipamento
+  + pes: Equipamento
+  + maoEsquerda: Equipamento
+  + maoDireita: Equipamento
+  - itensEquipados: Item[]
+  - itensGuardados: Item[]
+}
+
+class Luta {
+  + monstro: Monstro
+  + jogador: Jogador
+  + fugir(): boolean
+}
+
+class Combate {
+  + lutas: Lutas[]
+  + calcularResultado(): boolean
+  + pedirAjuda(jogador: Jogador, barganha: int): boolean
+}
+
+class Efeito {
+
+}
+
+enum Etapa {
+  ABRIR_PORTA
+  PROCURAR_ENCRENCA
+  SAQUEAR_SALA
+  CARIDADE
+}
+
+enum TipoEquipamento {
+  CABECA
+  CORPO
+  PES
+  UMA_MAO
+  DUAS_MAOS
+  OUTRO
+}
+
+abstract class Carta {
+  - nome: String
+  - descricao: String
+  - tipo: TipoCarta
+  + usar()
+  + guardarNaMao()
+}
+
+class Monstro extends Carta {
+  - nivel: int
+  - tesouros: int
+  - coisaRuim: String
+  + aplicarCoisaRuim(jogador: Jogador)
+}
+
+class Maldicao extends Carta {
+  + sofrerMaldicao()
+  + aplicarMaldicao(jogador: Jogador)
+}
+
+abstract class Item extends Carta {
+  - nome: string
+  - valor: int
+  - bonus: int
+  - restricoesRaca: Raca[]
+  - restricoesClasse: Classe[]
+  + vender(jogador: Jogador): boolean
+}
+
+class Equipamento extends Item {
+  - grande: boolean
+  - tipoSlot: TipoSlotItem
+  + equipar(): boolean
+  + desequipar()
+}
+
+class Consumivel extends Item {
+
+}
+
+abstract class Baralho {
+  - reiniciarDeck()
+  + comprar(): Carta
+  + estaVazio(): boolean
+  + pegarPrimeiraCarta(): Carta
+  + limparPilha(): boolean
+}
+
+class Portas extends Baralho {
+
+}
+
+class Tesouros extends Baralho {
+
+}
+
+class Porta extends Carta {
+
+}
+
+class Tesouro extends Carta {
+
+}
+
+class Raca extends Carta {
+
+}
+
+class Classe {
+  - nome: String
+}
+
+class Habilidade {
+  - nome: String
+  - efeito: String
+  + usar()
+}
+
+Interface "1" -- "1" Jogo
+Jogo "1" -- "3..6" Jogador
+Jogo "1" -- "1" Dado
+Jogo "1" -- "1" GerenciadorDeTurno
+Jogo "1" --> "1" Portas : baralhoPortas
+Jogo "1" --> "1" Tesouros : baralhoTesouros
+Jogador "0..1" --> "0..1" Mao
+Jogador "0..1" --> "0..1" Inventario
+GerenciadorDeTurno "1" -- "0..1" Combate
+Combate "0..1" --> "0..*" Luta
+Mao "0..1" --> "0..5" Carta
+Carta "0..*" --> "0..*" Efeito
+Jogador "0..*" --> "0..2" Raca
+Jogador "0..*" --> "0..2" Classe
+Classe "*" --> "*" Habilidade
+Portas "0..1" o-- "0..*" Porta
+Tesouros "0..1" o-- "0..*" Tesouro
+@enduml
