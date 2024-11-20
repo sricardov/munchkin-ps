@@ -7,6 +7,8 @@ export class Maldicao extends Carta {
         super(nome, descricao, TipoCarta.MALDICAO);
     }
 
+    public sofrerMaldicao(): void {}
+    
     public aplicarMaldicao(jogador: Jogador) {
         throw new Error("Método não implementado");
     }

@@ -8,7 +8,7 @@ export class Carta {
         public tipo: TipoCarta
     ) {}
 
-    jogar(): void {}
+    usar(): void {}
     guardarNaMao(): void {}
 
 }

@@ -1,4 +1,4 @@
-export enum TipoItem {
+export enum TipoEquipamento {
     CABECA,
     CORPO,
     PES,
