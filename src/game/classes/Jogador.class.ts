@@ -1,30 +1,19 @@
 import { Carta } from "./Carta.class";
+import { Item } from "./Item.class";
+import { Efeito } from "./Efeito.class";
 
 export class Jogador {
 
+    nome: string;
+    nivel: number;
     efeitosAtivos: Efeito[] = [];
-    itensEquipados: Item[] = [];
-    itensGuardados: Item[] = [];
-    mao: Mao;
 
-    constructor(
-        nome: string,
-        nivel: number,
-    ) {}
+    constructor(nome: string, nivel: number) {
+        this.nome = nome;
+        this.nivel = nivel;
+    }
 
     jogarCarta(carta: Carta) {
-        throw new Error('Method not implemented');
-    }
-
-    lutar(monstro: Monstro) {
-        throw new Error('Method not implemented');
-    }
-
-    tentarFugir(monstro: Monstro) {
-        throw new Error('Method not implemented');
-    }
-
-    pedirAjuda(jogador: Jogador) {
         throw new Error('Method not implemented');
     }
 
@@ -32,7 +21,9 @@ export class Jogador {
         throw new Error('Method not implemented');
     }
 
-    guardarItem(item: Item) {
+    desequiparItem(item: Item) {
         throw new Error('Method not implemented');
     }
+    
+    morrer(): void {}
 }
