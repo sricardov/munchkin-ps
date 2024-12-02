@@ -1,21 +1,38 @@
-import { Card } from "./Card.class";
-import { Baralho } from "./Baralho.class";
+import { Carta } from "./Carta.class";
 
-class Mao {
-  private mao: Card[] = [];
+export class Mao {
+  private cartasNaMao: Carta[] = [];
 
-  descartar(carta: Card, baralho: Baralho): void {
-    console.log(`Carta movida para a pilha de descarte pela mão: ${carta.name}`);
-    this.mao = this.mao.filter(card => card !== carta);
-    baralho.descartar(carta);
+  usarCarta(carta: Carta): void {
+    const index = this.cartasNaMao.indexOf(carta);
+
+    if (index !== -1) {
+      this.cartasNaMao.splice(index, 1);
+      carta.usar();
+    } else {
+      console.error("A carta não está na mão.");
+    }
   }
 
-  adicionarCarta(carta: Card): void {
-    this.mao.push(carta);
-    console.log(`Carta adicionada à mão: ${carta.name}`);
+  descartar(carta: Carta): void {
+    const index = this.cartasNaMao.indexOf(carta);
+    
+    if (index !== -1) {
+      this.cartasNaMao.splice(index, 1);
+      console.log(`Carta ${carta.nome} descartada.`);
+    } else {
+      console.error("A carta não está na mão.");
+    }
   }
 
-  pegarCartasNaMao(): Card[] {
-    return this.mao;
+  verificarcartasNaMao(): void {
+    if (this.cartasNaMao.length === 0) {
+      console.log("A mão está vazia.");
+    } else {
+      console.log("Cartas na mão:");
+      this.cartasNaMao.forEach((carta, index) => {
+        console.log(`${carta.nome}`);
+      });
+    }
   }
 }
