@@ -1,15 +1,15 @@
 @startuml
 class Interface {
-  - desenhaTelaInicial()
+  + desenhaTelaInicial()
   + desenhaMesa()
   + desenhaMenu()
-  - desenhaConfig()
+  + desenhaConfig()
 }
 
 class Jogo {
-  + numJogadores: int
-  - verificarVencedor(): Jogador
-  - encerrarJogo(vencedor: Jogador)
+  - numJogadores: int
+  + verificarVencedor(): Jogador
+  + encerrarJogo(vencedor: Jogador)
 }
 
 class Dado {
@@ -19,17 +19,16 @@ class Dado {
 class Jogador {
   - nome: String
   - nivel: int
-  - efeitosAtivos: Carta[]
-  - jogarCarta(carta: Carta)
-  - equiparItem(item: Item)
-  - desequiparItem(item: Item)
-  - morrer()
+  + efeitosAtivos: Carta[]
+  + jogarCarta(carta: Carta)
+  + vender(jogador: Jogador): boolean
+  + morrer()
 }
 
 class GerenciadorDeTurno {
-  + jogadorAtual: Jogador
-  + etapa: Etapa
-  + contagem: int
+  - jogadorAtual: Jogador
+  - etapa: Etapa
+  - contagem: int
   + terminarTurno()
   + saquearSala(): Carta
   + fazerCaridade()
@@ -42,29 +41,31 @@ class Mao {
 }
 
 class Inventario {
-  + cabeca: Equipamento
-  + corpo: Equipamento
-  + pes: Equipamento
-  + maoEsquerda: Equipamento
-  + maoDireita: Equipamento
+  - cabeca: EquipamentoCabeca
+  - corpo: EquipamentoCorpo
+  - pes: EquipamentoPes
+  - maoEsquerda: EquipamentoMaos
+  - maoDireita: EquipamentoMaos
   - itensEquipados: Item[]
   - itensGuardados: Item[]
+  + equiparItem(item: Item)
+  + desequiparItem(item: Item)
 }
 
 class Luta {
-  + monstro: Monstro
-  + jogador: Jogador
+  - monstro: Monstro
+  - jogador: Jogador
   + fugir(): boolean
 }
 
 class Combate {
-  + lutas: Lutas[]
+  - lutas: Lutas[]
   + calcularResultado(): boolean
   + pedirAjuda(jogador: Jogador, barganha: int): boolean
 }
 
 abstract class Efeito {
- - usar():
+ + usar():
 }
 
 enum Etapa {
@@ -74,21 +75,11 @@ enum Etapa {
   CARIDADE
 }
 
-enum TipoEquipamento {
-  CABECA
-  CORPO
-  PES
-  UMA_MAO
-  DUAS_MAOS
-  OUTRO
-}
-
 abstract class Carta {
   - nome: String
   - descricao: String
   - tipo: TipoCarta
   + usar()
-  + guardarNaMao()
 }
 
 class Monstro extends CartaPorta {
@@ -109,22 +100,44 @@ abstract class Item extends CartaTesouro {
   - bonus: int
   - restricoesRaca: Raca[]
   - restricoesClasse: Classe[]
-  + vender(jogador: Jogador): boolean
 }
 
 class Equipamento extends Item {
   - grande: boolean
-  - tipoSlot: TipoSlotItem
   + equipar(): boolean
   + desequipar()
 }
+
+class EquipamentoCabeça extends Equipamento {
+
+}
+
+class EquipamentoCorpo extends Equipamento {
+
+}
+
+class EquipamentoPes extends Equipamento {
+
+}
+
+class EquipamentoMaos extends Equipamento {
+
+}
+class EquipamentoUmaMao extends EquipamentoMaos {
+
+}
+
+class EquipamentoDuasMaos extends EquipamentoMaos {
+
+}
+
 
 class Consumivel extends Item {
 
 }
 
 abstract class Baralho {
-  - reiniciarDeck()
+  + reiniciarDeck()
   + comprar(): Carta
   + estaVazio(): boolean
   + pegarPrimeiraCarta(): Carta
