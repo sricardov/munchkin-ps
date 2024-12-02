@@ -1,15 +1,16 @@
 import { Classe } from "./Classe.class";
 import { Item } from "./Item.class";
 import { Raca } from "./Raca.class";
+import { TipoEquipamento } from "../enums/TipoEquipamento.enum";
 
 export class Equipamento extends Item {
 
     grande: boolean;
-    tipoSlot: TipoSlotItem;
+    tipoSlot: TipoEquipamento;
 
     constructor(
         grande: boolean,
-        tipoSlot: TipoSlotItem,
+        tipoSlot: TipoEquipamento,
         nomeItem: string,
         valor: number,
         bonus: number,

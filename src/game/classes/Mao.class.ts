@@ -1,21 +1,21 @@
-import { Card } from "./Card.class";
+import { Carta } from "./Carta.class";
 import { Baralho } from "./Baralho.class";
 
 class Mao {
-  private mao: Card[] = [];
+  private mao: Carta[] = [];
 
-  descartar(carta: Card, baralho: Baralho): void {
-    console.log(`Carta movida para a pilha de descarte pela mão: ${carta.name}`);
+  descartar(carta: Carta, baralho: Baralho): void {
+    console.log(`Carta movida para a pilha de descarte pela mão: ${carta.nome}`);
     this.mao = this.mao.filter(card => card !== carta);
-    baralho.descartar(carta);
+    baralho.adicionarDescarte(carta);
   }
 
-  adicionarCarta(carta: Card): void {
+  adicionarCarta(carta: Carta): void {
     this.mao.push(carta);
-    console.log(`Carta adicionada à mão: ${carta.name}`);
+    console.log(`Carta adicionada à mão: ${carta.nome}`);
   }
 
-  pegarCartasNaMao(): Card[] {
+  pegarCartasNaMao(): Carta[] {
     return this.mao;
   }
 }
