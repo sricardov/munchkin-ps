@@ -1,10 +1,11 @@
 import { TipoCarta } from "../enums/TipoCarta.enum";
-import { Carta } from "./Carta.class";
+import { CartaPorta } from "./CartaPorta.class";
 import { Jogador } from "./Jogador.class";
+import { Efeito } from "./Efeito.class";
 
-export class Maldicao extends Carta {
-    constructor(nome: string, descricao: string) {
-        super(nome, descricao, TipoCarta.MALDICAO);
+export class Maldicao extends CartaPorta {
+    constructor(nome: string, descricao: string, efeitos: Efeito[] = []) {
+        super(nome, descricao, TipoCarta.MALDICAO, efeitos);
     }
 
     public sofrerMaldicao(): void {}

@@ -1,8 +1,9 @@
 import { TipoCarta } from "../enums/TipoCarta.enum";
-import { Carta } from "./Carta.class";
+import { CartaPorta } from "./CartaPorta.class";
 import { Jogador } from "./Jogador.class";
+import { Efeito } from "./Efeito.class";
 
-export class Monstro extends Carta {
+export class Monstro extends CartaPorta {
 
     nivel: number;
     tesouros: number;
@@ -13,9 +14,10 @@ export class Monstro extends Carta {
         descricao: string,
         nivel: number,
         tesouros: number,
-        coisaRuim: string
+        coisaRuim: string,
+        efeitos: Efeito[] = []
     ) {
-        super(nome, descricao, TipoCarta.MONSTRO);
+        super(nome, descricao, TipoCarta.MONSTRO, efeitos);
         this.nivel = nivel;
         this.tesouros = tesouros;
         this.coisaRuim = coisaRuim;
