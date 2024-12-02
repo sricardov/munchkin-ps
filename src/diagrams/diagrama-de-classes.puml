@@ -63,8 +63,8 @@ class Combate {
   + pedirAjuda(jogador: Jogador, barganha: int): boolean
 }
 
-class Efeito {
-
+abstract class Efeito {
+ - usar():
 }
 
 enum Etapa {
@@ -91,19 +91,19 @@ abstract class Carta {
   + guardarNaMao()
 }
 
-class Monstro extends Carta {
+class Monstro extends CartaPorta {
   - nivel: int
   - tesouros: int
   - coisaRuim: String
   + aplicarCoisaRuim(jogador: Jogador)
 }
 
-class Maldicao extends Carta {
+class Maldicao extends CartaPorta {
   + sofrerMaldicao()
   + aplicarMaldicao(jogador: Jogador)
 }
 
-abstract class Item extends Carta {
+abstract class Item extends CartaTesouro {
   - nome: string
   - valor: int
   - bonus: int
@@ -131,27 +131,27 @@ abstract class Baralho {
   + limparPilha(): boolean
 }
 
-class Portas extends Baralho {
+class BaralhoPortas extends Baralho {
+  - descarte: Porta[]
+}
+
+class BaralhoTesouros extends Baralho {
+  - descarte: Tesouro[]
+}
+
+class CartaPorta extends Carta {
 
 }
 
-class Tesouros extends Baralho {
+class CartaTesouro extends Carta {
 
 }
 
-class Porta extends Carta {
+class Raca extends CartaPorta {
 
 }
 
-class Tesouro extends Carta {
-
-}
-
-class Raca extends Carta {
-
-}
-
-class Classe {
+class Classe extends CartaPorta {
   - nome: String
 }
 
@@ -165,8 +165,8 @@ Interface "1" -- "1" Jogo
 Jogo "1" -- "3..6" Jogador
 Jogo "1" -- "1" Dado
 Jogo "1" -- "1" GerenciadorDeTurno
-Jogo "1" --> "1" Portas : baralhoPortas
-Jogo "1" --> "1" Tesouros : baralhoTesouros
+Jogo "1" --> "1" BaralhoPortas : baralhoPortas
+Jogo "1" --> "1" BaralhoTesouros : baralhoTesouros
 Jogador "0..1" --> "0..1" Mao
 Jogador "0..1" --> "0..1" Inventario
 GerenciadorDeTurno "1" -- "0..1" Combate
@@ -176,6 +176,6 @@ Carta "0..*" --> "0..*" Efeito
 Jogador "0..*" --> "0..2" Raca
 Jogador "0..*" --> "0..2" Classe
 Classe "*" --> "*" Habilidade
-Portas "0..1" o-- "0..*" Porta
-Tesouros "0..1" o-- "0..*" Tesouro
+BaralhoPortas "1" o-- "0..*" CartaPorta : deck
+BaralhoTesouros "1" o-- "0..*" CartaTesouro : deck
 @enduml
