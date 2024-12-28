@@ -6,7 +6,7 @@ import { Classe } from "./Classe.class";
 import { Efeito } from "./Efeito.class";
 
 
-export class Item extends CartaTesouro {
+export abstract class Item extends CartaTesouro {
   private nomeItem: string;
   private valor: number;
   private bonus: number;
@@ -23,15 +23,11 @@ export class Item extends CartaTesouro {
     descricao: string,
     efeitos: Efeito[] = []
   ) {
-    super(nome, descricao, TipoCarta.ITEM, efeitos);
+    super(nome, descricao, TipoCarta.ITEM);
     this.nomeItem = nomeItem;
     this.valor = valor;
     this.bonus = bonus;
     this.restricoesRaca = restricoesRaca;
     this.restricoesClasse = restricoesClasse;
-  }
-
-  vender(jogador: Jogador): boolean {
-    throw new Error("Method not implemented.");
   }
 }
