@@ -3,7 +3,7 @@ import { Carta } from "./Carta.class";
 export class Mao {
   private cartasNaMao: Carta[] = [];
 
-  usarCarta(carta: Carta): void {
+  usarCarta(carta: Carta): void { // falta adicionar ao local apropriado (descarte ou inventario)
     const index = this.cartasNaMao.indexOf(carta);
 
     if (index !== -1) {
@@ -14,7 +14,7 @@ export class Mao {
     }
   }
 
-  descartar(carta: Carta): void {
+  descartar(carta: Carta): void { // falta adicionar ao descarte
     const index = this.cartasNaMao.indexOf(carta);
     
     if (index !== -1) {
@@ -25,7 +25,7 @@ export class Mao {
     }
   }
 
-  verificarcartasNaMao(): void {
+  verificarcartasNaMao(): number { // precisa retornar o número de cartas na mão
     if (this.cartasNaMao.length === 0) {
       console.log("A mão está vazia.");
     } else {
@@ -34,5 +34,6 @@ export class Mao {
         console.log(`${carta.nome}`);
       });
     }
+    return 1 // 'carta'
   }
 }

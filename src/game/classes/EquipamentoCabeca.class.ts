@@ -2,16 +2,16 @@ import { Classe } from "./Classe.class";
 import { Equipamento } from "./Equipamento.class";
 import { Raca } from "./Raca.class";
 
-export class EquipamentoCabeca extends Equipamento{
+export class EquipamentoCabeca extends Equipamento { // OK
     constructor(
-        grande: boolean,
-        nomeItem: string,
+        nome: string,
+        descricao: string,
         valor: number,
         bonus: number,
         restricoesRaca: Raca[],
         restricoesClasse: Classe[],
-        nome: string,
-        descricao: string) {
-            super(grande, nomeItem, valor, bonus, restricoesRaca, restricoesClasse, nome, descricao);
-        }
+        grande: boolean,
+    ) {
+        super(nome, descricao, grande, valor, bonus, restricoesRaca, restricoesClasse);
+    }
 }

@@ -4,14 +4,14 @@ import { Raca } from "./Raca.class";
 
 export class EquipamentoDuasMaos extends EquipamentoMaos{
     constructor(
+        nome: string,
+        descricao: string,
         grande: boolean,
-        nomeItem: string,
         valor: number,
         bonus: number,
         restricoesRaca: Raca[],
         restricoesClasse: Classe[],
-        nome: string,
-        descricao: string) {
-            super(grande, nomeItem, valor, bonus, restricoesRaca, restricoesClasse, nome, descricao);
-        }
+    ) {
+        super(nome, descricao, grande, valor, bonus, restricoesRaca, restricoesClasse);
+    }
 }

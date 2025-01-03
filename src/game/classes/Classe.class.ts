@@ -10,16 +10,16 @@ export class Classe extends CartaPorta {
     super(nome, descricao, tipo, efeitos);
   }
 
-  adicionarHabilidade(habilidade: Habilidade): void {
+  adicionarHabilidade(habilidade: Habilidade): void { // OK
     this.habilidades.push(habilidade);
     console.log(`Habilidade "${habilidade.nome}" adicionada à classe "${this.nome}".`);
   }
 
-  listarHabilidades(): Habilidade[] {
+  listarHabilidades(): Habilidade[] { // OK
     return this.habilidades;
   }
 
-  getNome(): string {
+  getNome(): string { //OK
     return this.nome;
   }
 }

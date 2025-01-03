@@ -13,11 +13,20 @@ export class GerenciadorDeTurno {
         this.contagem = contagem;
     }
 
-    terminarTurno(): void {}
-
-    saquearSala(): Carta {
+    abrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.
         throw new Error("Method not implemented.");
     }
 
-    fazerCaridade(): void {}
+    procurarEncrenca(): void { } // se não combateu ou sofreu maldição, usar uma carta de monstro da mão e iniciar combate com ela
+
+    saquearSala(): Carta { // se não combateu, comprar carta de porta
+        throw new Error("Method not implemented.");
+    }
+
+    fazerCaridade(): void { } // chamar metodo de Mao para ver se está dentro do limite, se nao estiver, precisa dar as cartsas e tals
+
+    terminarTurno(): void { } // troca o jogadorAtual, reseta a etapa e incrementa a contagem
+
+    // precisamos de um metodo para alterar a etapa do turno
+
 }

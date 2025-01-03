@@ -8,9 +8,9 @@ export class Maldicao extends CartaPorta {
         super(nome, descricao, TipoCarta.MALDICAO, efeitos);
     }
 
-    public sofrerMaldicao(): void {}
+    public sofrerMaldicao(): void {} // chamar metodo usar de efeito no proprio jogador
     
-    public aplicarMaldicao(jogador: Jogador) {
+    public aplicarMaldicao(jogador: Jogador) { // chamar metodo usar de efeito em um outro jogador
         throw new Error("Método não implementado");
     }
 }

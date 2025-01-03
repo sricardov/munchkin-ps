@@ -23,7 +23,7 @@ export class Monstro extends CartaPorta {
         this.coisaRuim = coisaRuim;
     }
 
-    aplicarCoisaRuim(jogador: Jogador): void {
+    aplicarCoisaRuim(jogador: Jogador): void { // chamar metodo usar do efeito
         throw new Error("Method not implemented.");
     }
 }

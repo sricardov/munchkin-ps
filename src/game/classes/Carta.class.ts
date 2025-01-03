@@ -10,7 +10,7 @@ export abstract class Carta {
       protected efeitos: Efeito[] = []
   ) {}
 
-  public usar(): void {
+  public usar(): void { // OK
     console.log(`Usando a carta: ${this.nome}`);
 
     if (this.efeitos.length > 0) {
