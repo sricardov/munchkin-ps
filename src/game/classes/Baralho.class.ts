@@ -7,9 +7,9 @@ export abstract class Baralho {
     ) {}
 
     //lógica para ler info das cartas em um arquivo e criar a pilha de baralho
-    abstract reiniciarDeck(): void;
+    abstract iniciarDeck(): void;
 
-    comprar(): Carta | null {
+    comprar(): Carta | null { // falta adicionar a carta comprada à mão do jogador
       const card = this.baralho.pop();
         if (card) {
           console.log(`Carta comparada: ${card.nome}`);
@@ -19,12 +19,12 @@ export abstract class Baralho {
         return null;
     }
 
-    adicionarDescarte(card: Carta): void {
+    adicionarDescarte(card: Carta): void { // OK
       console.log(`Carta movida para a pilha de descarte: ${card.nome}`);
       this.descarte.push(card);
     }
     
-    verTopoDescarte(): Carta | null {
+    verTopoDescarte(): Carta | null { // OK
       if (this.descarte.length > 0) {
         const card = this.descarte[this.descarte.length - 1];
         console.log(`Carta no topo da pilha de descarte: ${card.nome}`);
@@ -34,20 +34,20 @@ export abstract class Baralho {
       return null;
     }
 
-    estaVazio(): boolean {
+    estaVazio(): boolean { // OK
       return this.baralho.length === 0;
     }
 
-    pegarPrimeiraCarta(): Carta | null {
+    verTopoBaralho(): Carta | null { // OK
       if (this.baralho.length > 0) {
-        const card = this.baralho[0]
+        const card = this.baralho[this.baralho.length - 1]
         console.log(`Primeira carta da pilha: ${card.nome}`);
-        return this.baralho[0];
+        return card;
       }
       return null;
     }
 
-    limparPilha(): boolean {
+    limparPilha(): boolean { //OK
       console.log("Limpando pilha de descarte e juntando ao baralho...");
       this.baralho.push(...this.descarte);
       this.baralho.sort(() => Math.random() - 0.5);

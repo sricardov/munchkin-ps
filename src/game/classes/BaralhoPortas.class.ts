@@ -6,7 +6,7 @@ export class BaralhoPortas extends Baralho {
         super(baralho, descarte);
     }
 
-    reiniciarDeck(): void {
+    iniciarDeck(): void {
         //lógica para ler info das cartas em um arquivo e criar a pilha
     }
 }

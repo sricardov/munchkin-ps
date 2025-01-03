@@ -9,4 +9,4 @@ export class CartaTesouro extends Carta {
     tipo: TipoCarta) {
     super(nome, descricao, tipo);
   }
-}
+} // OK

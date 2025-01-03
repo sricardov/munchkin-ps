@@ -7,7 +7,7 @@ export class CartaPorta extends Carta {
     super(nome, descricao, tipo, efeitos);
   }
 
-  public override guardarNaMao(): void {
-    console.log(`Guardando a carta porta: ${this.nome}`);
-  }
+  // public override guardarNaMao(): void {
+  //   console.log(`Guardando a carta porta: ${this.nome}`);
+  // }
 }

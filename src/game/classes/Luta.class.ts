@@ -12,6 +12,9 @@ export class Luta {
     }
 
     public fugir(): boolean {
+        // rolar dado 
+        // ver fuga do jogador
+        // 1,2,3,4 = não foge, caso contrario foge.
         throw new Error("Method not implemented.");
     }
 

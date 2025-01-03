@@ -7,7 +7,7 @@ export class Habilidade {
     this.efeito = efeito;
   }
 
-  usar(): void {
+  usar(): void { // chamar o usar do efeito
     console.log(`Usando a habilidade "${this.nome}": ${this.efeito}`);
   }
 }
