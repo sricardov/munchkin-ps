@@ -3,6 +3,7 @@
     height: 100%;
 
     background-color: #000000;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,4 +22,9 @@
     color: #ffffff;
     font-size: 5rem;
     margin-bottom: 10rem;
+}
+
+.mesa {
+    width: 100%;
+    height: 100%;
 }

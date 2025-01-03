@@ -1,5 +1,9 @@
 <div class="canvas">
     <span class="title">MUNCHKIN</span>
-    <app-menu-button text="START"></app-menu-button>
-    <app-menu-button text="SETTINGS"></app-menu-button>
+    <div class="d-flex flex-column">
+        <div *ngFor="let button of buttonList; index as i;">
+            <app-menu-button [text]="button.text" (click)="button.action($event)"></app-menu-button>
+        </div>
+    </div>
+    <!-- <app-mesa class="mesa"></app-mesa> -->
 </div>
