@@ -64,6 +64,12 @@ export class Jogador {
     this.efeitosAtivos.push(...efeitos);
   }
 
+  removerEfeito(efeitos: Efeito[]): void {
+    this.efeitosAtivos = this.efeitosAtivos.filter(efeito_i =>
+      !efeitos.some(efeito_j => efeito_i === efeito_j)
+    );
+  }
+
   getRaca(): Raca {
     return this.raca;
   }
