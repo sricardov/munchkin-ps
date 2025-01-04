@@ -16,20 +16,20 @@ export class EquipamentoUmaMao extends EquipamentoMaos {
     super(nome, descricao, grande, valor, bonus, restricoesRaca, restricoesClasse);
   }
 
-  override usar(jogador: Jogador): void { // EQUIPAR
-    if (!this.verificaRestricoes(jogador))
-      return;
+  // override usar(jogador: Jogador): void { // EQUIPAR
+  //   if (!this.verificaRestricoes(jogador))
+  //     return;
 
-    const inventario = jogador.getInventario();
-    inventario.equipaUmaMao(this);
-    this.adicionarEfeito(jogador);
-  }
+  //   const inventario = jogador.getInventario();
+  //   inventario.equipaUmaMao(this);
+  //   this.adicionarEfeito(jogador);
+  // }
 
-  override desequipar(jogador: Jogador): boolean {
-    const retorno = jogador.getInventario().desequipaUmaMao(this);
-    if (retorno)
-      this.removerEfeito(jogador);
+  // override desequipar(jogador: Jogador): boolean {
+  //   const retorno = jogador.getInventario().desequipaUmaMao(this);
+  //   if (retorno)
+  //     this.removerEfeito(jogador);
 
-    return retorno;
-  }
+  //   return retorno;
+  // }
 }
