@@ -8,5 +8,5 @@ export abstract class Efeito {
     this.nome = nome;
   }
 
-  public abstract usar(jogador: Jogador): void; // OK
+  public abstract usar(jogo: Jogo, jogador: Jogador): void; // OK
 }
