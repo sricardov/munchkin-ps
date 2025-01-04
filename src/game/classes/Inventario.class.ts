@@ -15,7 +15,8 @@ export class Inventario {
   itensEquipados: Item[] = [];
   itensGuardados: Item[] = [];
 
-  constructor(cabeca: Equipamento, corpo: Equipamento, pes: Equipamento, maoEsquerda: Equipamento, maoDireita: Equipamento) {
+  constructor(cabeca: EquipamentoCabeca, corpo: EquipamentoCorpo, 
+              pes: EquipamentoPes, maoEsquerda: EquipamentoMaos, maoDireita: EquipamentoMaos  ) {
     this.cabeca = cabeca;
     this.corpo = corpo;
     this.pes = pes;
@@ -25,12 +26,22 @@ export class Inventario {
     this.itensGuardados = [];
   }
 
-  equiparItem(item: Item): boolean {
-    if (!(item instanceof Equipamento)) {
-      console.log(`O item não é um equipamento.`);
+  equiparItem(nomeItem: string): boolean {
+    const index = this.itensGuardados.findIndex((item) => item.nome === nomeItem);
+  
+    if (index === -1) {
+      console.log(`Item ${nomeItem} não está nos itens guardados.`);
       return false;
     }
-
+  
+    const item = this.itensGuardados.splice(index, 1)[0];
+  
+    if (!(item instanceof Equipamento)) {
+      console.log(`O item ${item.nome} não é um equipamento.`);
+      this.itensGuardados.push(item);
+      return false;
+    }
+  
     if (item instanceof EquipamentoCabeca) {
       this.cabeca = item;
     } else if (item instanceof EquipamentoCorpo) {
@@ -44,19 +55,30 @@ export class Inventario {
         this.maoDireita = item;
       } else {
         console.log(`Ambas as mãos já estão ocupadas.`);
+        this.itensGuardados.push(item);
         return false;
       }
     } else {
       console.log(`Equipamento não pode ser equipado.`);
+      this.itensGuardados.push(item);
       return false;
     }
-
+  
     this.itensEquipados.push(item);
     console.log(`Equipando ${item.nome}.`);
     return true;
   }
 
-  desequiparItem(item: Item): void {
+  desequiparItem(nomeItem: string): void {
+    const index = this.itensEquipados.findIndex((item) => item.nome === nomeItem);
+  
+    if (index === -1) {
+      console.log(`Item ${nomeItem} não está equipado.`);
+      return;
+    }
+  
+    const item = this.itensEquipados.splice(index, 1)[0];
+  
     if (item instanceof EquipamentoCabeca) {
       this.cabeca = null;
     } else if (item instanceof EquipamentoCorpo) {
@@ -70,13 +92,8 @@ export class Inventario {
         this.maoDireita = null;
       }
     }
-
-    const index = this.itensEquipados.findIndex(
-      (equipamento) => equipamento.nome === item.nome);
-      
-    if (index !== -1) {
-      this.itensEquipados.splice(index, 1);
-      console.log(`Desequipando ${item.nome} do inventário.`);
-    }
+  
+    this.itensGuardados.push(item);
+    console.log(`Desequipando ${item.nome} e guardando no inventário.`);
   }
 }
