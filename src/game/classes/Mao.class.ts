@@ -14,6 +14,11 @@ export class Mao {
     this.baralho = baralho
   }
 
+  adicionarCarta(carta: Carta) {
+    this.cartasNaMao.push(carta);
+    console.log("Carta adicionada.");
+  }
+
   usarCarta(carta: Carta, jogo: Jogo, jogador: Jogador): void {
     const index = this.cartasNaMao.indexOf(carta);
   
@@ -57,5 +62,9 @@ export class Mao {
       });
     }
     return this.cartasNaMao.length;
+  }
+
+  verCartas(): Carta[] {
+    return this.cartasNaMao;
   }
 }

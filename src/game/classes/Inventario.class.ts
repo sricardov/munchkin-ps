@@ -1,99 +1,158 @@
 import { Equipamento } from "./Equipamento.class";
 import { EquipamentoCabeca } from "./EquipamentoCabeca.class";
 import { EquipamentoCorpo } from "./EquipamentoCorpo.class";
+import { EquipamentoDuasMaos } from "./EquipamentoDuasMaos.class";
 import { EquipamentoMaos } from "./EquipamentoMaos.class";
 import { EquipamentoPes } from "./EquipamentoPes.class";
+import { EquipamentoUmaMao } from "./EquipamentoUmaMao.class";
 import { Item } from "./Item.class";
+import { Jogador } from "./Jogador.class";
 
 export class Inventario {
+  jogador: Jogador
   cabeca: EquipamentoCabeca | null;
   corpo: EquipamentoCorpo | null;
   pes: EquipamentoPes | null;
   maoEsquerda: EquipamentoMaos | null;
   maoDireita: EquipamentoMaos | null;
 
-  itensEquipados: Item[] = [];
   itensGuardados: Item[] = [];
 
-  constructor(cabeca: EquipamentoCabeca, corpo: EquipamentoCorpo, 
-              pes: EquipamentoPes, maoEsquerda: EquipamentoMaos, maoDireita: EquipamentoMaos  ) {
+  constructor(jogador: Jogador, cabeca: EquipamentoCabeca, corpo: EquipamentoCorpo, pes: EquipamentoPes, maoEsquerda: EquipamentoMaos, maoDireita: EquipamentoMaos) {
     this.cabeca = cabeca;
+    this.jogador = jogador;
     this.corpo = corpo;
     this.pes = pes;
     this.maoEsquerda = maoEsquerda;
     this.maoDireita = maoDireita;
-    this.itensEquipados = [];
     this.itensGuardados = [];
   }
 
-  equiparItem(nomeItem: string): boolean {
-    const index = this.itensGuardados.findIndex((item) => item.nome === nomeItem);
-  
-    if (index === -1) {
-      console.log(`Item ${nomeItem} não está nos itens guardados.`);
-      return false;
-    }
-  
-    const item = this.itensGuardados.splice(index, 1)[0];
-  
+  equiparItem(item: Item): boolean {  
     if (!(item instanceof Equipamento)) {
-      console.log(`O item ${item.nome} não é um equipamento.`);
-      this.itensGuardados.push(item);
+      console.log(`Item ${item.nome} não é um equipamento.`);
       return false;
     }
-  
-    if (item instanceof EquipamentoCabeca) {
-      this.cabeca = item;
-    } else if (item instanceof EquipamentoCorpo) {
-      this.corpo = item;
-    } else if (item instanceof EquipamentoPes) {
-      this.pes = item;
-    } else if (item instanceof EquipamentoMaos) {
-      if (this.maoEsquerda === null) {
-        this.maoEsquerda = item;
-      } else if (this.maoDireita === null) {
-        this.maoDireita = item;
-      } else {
-        console.log(`Ambas as mãos já estão ocupadas.`);
-        this.itensGuardados.push(item);
-        return false;
-      }
-    } else {
-      console.log(`Equipamento não pode ser equipado.`);
-      this.itensGuardados.push(item);
-      return false;
-    }
-  
-    this.itensEquipados.push(item);
+
+    item.usar(this.jogador);
     console.log(`Equipando ${item.nome}.`);
     return true;
   }
 
-  desequiparItem(nomeItem: string): void {
-    const index = this.itensEquipados.findIndex((item) => item.nome === nomeItem);
-  
-    if (index === -1) {
-      console.log(`Item ${nomeItem} não está equipado.`);
+  desequiparItem(item: Item): void {
+    const desequipa = item.desequipar(this.jogador)
+    if (!desequipa) {
+      console.error("Item não está equipado");
       return;
     }
-  
-    const item = this.itensEquipados.splice(index, 1)[0];
-  
-    if (item instanceof EquipamentoCabeca) {
-      this.cabeca = null;
-    } else if (item instanceof EquipamentoCorpo) {
-      this.corpo = null;
-    } else if (item instanceof EquipamentoPes) {
-      this.pes = null;
-    } else if (item instanceof EquipamentoMaos) {
-      if (this.maoEsquerda === item) {
-        this.maoEsquerda = null;
-      } else if (this.maoDireita === item) {
-        this.maoDireita = null;
-      }
-    }
-  
+
     this.itensGuardados.push(item);
-    console.log(`Desequipando ${item.nome} e guardando no inventário.`);
+    console.log(`Desequipando ${item.nome} do inventário.`);
+  }
+
+  equipaCabeca(item: EquipamentoCabeca): boolean {
+    if (!this.cabeca === null)
+      return false;
+
+    this.cabeca = item;
+    return true;
+  }
+
+  desequipaCabeca(): boolean {
+    if (this.cabeca === null)
+      return false
+
+    this.cabeca === null
+    return true;
+  }
+
+  equipaCorpo(item: EquipamentoCorpo): boolean {
+    if (!this.corpo === null)
+      return false;
+
+    this.corpo = item;
+    return true;
+  }
+
+  desequipaCorpo(): boolean {
+    if (this.corpo === null)
+      return false
+
+    this.corpo === null
+    return true;
+  }
+
+  equipaPes(item: EquipamentoPes): boolean {
+    if (!this.pes === null)
+      return false;
+
+    this.pes = item;
+    return true;
+  }
+
+  desequipaPes(): boolean {
+    if (this.pes === null)
+      return false
+
+    this.pes === null
+    return true;
+  }
+
+  equipaUmaMao(item: EquipamentoUmaMao): boolean {
+    if (this.maoEsquerda === null)
+      this.maoEsquerda = item;
+
+    else if (this.maoDireita === null)
+      this.maoDireita = item;
+
+    else
+      return false;
+
+    return true;
+  }
+
+  desequipaUmaMao(item: EquipamentoUmaMao): boolean {
+    if (this.maoDireita === item)
+      this.maoDireita = null;
+
+    else if (this.maoEsquerda === item)
+      this.maoEsquerda = null;
+
+    else
+      return false;
+
+    return true;
+  }
+
+  desequipaMaoDireita(): boolean {
+    if (this.maoDireita === null) {
+      return false;
+    }
+
+    this.maoDireita = null;
+    return true;
+  }
+
+  desequipaMaoEsquerda(): boolean {
+    if (this.maoEsquerda === null) {
+      return false;
+    }
+
+    this.maoEsquerda = null;
+    return true;
+  }
+
+  equipaDuasMaos(item: EquipamentoDuasMaos): boolean {
+    if (this.maoEsquerda === null && this.maoDireita === null) {
+      this.maoDireita = this.maoEsquerda = item;
+      return true;
+    }
+
+    return false;
+  }
+
+  desequipaDuasMaos(): boolean {
+    this.maoDireita = this.maoEsquerda = null;
+    return true;
   }
 }

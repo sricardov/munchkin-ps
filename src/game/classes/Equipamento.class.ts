@@ -5,7 +5,6 @@ import { Item } from "./Item.class";
 import { Raca } from "./Raca.class";
 
 export class Equipamento extends Item {
-
     private grande: boolean;
     private inventario: Inventario;
 
@@ -46,5 +45,9 @@ export class Equipamento extends Item {
 
         this.inventario.itensGuardados.splice(index, 1);
         console.log(`O item ${this.nome} foi descartado do inventário.`);
+    }
+
+    getGrande(): boolean {
+        return this.grande;
     }
 }

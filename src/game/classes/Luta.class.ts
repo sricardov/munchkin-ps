@@ -10,7 +10,13 @@ export class Luta {
         this.monstro = monstro;
         this.jogador = jogador
     }
-
+    
+    public calcularResultado(): boolean {
+        if (this.jogador.bonus+this.jogador.nivel > this.monstro.nivel+this.monstro.bonus) {
+            return true;
+        }
+        return false;
+    }
     public fugir(): boolean {
         // rolar dado 
         // ver fuga do jogador
