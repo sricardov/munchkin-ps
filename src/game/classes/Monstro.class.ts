@@ -24,6 +24,8 @@ export class Monstro extends CartaPorta {
     }
 
     aplicarCoisaRuim(jogador: Jogador): void { // chamar metodo usar do efeito
-        throw new Error("Method not implemented.");
+        this.efeitos.forEach((efeito) => {
+            efeito.usar(); //usar deveria ter Jogador como argumento?
+        });
     }
 }

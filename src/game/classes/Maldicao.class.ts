@@ -9,8 +9,10 @@ export class Maldicao extends CartaPorta {
     }
 
     public sofrerMaldicao(): void {} // chamar metodo usar de efeito no proprio jogador
-    
-    public aplicarMaldicao(jogador: Jogador) { // chamar metodo usar de efeito em um outro jogador
-        throw new Error("Método não implementado");
+
+    public aplicarMaldicao(jogador: Jogador) {
+        this.efeitos.forEach((efeito) => {
+            efeito.usar(); //usar deveria ter Jogador como argumento?
+        });
     }
 }
