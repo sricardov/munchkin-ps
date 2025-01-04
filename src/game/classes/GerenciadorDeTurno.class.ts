@@ -1,16 +1,28 @@
 import { Etapa } from "../enums/Etapa.enum";
 import { Carta } from "./Carta.class";
+import { Combate } from "./Combate.class";
 import { Jogador } from "./Jogador.class";
+import { Jogo } from "./Jogo.class";
 
 export class GerenciadorDeTurno {
+    public jogo: Jogo;
     public jogadorAtual: Jogador;
     public etapa: Etapa;
     public contagem: number;
+    public combates: Combate[];
 
-    constructor(jogadorAtual: Jogador, etapa: Etapa, contagem: number) {
+    constructor(
+        jogadorAtual: Jogador, 
+        etapa: Etapa, 
+        contagem: number, 
+        combates: Combate[],
+        jogo: Jogo
+    ) {
+        this.jogo = jogo;
         this.jogadorAtual = jogadorAtual;
         this.etapa = etapa;
         this.contagem = contagem;
+        this.combates = combates;
     }
 
     abrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.

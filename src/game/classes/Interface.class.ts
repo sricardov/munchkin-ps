@@ -1,7 +1,12 @@
+import { Jogo } from "./Jogo.class";
+
 export class Interface {
+    public jogo: Jogo;
     
-    constructor() {
-    }
+    constructor(jogo: Jogo) {
+        this.jogo = jogo;
+      }
+    
 
     desenhaTelaInicial(): void {}
 

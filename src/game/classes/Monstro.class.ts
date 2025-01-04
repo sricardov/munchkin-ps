@@ -2,6 +2,7 @@ import { TipoCarta } from "../enums/TipoCarta.enum";
 import { CartaPorta } from "./CartaPorta.class";
 import { Jogador } from "./Jogador.class";
 import { Efeito } from "./Efeito.class";
+import { Jogo } from "./Jogo.class";
 
 export class Monstro extends CartaPorta {
 
@@ -23,7 +24,7 @@ export class Monstro extends CartaPorta {
         this.coisaRuim = coisaRuim;
     }
 
-    aplicarCoisaRuim(jogador: Jogador): void { // chamar metodo usar do efeito
+    aplicarCoisaRuim(jogo: Jogo, jogador: Jogador): void { // chamar metodo usar do efeito
         throw new Error("Method not implemented.");
     }
 }
