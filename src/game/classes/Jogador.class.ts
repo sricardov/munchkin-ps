@@ -8,48 +8,74 @@ import { Inventario } from "./Inventario.class";
 import { Jogo } from "./Jogo.class";
 
 export class Jogador {
-    jogo: Jogo;
-    nome: string;
-    nivel: number;
-    classes: Classe[];
-    raca: Raca;
-    mao: Mao;
-    inventario: Inventario;
-    efeitosAtivos: Efeito[] = [];
 
-    constructor(
-        jogo: Jogo,
-        nome: string,
-        nivel: number,
-        classes: Classe[],
-        raca: Raca,
-        mao: Mao,
-        inventario: Inventario,
-        efeitosAtivos: Efeito[] = []
-    ) {
-        this.jogo = jogo;
-        this.nome = nome;
-        this.nivel = nivel;
-        this.classes = classes;
-        this.raca = raca;
-        this.mao = mao;
-        this.inventario = inventario;
-        this.efeitosAtivos = efeitosAtivos;
-    }
+  nome: string;
+  nivel: number;
+  classe: Classe;
+  raca: Raca;
+  mao: Mao;
+  inventario: Inventario;
+  jogo: Jogo;
+  efeitosAtivos: Efeito[] = [];
 
-    jogarCarta(carta: Carta) { // descarta da mão e, se for o caso, adicionar ao inventário
-        throw new Error('Method not implemented');
-        //passar o jogo e o proprio jogador que jogou como argumentos pra mao
-        //ex: mao.usarCarta(carta, this.jogo, this)
-    }
+  constructor(
+    nome: string,
+    nivel: number,
+    classe: Classe,
+    raca: Raca,
+    mao: Mao,
+    inventario: Inventario,
+    efeitosAtivos: Efeito[] = [],
+    jogo: Jogo
+  ) {
+    this.nome = nome;
+    this.nivel = nivel;
+    this.classe = classe;
+    this.raca = raca;
+    this.mao = mao;
+    this.inventario = inventario;
+    this.jogo = jogo
+    this.efeitosAtivos = efeitosAtivos;
+  }
 
-    equiparItem(item: Item) { // chamar metodo do inventario
-        throw new Error('Method not implemented');
-    }
+  jogarCarta(carta: Carta) {
+    this.mao.usarCarta(carta, this.jogo, this);
+  }
 
-    desequiparItem(item: Item) { // chamar metodo do inventario
-        throw new Error('Method not implemented');
-    }
-    
-    morrer(): void {} // alterar o nivel do jogar
+  equiparItem(item: Item) {
+    this.mao.descartar(item);
+    this.inventario.equiparItem(item);
+  }
+
+  desequiparItem(item: Item) {
+    this.inventario.desequiparItem(item);
+  }
+
+  morrer(): void {
+    this.nivel = Math.floor(this.nivel / 2);
+  } // alterar o nivel do jogar
+
+  definirRaca(raca: Raca): void {
+    this.raca = raca;
+  }
+
+  definirClasse(classe: Classe): void {
+    this.classe = classe;
+  }
+
+  adicionarEfeito(efeitos: Efeito[]): void {
+    this.efeitosAtivos.push(...efeitos);
+  }
+
+  getRaca(): Raca {
+    return this.raca;
+  }
+
+  getClasse(): Classe {
+    return this.classe;
+  }
+
+  getInventario(): Inventario {
+    return this.inventario;
+  }
 }
