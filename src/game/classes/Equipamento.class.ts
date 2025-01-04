@@ -6,7 +6,7 @@ import { Raca } from "./Raca.class";
 
 export class Equipamento extends Item {
     private grande: boolean;
-    private inventario: Inventario;
+    // private inventario: Inventario;
 
     constructor(
         nome: string,
@@ -16,36 +16,36 @@ export class Equipamento extends Item {
         bonus: number,
         restricoesRaca: Raca[],
         restricoesClasse: Classe[],
-        inventario: Inventario,
+        // inventario: Inventario,
         efeito: Efeito[] = []
     ) {
         super(nome, descricao, valor, bonus, restricoesRaca, restricoesClasse, efeito);
         this.grande = grande;
-        this.inventario = inventario;
+        // this.inventario = inventario;
     }
 
-    guardar(): boolean {
-        if (this.inventario.itensGuardados.includes(this)) {
-            console.log(`O item ${this.nome} já está guardado no inventário.`);
-            return false;
-        }
+    // guardar(): boolean {
+    //     if (this.inventario.itensGuardados.includes(this)) {
+    //         console.log(`O item ${this.nome} já está guardado no inventário.`);
+    //         return false;
+    //     }
 
-        this.inventario.itensGuardados.push(this);
-        console.log(`O item ${this.nome} foi guardado no inventário.`);
-        return true;
-    }
+    //     this.inventario.itensGuardados.push(this);
+    //     console.log(`O item ${this.nome} foi guardado no inventário.`);
+    //     return true;
+    // }
 
-    descartar(): void {
-        const index = this.inventario.itensGuardados.indexOf(this);
+    // descartar(): void {
+    //     const index = this.inventario.itensGuardados.indexOf(this);
 
-        if (index === -1) {
-            console.log(`O item ${this.nome} não está no inventário para ser descartado.`);
-            return;
-        }
+    //     if (index === -1) {
+    //         console.log(`O item ${this.nome} não está no inventário para ser descartado.`);
+    //         return;
+    //     }
 
-        this.inventario.itensGuardados.splice(index, 1);
-        console.log(`O item ${this.nome} foi descartado do inventário.`);
-    }
+    //     this.inventario.itensGuardados.splice(index, 1);
+    //     console.log(`O item ${this.nome} foi descartado do inventário.`);
+    // }
 
     getGrande(): boolean {
         return this.grande;

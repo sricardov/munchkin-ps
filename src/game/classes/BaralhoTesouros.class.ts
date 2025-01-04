@@ -1,9 +1,16 @@
 import { Carta } from "./Carta.class";
 import { Baralho } from "./Baralho.class";
+import { CartaTesouro } from "./CartaTesouro.class";
 
 export class BaralhoTesouros extends Baralho {
-    constructor() {
-        super();
+    
+    
+    constructor(
+        protected override baralho: CartaTesouro[],
+        protected override descarte: CartaTesouro[],
+
+    ) {
+        super(baralho, descarte);
     }
 
     iniciarDeck(): void {

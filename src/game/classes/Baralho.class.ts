@@ -1,65 +1,73 @@
 import { Carta } from "./Carta.class";
 
 export abstract class Baralho {
-  public baralho: Carta[];
-  public descarte: Carta[];
-    constructor(
-    ) {
-      this.baralho = []
-      this.descarte = []
-      this.iniciarDeck();
-    }
 
-    //lógica para ler info das cartas em um arquivo e criar a pilha de baralho
-    abstract iniciarDeck(): void;
+  protected baralho: Carta[];
+  protected descarte: Carta[];
 
-    //falta um método para apenas embaralhar o baralho
+  constructor(
+    baralho: Carta[],
+    descarte: Carta[]
+  ) {
+    this.baralho = baralho;
+    this.descarte = descarte;
+    this.iniciarDeck();
+  }
 
-    comprar(): Carta { 
-      let card = this.baralho.pop();
-      if (card) {
-        console.log(`Carta comparada: ${card.nome}`);
-        return card;
-      }
-      this.limparPilha()
-      card = this.baralho.pop();
-      if (!card) throw new Error("Baralho de compra vazio.");
-      else return card;
-    }
+  //lógica para ler info das cartas em um arquivo e criar a pilha de baralho
+  abstract iniciarDeck(): void;
 
-    adicionarDescarte(card: Carta): void { // OK
-      console.log(`Carta movida para a pilha de descarte: ${card.nome}`);
-      this.descarte.push(card);
-    }
-    
-    verTopoDescarte(): Carta | null { // OK
-      if (this.descarte.length > 0) {
-        const card = this.descarte[this.descarte.length - 1];
-        console.log(`Carta no topo da pilha de descarte: ${card.nome}`);
-        return card;
-      }
-      console.log("A pilha de descarte está vazia.");
-      return null;
-    }
+  embaralhar(baralho: Carta[]): void { // OK
+    baralho.sort(() => Math.random() - 0.5);
+  }
 
-    estaVazio(): boolean { // OK
-      return this.baralho.length === 0;
+  comprar(): Carta {
+    if (this.baralho.length === 0) {
+      this.limparPilha();
+      console.log("Baralho de compra vazio.");
     }
+    let carta = this.baralho.pop()!;
+    console.log(`Carta comparada: ${carta.nome}`);
+    return carta;
+  }
 
-    verTopoBaralho(): Carta | null { // OK
-      if (this.baralho.length > 0) {
-        const card = this.baralho[this.baralho.length - 1]
-        console.log(`Primeira carta da pilha: ${card.nome}`);
-        return card;
-      }
-      return null;
-    }
+  /**
+   * Move a carta passada como parâmetro para a pilha de descarte
+   * @param carta Carta a ser descartada
+   */
+  descartar(carta: Carta): void { // OK
+    console.log(`Carta movida para a pilha de descarte: ${carta.nome}`);
+    this.descarte.push(carta);
+  }
 
-    limparPilha(): boolean { //OK
-      console.log("Limpando pilha de descarte e juntando ao baralho...");
-      this.baralho.push(...this.descarte);
-      this.baralho.sort(() => Math.random() - 0.5);
-      this.descarte = [];
-      return true;
+  verTopoDescarte(): Carta | null { // OK
+    if (this.descarte.length > 0) {
+      const card = this.descarte[this.descarte.length - 1];
+      console.log(`Carta no topo da pilha de descarte: ${card.nome}`);
+      return card;
     }
+    console.log("A pilha de descarte está vazia.");
+    return null;
+  }
+
+  estaVazio(): boolean { // OK
+    return this.baralho.length === 0;
+  }
+
+  verTopoBaralho(): Carta | null { // OK
+    if (this.baralho.length > 0) {
+      const card = this.baralho[this.baralho.length - 1]
+      console.log(`Primeira carta da pilha: ${card.nome}`);
+      return card;
+    }
+    return null;
+  }
+
+  limparPilha(): boolean { //OK
+    console.log("Limpando pilha de descarte e juntando ao baralho...");
+    this.baralho.push(...this.descarte);
+    this.embaralhar(this.baralho);
+    this.descarte = [];
+    return true;
+  }
 }
