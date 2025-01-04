@@ -1,10 +1,14 @@
 import { Carta } from "./Carta.class";
 
 export abstract class Baralho {
+  public baralho: Carta[];
+  public descarte: Carta[];
     constructor(
-        protected baralho: Carta[], 
-        protected descarte: Carta[]
-    ) {}
+    ) {
+      this.baralho = []
+      this.descarte = []
+      this.iniciarDeck();
+    }
 
     //lógica para ler info das cartas em um arquivo e criar a pilha de baralho
     abstract iniciarDeck(): void;

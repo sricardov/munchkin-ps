@@ -2,11 +2,8 @@ import { Carta } from "./Carta.class";
 import { Baralho } from "./Baralho.class";
 
 export class BaralhoTesouros extends Baralho {
-    constructor(
-        baralho: Carta[], 
-        descarte: Carta[]
-    ) {
-        super(baralho, descarte);
+    constructor() {
+        super();
     }
 
     iniciarDeck(): void {

@@ -29,7 +29,19 @@ export class GerenciadorDeTurno {
         this.combates = combates;
     }
 
-    descartarCartaJogadorAtual(carta: Carta) {
+    iniciarEtapa() {
+        if (this.etapa = Etapa.ABRIR_PORTA) {
+            this.etapaAbrirPorta();
+        } else if (this.etapa = Etapa.PROCURAR_ENCRENCA) {
+            this.etapaProcurarEncrenca();
+        } else if (this.etapa = Etapa.SAQUEAR_SALA) {
+            this.etapaSaquearSala();
+        } else if (this.etapa = Etapa.CARIDADE){
+            this.etapaFazerCaridade();
+        }
+    }
+
+    _descartarCartaJogadorAtual(carta: Carta) {
         this.jogadorAtual.mao.descartar(carta);
         if (carta instanceof CartaPorta) 
             this.jogo.baralhoPortas.adicionarDescarte(carta);
@@ -37,20 +49,20 @@ export class GerenciadorDeTurno {
             this.jogo.baralhoTesouros.adicionarDescarte(carta);
     }
 
-    realizarCombate(monstro: Monstro): void {
+    _realizarCombate(monstro: Monstro): void {
         const luta = new Luta(monstro, this.jogadorAtual)
         const combate = new Combate(this.jogo)
         combate.lutas.push(luta)
         const ganhou = combate.calcularResultado()
         if (ganhou) {
-            this.resgatarRecompensas(monstro, this.jogadorAtual)
+            this._resgatarRecompensas(monstro, this.jogadorAtual)
             this.jogadorAtual.nivel += 1; // sobe o jogador de nível
         } else {
             monstro.aplicarCoisaRuim(this.jogo, this.jogadorAtual);
         }
     }
 
-    resgatarRecompensas(monstro: Monstro, jogador: Jogador): void {
+    _resgatarRecompensas(monstro: Monstro, jogador: Jogador): void {
         for (let i = 0; i < monstro.tesouros; i++) {
             const tesouro = this.jogo.baralhoTesouros.comprar();
             if (tesouro) {
@@ -59,24 +71,24 @@ export class GerenciadorDeTurno {
         }
     }
 
-    abrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.
+    etapaAbrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.
         const cartaTopo = this.jogo.baralhoPortas.comprar()
         this.jogadorAtual.mao.adicionarCarta(cartaTopo);
 
         if (cartaTopo instanceof Monstro) {
-            this.realizarCombate(cartaTopo);
-            this.descartarCartaJogadorAtual(cartaTopo);
+            this._realizarCombate(cartaTopo);
+            this._descartarCartaJogadorAtual(cartaTopo);
         }
         else if (cartaTopo instanceof Maldicao) {
             cartaTopo.aplicarMaldicao(this.jogo, this.jogadorAtual);
-            this.descartarCartaJogadorAtual(cartaTopo);
+            this._descartarCartaJogadorAtual(cartaTopo);
         }
         else {
             this.jogadorAtual.mao.adicionarCarta(cartaTopo);
             //esperar input do jogador se ele quiser jogar a carta que recebeu
             const querJogar = true
             if (querJogar) {
-                this.descartarCartaJogadorAtual(cartaTopo);
+                this._descartarCartaJogadorAtual(cartaTopo);
                 cartaTopo.usar(this.jogo, this.jogadorAtual)
             }
         }
@@ -87,7 +99,7 @@ export class GerenciadorDeTurno {
         return cartaTopo;
     }
 
-    procurarEncrenca(): void {
+    etapaProcurarEncrenca(): void {
         let temMonstro = false
         let indexMonstro = 0
         let cartas = this.jogadorAtual.mao.verCartas()
@@ -103,22 +115,22 @@ export class GerenciadorDeTurno {
             const querJogar = true
             const cartaMonstro = cartas[indexMonstro]; // escolha do jogador
             if (querJogar && cartaMonstro instanceof Monstro) {
-                this.descartarCartaJogadorAtual(cartaMonstro);
-                this.realizarCombate(cartaMonstro);
+                this._descartarCartaJogadorAtual(cartaMonstro);
+                this._realizarCombate(cartaMonstro);
             }
         }
 
         this.etapa = Etapa.SAQUEAR_SALA;
     } // se não combateu ou sofreu maldição, usar uma carta de monstro da mão e iniciar combate com ela
 
-    saquearSala(): Carta { // se não combateu, comprar carta de porta
+    etapaSaquearSala(): Carta { // se não combateu, comprar carta de porta
         const cartaTopo = this.jogo.baralhoPortas.comprar()
         this.jogadorAtual.mao.adicionarCarta(cartaTopo);
         this.etapa = Etapa.CARIDADE;
         return cartaTopo;
     }
 
-    fazerCaridade(): void {
+    etapaFazerCaridade(): void {
         let numCartas = this.jogadorAtual.mao.verificarcartasNaMao()
         if (numCartas <= 5) {
             this.terminarTurno()
@@ -130,7 +142,7 @@ export class GerenciadorDeTurno {
         if (cartasExtras.length > 0) {
             cartasExtras.forEach(carta => {
                 carta.usar(this.jogo, this.jogadorAtual);
-                this.descartarCartaJogadorAtual(carta);
+                this._descartarCartaJogadorAtual(carta);
             });
         }
 
@@ -147,7 +159,7 @@ export class GerenciadorDeTurno {
 
         if (this.jogadorAtual.nivel === menorNivel) {
             for (const carta of cartasExtras) {
-                this.descartarCartaJogadorAtual(carta);
+                this._descartarCartaJogadorAtual(carta);
             }
             console.log("Cartas descartadas por ser jogador de menor nível.");
         }
@@ -161,7 +173,7 @@ export class GerenciadorDeTurno {
         }
 
         for (const carta of cartasExtras) {
-            this.descartarCartaJogadorAtual(carta);
+            this._descartarCartaJogadorAtual(carta);
         }
 
         console.log("Cartas distribuídas entre os jogadores de menor nível.");
