@@ -7,18 +7,17 @@ export abstract class Carta {
 
   constructor(
     public nome: string,
-    public jogo: Jogo,
     public descricao: string,
     public tipo: TipoCarta,
     protected efeitos: Efeito[] = []
   ) { }
 
-  public usar(jogador: Jogador, jogo?: Jogo): void { // OK
+  public usar(jogador: Jogador): void { // OK
     console.log(`Usando a carta: ${this.nome}`);
 
     if (this.efeitos.length > 0) {
       console.log(`Ativando os efeitos da carta "${this.nome}":`);
-      this.efeitos.forEach((efeito) => efeito.usar(this.jogo, jogador));
+      this.efeitos.forEach((efeito) => efeito.usar(jogador));
     } else {
       console.log(`A carta "${this.nome}" não possui efeitos.`);
     }

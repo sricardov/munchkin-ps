@@ -9,6 +9,7 @@ export class Monstro extends CartaPorta {
     nivel: number;
     tesouros: number;
     coisaRuim: string;
+    experiencia: number;
     bonus: number;
 
     constructor(
@@ -16,6 +17,7 @@ export class Monstro extends CartaPorta {
         descricao: string,
         nivel: number,
         bonus: number,
+        experiencia: number,
         tesouros: number,
         coisaRuim: string,
         efeitos: Efeito[] = []
@@ -23,13 +25,14 @@ export class Monstro extends CartaPorta {
         super(nome, descricao, TipoCarta.MONSTRO, efeitos);
         this.bonus = bonus;
         this.nivel = nivel;
+        this.experiencia = experiencia;
         this.tesouros = tesouros;
         this.coisaRuim = coisaRuim;
     }
 
-    aplicarCoisaRuim(jogo: Jogo, jogador: Jogador): void { // chamar metodo usar do efeito
+    aplicarCoisaRuim(jogador: Jogador): void { // chamar metodo usar do efeito
         this.efeitos.forEach((efeito) => {
-            efeito.usar(jogo, jogador);
+            efeito.usar(jogador);
         });
     }
 }

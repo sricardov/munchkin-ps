@@ -1,6 +1,8 @@
 import { Etapa } from "../enums/Etapa.enum";
 import { BaralhoPortas } from "./BaralhoPortas.class";
 import { BaralhoTesouros } from "./BaralhoTesouros.class";
+import { Carta } from "./Carta.class";
+import { CartaPorta } from "./CartaPorta.class";
 import { Dado } from "./Dado.class";
 import { GerenciadorDeTurno } from "./GerenciadorDeTurno.class";
 import { Interface } from "./Interface.class";
@@ -43,6 +45,19 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
         this.UI = UI;
         this.fimDeJogo = false;
         this.gameLoop();
+    }
+
+    public descartar(carta: Carta) {
+        if (carta instanceof CartaPorta) {
+            if (this.baralhoPortas.descarte.includes(carta))
+                return;
+            this.baralhoPortas.adicionarDescarte(carta);
+        }
+        else {
+            if (this.baralhoTesouros.descarte.includes(carta))
+                return;
+            this.baralhoTesouros.adicionarDescarte(carta);
+        }
     }
 
     private gameLoop() {
