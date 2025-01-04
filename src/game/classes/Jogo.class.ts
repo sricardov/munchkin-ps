@@ -1,3 +1,4 @@
+import { Etapa } from "../enums/Etapa.enum";
 import { BaralhoPortas } from "./BaralhoPortas.class";
 import { BaralhoTesouros } from "./BaralhoTesouros.class";
 import { Dado } from "./Dado.class";
@@ -13,6 +14,7 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     baralhoPortas: BaralhoPortas;
     dado: Dado;
     UI: Interface;
+    fimDeJogo: boolean;
 
     constructor(
         numJogadores: number, 
@@ -27,20 +29,50 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
             throw new Error("O número de jogadores não corresponde à lista de jogadores fornecida.");
         }
 
-        this.numJogadores = numJogadores;
+        this.numJogadores = jogadores.length;
         this.jogadores = jogadores;
-        this.gerenciadorTurno = gerenciadorTurno;
-        this.baralhoTesouros = baralhoTesouros;
-        this.baralhoPortas = baralhoPortas;
-        this.dado = dado;
+        this.gerenciadorTurno = new GerenciadorDeTurno(
+            jogadores[0], 
+            Etapa.ABRIR_PORTA, 
+            0,
+            [],
+            this);
+        this.baralhoTesouros = new BaralhoTesouros();
+        this.baralhoPortas = new BaralhoPortas();
+        this.dado = new Dado();
         this.UI = UI;
+        this.fimDeJogo = false;
+        this.gameLoop();
     }
 
-    private verificarVencedor(): Jogador { // sempre que um jogador mudar de nivel, verificar se tem alguem no nivel 10 e encerrar o jogo se tiver
-        throw new Error("Method not implemented.");
+    private gameLoop() {
+        while (!this.fimDeJogo) {
+            const vencedor = this.verificarVencedor();
+            if (vencedor != null) {
+                this.encerrarJogo(vencedor);
+                this.fimDeJogo = true;
+            }
+            else {
+                this.gerenciadorTurno.iniciarEtapa();
+            }
+        }
+        // desconectar jogadores e ir para o menu
+        return;
+    }
+
+
+    private verificarVencedor(): Jogador | null {
+        for (const jogador of this.jogadores) {
+            if (jogador.nivel === 10) {
+                return jogador;
+            }
+        }
+        return null;
     }
     
     private encerrarJogo(vencedor: Jogador) {
-        throw new Error("Method not implemented.");
+        // animacao de encerramento de jogo na tela
+        console.log(`${vencedor.nome} ganhou o jogo!`);
+        
     }
 }

@@ -8,6 +8,7 @@ import { Inventario } from "./Inventario.class";
 import { Jogo } from "./Jogo.class";
 
 export class Jogador {
+
   nome: string;
   nivel: number;
   classe: Classe;
@@ -50,7 +51,9 @@ export class Jogador {
     this.inventario.desequiparItem(item);
   }
 
-  morrer(): void { } // alterar o nivel do jogar
+  morrer(): void {
+    this.nivel = Math.floor(this.nivel / 2);
+  } // alterar o nivel do jogar
 
   definirRaca(raca: Raca): void {
     this.raca = raca;
