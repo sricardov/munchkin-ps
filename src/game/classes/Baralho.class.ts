@@ -1,24 +1,30 @@
 import { Carta } from "./Carta.class";
 
 export abstract class Baralho {
+  public baralho: Carta[];
+  public descarte: Carta[];
     constructor(
-        protected baralho: Carta[], 
-        protected descarte: Carta[]
-    ) {}
+    ) {
+      this.baralho = []
+      this.descarte = []
+      this.iniciarDeck();
+    }
 
     //lógica para ler info das cartas em um arquivo e criar a pilha de baralho
     abstract iniciarDeck(): void;
 
     //falta um método para apenas embaralhar o baralho
 
-    comprar(): Carta | null { // falta adicionar a carta comprada à mão do jogador
-      const card = this.baralho.pop();
-        if (card) {
-          console.log(`Carta comparada: ${card.nome}`);
-          return card;
-        }
-        console.log("Pilha de compra vazia, nenhuma carta retornada");
-        return null;
+    comprar(): Carta { 
+      let card = this.baralho.pop();
+      if (card) {
+        console.log(`Carta comparada: ${card.nome}`);
+        return card;
+      }
+      this.limparPilha()
+      card = this.baralho.pop();
+      if (!card) throw new Error("Baralho de compra vazio.");
+      else return card;
     }
 
     adicionarDescarte(card: Carta): void { // OK
