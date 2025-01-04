@@ -18,7 +18,7 @@ export class Inventario {
 
   itensGuardados: Item[] = [];
 
-  constructor(jogador: Jogador, cabeca: Equipamento, corpo: Equipamento, pes: Equipamento, maoEsquerda: Equipamento, maoDireita: Equipamento) {
+  constructor(jogador: Jogador, cabeca: EquipamentoCabeca, corpo: EquipamentoCorpo, pes: EquipamentoPes, maoEsquerda: EquipamentoMaos, maoDireita: EquipamentoMaos) {
     this.cabeca = cabeca;
     this.jogador = jogador;
     this.corpo = corpo;
@@ -28,9 +28,9 @@ export class Inventario {
     this.itensGuardados = [];
   }
 
-  equiparItem(item: Item): boolean {
+  equiparItem(item: Item): boolean {  
     if (!(item instanceof Equipamento)) {
-      console.log(`O item não é um equipamento.`);
+      console.log(`Item ${item.nome} não é um equipamento.`);
       return false;
     }
 
@@ -156,4 +156,3 @@ export class Inventario {
     return true;
   }
 }
-
