@@ -1,7 +1,5 @@
 import { Classe } from "./Classe.class";
 import { Equipamento } from "./Equipamento.class";
-import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
 import { Raca } from "./Raca.class";
 
 export class EquipamentoMaos extends Equipamento {

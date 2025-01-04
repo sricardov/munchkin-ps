@@ -11,6 +11,7 @@ export class Jogador {
 
   nome: string;
   nivel: number;
+  bonus: number;
   classe: Classe;
   raca: Raca;
   mao: Mao;
@@ -21,6 +22,7 @@ export class Jogador {
   constructor(
     nome: string,
     nivel: number,
+    bonus: number,
     classe: Classe,
     raca: Raca,
     mao: Mao,
@@ -30,6 +32,7 @@ export class Jogador {
   ) {
     this.nome = nome;
     this.nivel = nivel;
+    this.bonus = bonus;
     this.classe = classe;
     this.raca = raca;
     this.mao = mao;
@@ -65,6 +68,12 @@ export class Jogador {
 
   adicionarEfeito(efeitos: Efeito[]): void {
     this.efeitosAtivos.push(...efeitos);
+  }
+
+  removerEfeito(efeitos: Efeito[]): void {
+    this.efeitosAtivos = this.efeitosAtivos.filter(efeito_i =>
+      !efeitos.some(efeito_j => efeito_i === efeito_j)
+    );
   }
 
   getRaca(): Raca {

@@ -24,4 +24,12 @@ export class EquipamentoCorpo extends Equipamento { // OK
     inventario.equipaCorpo(this);
     this.adicionarEfeito(jogador);
   }
+
+  override desequipar(jogador: Jogador): boolean {
+    const retorno = jogador.getInventario().desequipaCorpo();
+    if (retorno)
+      this.removerEfeito(jogador);
+
+    return retorno;
+  }
 }

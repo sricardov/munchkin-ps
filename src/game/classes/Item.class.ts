@@ -38,4 +38,8 @@ export abstract class Item extends CartaTesouro { // OK
 
     return true;
   }
+
+  desequipar(jogador: Jogador): boolean {
+    return true;
+  }
 }

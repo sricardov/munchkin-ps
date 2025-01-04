@@ -16,87 +16,143 @@ export class Inventario {
   maoEsquerda: EquipamentoMaos | null;
   maoDireita: EquipamentoMaos | null;
 
-  itensEquipados: Item[] = [];
   itensGuardados: Item[] = [];
 
-  constructor(jogador: Jogador, cabeca: Equipamento, corpo: Equipamento, pes: Equipamento, maoEsquerda: Equipamento, maoDireita: Equipamento) {
+  constructor(jogador: Jogador, cabeca: EquipamentoCabeca, corpo: EquipamentoCorpo, pes: EquipamentoPes, maoEsquerda: EquipamentoMaos, maoDireita: EquipamentoMaos) {
     this.cabeca = cabeca;
     this.jogador = jogador;
     this.corpo = corpo;
     this.pes = pes;
     this.maoEsquerda = maoEsquerda;
     this.maoDireita = maoDireita;
-    this.itensEquipados = [];
     this.itensGuardados = [];
   }
 
-  equiparItem(item: Item): boolean {
+  equiparItem(item: Item): boolean {  
     if (!(item instanceof Equipamento)) {
-      console.log(`O item não é um equipamento.`);
+      console.log(`Item ${item.nome} não é um equipamento.`);
       return false;
     }
 
     item.usar(this.jogador);
-    this.itensEquipados.push(item);
     console.log(`Equipando ${item.nome}.`);
     return true;
   }
 
   desequiparItem(item: Item): void {
-    if (!this.verificarSeEquipado(item)) {
+    const desequipa = item.desequipar(this.jogador)
+    if (!desequipa) {
       console.error("Item não está equipado");
       return;
     }
 
-    if (item instanceof EquipamentoCabeca) {
-      this.cabeca = null;
-    } else if (item instanceof EquipamentoCorpo) {
-      this.corpo = null;
-    } else if (item instanceof EquipamentoPes) {
-      this.pes = null;
-    } else if (item instanceof EquipamentoMaos) {
-      if (this.maoEsquerda === item) {
-        this.maoEsquerda = null;
-      } else if (this.maoDireita === item) {
-        this.maoDireita = null;
-      }
-    }
-
-    const index = this.itensEquipados.findIndex(
-      (equipamento) => equipamento.nome === item.nome);
-
-    if (index !== -1) {
-      this.itensEquipados.splice(index, 1);
-      this.itensGuardados.push(item);
-      console.log(`Desequipando ${item.nome} do inventário.`);
-    }
+    this.itensGuardados.push(item);
+    console.log(`Desequipando ${item.nome} do inventário.`);
   }
 
-  verificarSeEquipado(item: Item): boolean {
-    return this.itensEquipados.includes(item);
-  }
+  equipaCabeca(item: EquipamentoCabeca): boolean {
+    if (!this.cabeca === null)
+      return false;
 
-  equipaCabeca(item: EquipamentoCabeca) {
     this.cabeca = item;
+    return true;
   }
 
-  equipaCorpo(item: EquipamentoCorpo) {
+  desequipaCabeca(): boolean {
+    if (this.cabeca === null)
+      return false
+
+    this.cabeca === null
+    return true;
+  }
+
+  equipaCorpo(item: EquipamentoCorpo): boolean {
+    if (!this.corpo === null)
+      return false;
+
     this.corpo = item;
+    return true;
   }
 
-  equipaPes(item: EquipamentoPes) {
+  desequipaCorpo(): boolean {
+    if (this.corpo === null)
+      return false
+
+    this.corpo === null
+    return true;
+  }
+
+  equipaPes(item: EquipamentoPes): boolean {
+    if (!this.pes === null)
+      return false;
+
     this.pes = item;
+    return true;
   }
 
-  equipaUmaMao(item: EquipamentoUmaMao) {
-    if (this.maoEsquerda === null) {
+  desequipaPes(): boolean {
+    if (this.pes === null)
+      return false
+
+    this.pes === null
+    return true;
+  }
+
+  equipaUmaMao(item: EquipamentoUmaMao): boolean {
+    if (this.maoEsquerda === null)
       this.maoEsquerda = item;
-    } else if (this.maoDireita === null) {
+
+    else if (this.maoDireita === null)
       this.maoDireita = item;
-    }
+
+    else
+      return false;
+
+    return true;
   }
 
-  equipaDuasMaos(item: EquipamentoDuasMaos) {
-    // TO DO
+  desequipaUmaMao(item: EquipamentoUmaMao): boolean {
+    if (this.maoDireita === item)
+      this.maoDireita = null;
+
+    else if (this.maoEsquerda === item)
+      this.maoEsquerda = null;
+
+    else
+      return false;
+
+    return true;
+  }
+
+  desequipaMaoDireita(): boolean {
+    if (this.maoDireita === null) {
+      return false;
+    }
+
+    this.maoDireita = null;
+    return true;
+  }
+
+  desequipaMaoEsquerda(): boolean {
+    if (this.maoEsquerda === null) {
+      return false;
+    }
+
+    this.maoEsquerda = null;
+    return true;
+  }
+
+  equipaDuasMaos(item: EquipamentoDuasMaos): boolean {
+    if (this.maoEsquerda === null && this.maoDireita === null) {
+      this.maoDireita = this.maoEsquerda = item;
+      return true;
+    }
+
+    return false;
+  }
+
+  desequipaDuasMaos(): boolean {
+    this.maoDireita = this.maoEsquerda = null;
+    return true;
   }
 }

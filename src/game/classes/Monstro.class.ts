@@ -9,16 +9,19 @@ export class Monstro extends CartaPorta {
     nivel: number;
     tesouros: number;
     coisaRuim: string;
+    bonus: number;
 
     constructor(
         nome: string,
         descricao: string,
         nivel: number,
+        bonus: number,
         tesouros: number,
         coisaRuim: string,
         efeitos: Efeito[] = []
     ) {
         super(nome, descricao, TipoCarta.MONSTRO, efeitos);
+        this.bonus = bonus;
         this.nivel = nivel;
         this.tesouros = tesouros;
         this.coisaRuim = coisaRuim;
