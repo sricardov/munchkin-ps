@@ -1,26 +1,63 @@
-import { Luta } from "./Luta.class";
+import { Dado } from "./Dado.class";
 import { Jogador } from "./Jogador.class";
 import { Jogo } from "./Jogo.class";
+import { Monstro } from "./Monstro.class";
 
 export class Combate {
-    public lutas: Luta[];
     public jogo: Jogo;
+    public lutas: {jogador: Jogador, monstros: Monstro[] } []=[];
 
-    constructor(jogo: Jogo) {
-        this.lutas = [];
+
+    constructor(jogo: Jogo, jogador: Jogador, monstro: Monstro) {
         this.jogo = jogo;
+
+        this.lutas.push({jogador: jogador, monstros: [monstro]});
+    };
+
+    public adicionarMonstro(monstro: Monstro): void {
+        this.lutas.forEach(luta => { luta.monstros.push(monstro) });
     }
 
+    /** 
+     * Se for true, jogador(es) venceram, caso contrario monstros venceram
+    */
     public calcularResultado(): boolean {
-        let resultado: boolean = true;
-        this.lutas.forEach(luta => {
-            if (!luta.calcularResultado()) {
-                resultado = false;
-            }
-        });
-        return resultado;
+        let nivelJogadores = 0
+        let nivelMonstros = 0;
+        this.lutas.forEach(luta => { nivelJogadores += luta.jogador.nivel + luta.jogador.bonus })
+        this.lutas[0].monstros.forEach(monstro => nivelMonstros +=monstro.nivel+monstro.bonus)
+        
+        return nivelJogadores > nivelMonstros;   //se retornar true jogadores venceram
+        
+    }
+    public tentarFugir(jogador: Jogador, monstro: Monstro): void {
+        let resultado = new Dado().rolar();
+        let index = this.lutas.findIndex(luta => luta.jogador === jogador);
+        if (resultado + jogador.fuga > 4){
+            this.lutas[index].monstros.forEach(m => {if (m === monstro) {m= new Monstro("","",0,0,0,0,"")}}); //remover monstro da luta
+        }
+        else {
+            //aplicar coisa ruim do monstro no jogador
+            monstro.aplicarCoisaRuim(this.jogo, jogador);
+        }
+
+    }
+    public resolucaodeCombate(): void {
+        if (this.calcularResultado()) {
+            this.lutas[0].monstros.forEach(monstro => this.lutas[0].jogador.ganharNivel(monstro.experiencia));
+            this.lutas[0].monstros.forEach(monstro => this.lutas[0].jogador.ganharTesouros(monstro.tesouros));
+        }
+        else {
+            this.lutas.forEach(luta => luta.monstros.forEach(monstro => this.tentarFugir(luta.jogador, monstro))); 
+        }
     }
 
-    //public pedirAjuda(jogador: Jogador, barganha: number): boolean {
+    public pedirAjuda(jogador: Jogador, barganha: number): void {
+        //solicitar ao jogador ajuda, numero aleatório que resulta em sim ou nao
+        //ideia: peso maior para barganha maior (banganha = numero de tesouros que o jogador oferece)
+        //if(resposta){ this.lutas.push({jogador:jogador, monstros: this.lutas[0].monstros}) }
+        //TODO: implementar pedir ajuda (bot)
+        
+    }
 
 }
