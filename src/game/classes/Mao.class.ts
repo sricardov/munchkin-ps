@@ -5,6 +5,11 @@ import { Jogo } from "./Jogo.class";
 export class Mao {
   private cartasNaMao: Carta[] = [];
 
+  adicionarCarta(carta: Carta) {
+    this.cartasNaMao.push(carta);
+    console.log("Carta adicionada.");
+  }
+
   usarCarta(carta: Carta, jogo: Jogo, jogador: Jogador): void { // falta adicionar ao local apropriado (descarte ou inventario)
     const index = this.cartasNaMao.indexOf(carta);
 
@@ -37,5 +42,9 @@ export class Mao {
       });
     }
     return 1 // 'carta'
+  }
+
+  verCartas(): Carta[] {
+    return this.cartasNaMao;
   }
 }

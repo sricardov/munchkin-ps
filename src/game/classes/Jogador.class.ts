@@ -8,6 +8,7 @@ import { Inventario } from "./Inventario.class";
 import { Jogo } from "./Jogo.class";
 
 export class Jogador {
+    jogo: Jogo;
     nome: string;
     nivel: number;
     classes: Classe[];
