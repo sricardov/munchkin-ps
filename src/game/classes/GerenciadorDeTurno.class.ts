@@ -4,7 +4,6 @@ import { CartaPorta } from "./CartaPorta.class";
 import { Combate } from "./Combate.class";
 import { Jogador } from "./Jogador.class";
 import { Jogo } from "./Jogo.class";
-import { Luta } from "./Luta.class";
 import { Maldicao } from "./Maldicao.class";
 import { Monstro } from "./Monstro.class";
 
@@ -43,22 +42,17 @@ export class GerenciadorDeTurno {
 
     _descartarCartaJogadorAtual(carta: Carta) {
         this.jogadorAtual.mao.descartar(carta);
-        if (carta instanceof CartaPorta) 
-            this.jogo.baralhoPortas.adicionarDescarte(carta);
-        else 
-            this.jogo.baralhoTesouros.adicionarDescarte(carta);
+        this.jogo.descartar(carta);
     }
 
     _realizarCombate(monstro: Monstro): void {
-        const luta = new Luta(monstro, this.jogadorAtual)
-        const combate = new Combate(this.jogo)
-        combate.lutas.push(luta)
+        const combate = new Combate(this.jogo, this.jogadorAtual, monstro);
         const ganhou = combate.calcularResultado()
         if (ganhou) {
             this._resgatarRecompensas(monstro, this.jogadorAtual)
             this.jogadorAtual.nivel += 1; // sobe o jogador de nível
         } else {
-            monstro.aplicarCoisaRuim(this.jogo, this.jogadorAtual);
+            monstro.aplicarCoisaRuim(this.jogadorAtual);
         }
     }
 
@@ -80,7 +74,7 @@ export class GerenciadorDeTurno {
             this._descartarCartaJogadorAtual(cartaTopo);
         }
         else if (cartaTopo instanceof Maldicao) {
-            cartaTopo.aplicarMaldicao(this.jogo, this.jogadorAtual);
+            cartaTopo.aplicarMaldicao(this.jogadorAtual);
             this._descartarCartaJogadorAtual(cartaTopo);
         }
         else {
@@ -89,7 +83,7 @@ export class GerenciadorDeTurno {
             const querJogar = true
             if (querJogar) {
                 this._descartarCartaJogadorAtual(cartaTopo);
-                cartaTopo.usar(this.jogo, this.jogadorAtual)
+                cartaTopo.usar(this.jogadorAtual)
             }
         }
         
@@ -131,7 +125,7 @@ export class GerenciadorDeTurno {
     }
 
     etapaFazerCaridade(): void {
-        let numCartas = this.jogadorAtual.mao.verificarcartasNaMao()
+        let numCartas = this.jogadorAtual.mao.verificarCartasNaMao()
         if (numCartas <= 5) {
             this.terminarTurno()
             return;
@@ -141,7 +135,7 @@ export class GerenciadorDeTurno {
 
         if (cartasExtras.length > 0) {
             cartasExtras.forEach(carta => {
-                carta.usar(this.jogo, this.jogadorAtual);
+                carta.usar(this.jogadorAtual);
                 this._descartarCartaJogadorAtual(carta);
             });
         }
@@ -167,7 +161,7 @@ export class GerenciadorDeTurno {
         let index = 0;
         for (const carta of cartasExtras) {
             const jogador = jogadoresDeMenorNivel[index];
-            if (jogador.mao.verificarcartasNaMao() < 5)
+            if (jogador.mao.verificarCartasNaMao() < 5)
                 jogador.mao.adicionarCarta(carta);
             index = (index + 1) % jogadoresDeMenorNivel.length;
         }

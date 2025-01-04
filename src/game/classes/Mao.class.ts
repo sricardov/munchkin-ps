@@ -2,8 +2,10 @@ import { Baralho } from "./Baralho.class";
 import { Carta } from "./Carta.class";
 import { CartaPorta } from "./CartaPorta.class";
 import { CartaTesouro } from "./CartaTesouro.class";
+import { Item } from "./Item.class";
 import { Jogador } from "./Jogador.class";
 import { Jogo } from "./Jogo.class";
+import { Monstro } from "./Monstro.class";
 
 export class Mao {
   private cartasNaMao: Carta[];
@@ -24,13 +26,13 @@ export class Mao {
   
     if (index !== -1) {
       this.cartasNaMao.splice(index, 1);
-      carta.usar(jogo, jogador);
+      carta.usar(jogador);
   
       if (carta instanceof CartaPorta) {
         this.baralho.adicionarDescarte(carta);
         console.log(`Carta Porta ${carta.nome} usada e descartada.`);
-      } else if (carta instanceof CartaTesouro) {
-        jogador.inventario.equiparItem(carta.nome);
+      } else if (carta instanceof Item) {
+        jogador.inventario.equiparItem(carta);
         console.log(`Carta Tesouro ${carta.nome} usada e adicionada ao inventário.`);
       } else {
         console.error("Tipo de carta não suportado.");
