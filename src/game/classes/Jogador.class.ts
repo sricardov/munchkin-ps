@@ -8,8 +8,6 @@ import { Inventario } from "./Inventario.class";
 import { Jogo } from "./Jogo.class";
 
 export class Jogador {
-
-    jogo: Jogo;
     nome: string;
     nivel: number;
     classes: Classe[];
@@ -40,6 +38,8 @@ export class Jogador {
 
     jogarCarta(carta: Carta) { // descarta da mão e, se for o caso, adicionar ao inventário
         throw new Error('Method not implemented');
+        //passar o jogo e o proprio jogador que jogou como argumentos pra mao
+        //ex: mao.usarCarta(carta, this.jogo, this)
     }
 
     equiparItem(item: Item) { // chamar metodo do inventario
