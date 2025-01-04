@@ -25,4 +25,13 @@ export class EquipamentoDuasMaos extends EquipamentoMaos {
     inventario.equipaDuasMaos(this);
     this.adicionarEfeito(jogador);
   }
+
+  override desequipar(jogador: Jogador): boolean {
+    const retorno = jogador.getInventario().desequipaDuasMaos();
+    if (retorno)
+      this.removerEfeito(jogador);
+
+    return retorno;
+  }
+
 }

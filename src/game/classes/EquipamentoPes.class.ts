@@ -25,4 +25,12 @@ export class EquipamentoPes extends Equipamento {
     inventario.equipaPes(this);
     this.adicionarEfeito(jogador);
   }
+
+  override desequipar(jogador: Jogador): boolean {
+    const retorno = jogador.getInventario().desequipaPes();
+    if (retorno)
+      this.removerEfeito(jogador);
+
+    return retorno;
+  }
 }

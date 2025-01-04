@@ -7,6 +7,7 @@ export abstract class Carta {
 
   constructor(
     public nome: string,
+    public jogo: Jogo,
     public descricao: string,
     public tipo: TipoCarta,
     protected efeitos: Efeito[] = []
@@ -17,7 +18,7 @@ export abstract class Carta {
 
     if (this.efeitos.length > 0) {
       console.log(`Ativando os efeitos da carta "${this.nome}":`);
-      this.efeitos.forEach((efeito) => efeito.usar(jogador));
+      this.efeitos.forEach((efeito) => efeito.usar(this.jogo, jogador));
     } else {
       console.log(`A carta "${this.nome}" não possui efeitos.`);
     }
@@ -26,5 +27,10 @@ export abstract class Carta {
   adicionarEfeito(jogador: Jogador) {
     if (this.efeitos.length > 0)
       jogador.adicionarEfeito(this.efeitos);
+  }
+
+  removerEfeito(jogador: Jogador) {
+    if (this.efeitos.length > 0)
+      jogador.removerEfeito(this.efeitos);
   }
 }
