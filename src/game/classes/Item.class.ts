@@ -28,4 +28,14 @@ export abstract class Item extends CartaTesouro { // OK
     this.restricoesClasse = restricoesClasse;
     this.efeitos = efeitos;
   }
+
+  verificaRestricoes(jogador: Jogador): boolean {
+    if (this.restricoesClasse.includes(jogador.getClasse()))
+      return false;
+
+    if (this.restricoesRaca.includes(jogador.getRaca()))
+      return false;
+
+    return true;
+  }
 }
