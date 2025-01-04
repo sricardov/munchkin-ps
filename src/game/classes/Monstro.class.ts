@@ -30,9 +30,9 @@ export class Monstro extends CartaPorta {
         this.coisaRuim = coisaRuim;
     }
 
-    aplicarCoisaRuim(jogo: Jogo, jogador: Jogador): void { // chamar metodo usar do efeito
+    aplicarCoisaRuim(jogador: Jogador): void { // chamar metodo usar do efeito
         this.efeitos.forEach((efeito) => {
-            efeito.usar(jogo, jogador);
+            efeito.usar(jogador);
         });
     }
 }

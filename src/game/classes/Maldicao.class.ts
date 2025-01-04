@@ -11,9 +11,9 @@ export class Maldicao extends CartaPorta {
 
     public sofrerMaldicao(): void {} // método desnecessario?
 
-    public aplicarMaldicao(jogo: Jogo, jogador: Jogador) {
+    public aplicarMaldicao(jogador: Jogador) {
         this.efeitos.forEach((efeito) => {
-            efeito.usar(jogo, jogador);
+            efeito.usar(jogador);
         });
     }
 }
