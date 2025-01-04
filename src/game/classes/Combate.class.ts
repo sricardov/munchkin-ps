@@ -11,11 +11,16 @@ export class Combate {
         this.jogo = jogo;
     }
 
-    public calcularResultado(): boolean { // nível monstro menos nivel jogador
-        throw new Error("Method not implemented."); // precisa monstro e jogador
+    public calcularResultado(): boolean {
+        let resultado: boolean = true;
+        this.lutas.forEach(luta => {
+            if (!luta.calcularResultado()) {
+                resultado = false;
+            }
+        });
+        return resultado;
     }
 
-    public pedirAjuda(jogador: Jogador, barganha: number): boolean {
-        throw new Error("Method not implemented.");
-    }
+    //public pedirAjuda(jogador: Jogador, barganha: number): boolean {
+
 }

@@ -11,6 +11,7 @@ export class Jogador {
 
   nome: string;
   nivel: number;
+  bonus: number;
   classe: Classe;
   raca: Raca;
   mao: Mao;
@@ -21,6 +22,7 @@ export class Jogador {
   constructor(
     nome: string,
     nivel: number,
+    bonus: number,
     classe: Classe,
     raca: Raca,
     mao: Mao,
@@ -30,6 +32,7 @@ export class Jogador {
   ) {
     this.nome = nome;
     this.nivel = nivel;
+    this.bonus = bonus;
     this.classe = classe;
     this.raca = raca;
     this.mao = mao;
