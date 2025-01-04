@@ -9,6 +9,8 @@ export abstract class Baralho {
     //lógica para ler info das cartas em um arquivo e criar a pilha de baralho
     abstract iniciarDeck(): void;
 
+    //falta um método para apenas embaralhar o baralho
+
     comprar(): Carta | null { // falta adicionar a carta comprada à mão do jogador
       const card = this.baralho.pop();
         if (card) {

@@ -6,4 +6,6 @@ export abstract class Efeito {
   }
 
   public abstract usar(): void; // OK
+
+  // falta criar todas as instancias de efeitos diferentes
 }
