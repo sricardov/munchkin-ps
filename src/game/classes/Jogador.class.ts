@@ -13,6 +13,7 @@ export class Jogador {
   nivel: number;
   bonus: number;
   classe: Classe;
+  fuga: number;
   raca: Raca;
   mao: Mao;
   inventario: Inventario;
@@ -21,9 +22,10 @@ export class Jogador {
 
   constructor(
     nome: string,
-    nivel: number,
-    bonus: number,
+    nivel: 1,
+    bonus: 0,
     classe: Classe,
+    fuga: 0,
     raca: Raca,
     mao: Mao,
     inventario: Inventario,
@@ -35,10 +37,22 @@ export class Jogador {
     this.bonus = bonus;
     this.classe = classe;
     this.raca = raca;
+    this.fuga = fuga;
     this.mao = mao;
     this.inventario = inventario;
     this.jogo = jogo
     this.efeitosAtivos = efeitosAtivos;
+  }
+
+  ganharNivel(nivel: number): void {
+    this.nivel += nivel;
+  }
+
+  ganharTesouros(tesouros: number): void {
+    for (let i = 0; i < tesouros; i++){
+      this.mao.adicionarCarta(this.jogo.baralhoTesouros.comprar());
+    }
+    
   }
 
   jogarCarta(carta: Carta) {
