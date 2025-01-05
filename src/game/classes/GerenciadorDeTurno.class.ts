@@ -16,6 +16,14 @@ export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a ca
         private _jogo: Jogo
     ) { }
 
+    get etapa(): Etapa {
+        return this._etapa;
+    }
+
+    set etapa(etapa: Etapa) {
+        this._etapa = etapa;
+    }
+
     iniciarEtapa() {
         if (this._etapa = Etapa.ABRIR_PORTA) {
             this.etapaAbrirPorta();
