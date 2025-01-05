@@ -10,52 +10,70 @@ import { CartaTesouro } from "./CartaTesouro.class";
 
 export class Jogador {
 
-  nome: string;
-  nivel: number;
-  bonus: number;
-  classe: Classe | null;
-  fuga: number;
-  raca: Raca | null;
-  mao: Mao;
-  inventario: Inventario;
-  jogo: Jogo;
-  efeitosAtivos: Efeito[] = [];
-
   constructor(
-    nome: string,
-    nivel: 1,
-    bonus: 0,
-    classe: Classe | null,
-    fuga: 0,
-    raca: Raca | null,
-    mao: Mao,
-    inventario: Inventario,
-    efeitosAtivos: Efeito[] = [],
-    jogo: Jogo
-  ) {
-    this.nome = nome;
-    this.nivel = nivel;
-    this.bonus = bonus;
-    this.classe = classe;
-    this.raca = raca;
-    this.fuga = fuga;
-    this.mao = mao;
-    this.inventario = inventario;
-    this.jogo = jogo
-    this.efeitosAtivos = efeitosAtivos;
+    private _nome: string,
+    private _nivel: number = 1,
+    private _bonus: number = 0,
+    private _classe: Classe | null,
+    private _fuga: number = 0,
+    private _raca: Raca | null,
+    private _mao: Mao,
+    private _inventario: Inventario,
+    private _efeitosAtivos: Efeito[] = [],
+    private _jogo: Jogo
+  ) { }
+
+  get nome(): string {
+    return this._nome;
+  }
+
+  get nivel(): number {
+    return this._nivel;
+  }
+
+  get bonus(): number {
+    return this._bonus;
+  }
+
+  get classe(): Classe | null {
+    return this._classe;
+  }
+
+  get fuga(): number {
+    return this._fuga;
+  }
+
+  get raca(): Raca | null {
+    return this._raca;
+  }
+
+  get mao(): Mao {
+    return this._mao;
+  }
+
+  get inventario(): Inventario {
+    return this._inventario;
+  }
+
+  get efeitosAtivos(): Efeito[] {
+    return this._efeitosAtivos;
+  }
+
+  get jogo(): Jogo {
+    return this._jogo;
   }
 
   ganharNivel(nivel: number): void {
-    this.nivel += nivel;
+    this._nivel += nivel;
   }
 
-  receberTesouro(tesouro: CartaTesouro): void {
-    this.mao.adicionarCarta(tesouro);
+  receberTesouro(tesouro: CartaTesouro | null): void {
+    if (tesouro) this._mao.adicionarCarta(tesouro);
   }
 
   colocarNaMao(carta: Carta) {
-    if (this.mao.verificarCartasNaMao() < 5) {
-      this.mao.adicionarCarta(carta);
+    if (this._mao.verificarCartasNaMao() < 5) {
+      this._mao.adicionarCarta(carta);
     } else {
       console.log("A mão está cheia");
     }
@@ -63,79 +81,72 @@ export class Jogador {
 
   tirarDaMao(carta: Carta) {
     if (carta instanceof Item) {
-      this.mao.removerCarta(carta);
-      this.inventario.guardarItem(carta);
+      this._mao.removerCarta(carta);
+      this._inventario.guardarItem(carta);
     }
     else {
       console.log(`Carta ${carta.nome} não é um item, logo não pode ser guardado do inventario e permanece na mão.`);
     }
-    
+
   }
 
   descartarCarta(carta: Carta) {
     // se tiver na mao ou no inventario, remove e descarta pra pilha
-    if (this.mao.verCartas().includes(carta)) {
-      this.mao.removerCarta(carta);
+    if (this._mao.verCartas().includes(carta)) {
+      this._mao.removerCarta(carta);
     }
-    if (carta instanceof Item && this.inventario.temCarta(carta)) {
+    if (carta instanceof Item && this._inventario.temCarta(carta)) {
       this.desequiparItem(carta);
-      this.inventario.descartarItem(carta);
+      this._inventario.descartarItem(carta);
     }
-    this.jogo.descartar(carta);
+    this._jogo.descartar(carta);
   }
 
   equiparItem(item: Item) {
-    let equipou = this.inventario.equiparItem(item);
+    let equipou = this._inventario.equiparItem(item);
     if (equipou) {
       this.tirarDaMao(item);
-      this.bonus += item.getBonus();
+      this._bonus += item.bonus;
     }
   }
 
   desequiparItem(item: Item) {
-    let desequipou = this.inventario.desequiparItem(item);
+    let desequipou = this._inventario.desequiparItem(item);
     if (desequipou) {
-      this.bonus -= item.getBonus();
+      this._bonus -= item.bonus;
     }
   }
 
   morrer(): void {
-    this.nivel = Math.floor(this.nivel / 2);
+    this._nivel = Math.floor(this._nivel / 2);
   }
 
   definirRaca(raca: Raca | null): void {
-    if (this.raca) {
-      this.descartarCarta(this.raca);
+    if (this._raca) {
+      this.removerEfeito(this._raca.efeitos);
+      this.descartarCarta(this._raca);
     }
-    this.raca = raca;
+    this._raca = raca;
+    if (raca) this.adicionarEfeito(raca.efeitos);
   }
 
   definirClasse(classe: Classe | null): void {
-    if (this.classe) {
-      this.descartarCarta(this.classe);
+    if (this._classe) {
+      this.removerEfeito(this._classe.efeitos);
+      this.descartarCarta(this._classe);
     }
-    this.classe = classe;
+    this._classe = classe;
+    if (classe) this.adicionarEfeito(classe.efeitos);
   }
 
   adicionarEfeito(efeitos: Efeito[]): void {
-    this.efeitosAtivos.push(...efeitos);
+    this._efeitosAtivos.push(...efeitos);
   }
 
   removerEfeito(efeitos: Efeito[]): void {
-    this.efeitosAtivos = this.efeitosAtivos.filter(efeito_i =>
+    this._efeitosAtivos = this._efeitosAtivos.filter(efeito_i =>
       !efeitos.some(efeito_j => efeito_i === efeito_j)
     );
   }
 
-  getRaca(): Raca | null{
-    return this.raca;
-  }
-
-  getClasse(): Classe | null {
-    return this.classe;
-  }
-
-  getInventario(): Inventario {
-    return this.inventario;
-  }
 }

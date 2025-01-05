@@ -5,20 +5,19 @@ import { Item } from "./Item.class";
 import { Raca } from "./Raca.class";
 
 export class Equipamento extends Item {
-    private grande: boolean;
 
     constructor(
-        nome: string,
-        descricao: string,
-        grande: boolean,
-        valor: number,
-        bonus: number,
-        restricoesRaca: Raca[],
-        restricoesClasse: Classe[],
-        efeito: Efeito[] = []
+        _nome: string,
+        _descricao: string,
+        _imagem: string,
+        _efeitos: Efeito[] = [],
+        _valor: number,
+        _bonus: number,
+        _restricoesRaca: Raca[],
+        _restricoesClasse: Classe[],
+        protected _grande: boolean,
     ) {
-        super(nome, descricao, valor, bonus, restricoesRaca, restricoesClasse, efeito);
-        this.grande = grande;
+        super(_nome, _descricao, _imagem, _efeitos, _valor, _bonus, _restricoesRaca, _restricoesClasse);
     }
 
     // guardar(): boolean {
@@ -37,7 +36,7 @@ export class Equipamento extends Item {
     //     console.log(`O item ${this.nome} foi descartado do inventário.`);
     // }
 
-    getGrande(): boolean {
-        return this.grande;
+    get grande(): boolean {
+        return this._grande;
     }
 }
