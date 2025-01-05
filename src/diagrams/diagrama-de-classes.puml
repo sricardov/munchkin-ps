@@ -81,6 +81,8 @@ abstract class Carta {
   - descricao: String
   - tipo: TipoCarta
   + usar()
+  + adicionarEfeito()
+  + removerEfeito()
 }
 
 class Monstro extends CartaPorta {
