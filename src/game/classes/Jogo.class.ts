@@ -39,8 +39,8 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
             0,
             [],
             this);
-        this.baralhoTesouros = new BaralhoTesouros();
-        this.baralhoPortas = new BaralhoPortas();
+        this.baralhoTesouros = new BaralhoTesouros([],[]);
+        this.baralhoPortas = new BaralhoPortas([],[]);
         this.dado = new Dado();
         this.UI = UI;
         this.fimDeJogo = false;
@@ -49,14 +49,14 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
 
     public descartar(carta: Carta) {
         if (carta instanceof CartaPorta) {
-            if (this.baralhoPortas.descarte.includes(carta))
+            if (this.baralhoPortas.descarteTemCarta(carta))
                 return;
-            this.baralhoPortas.adicionarDescarte(carta);
+            this.baralhoPortas.descartar(carta);
         }
         else {
-            if (this.baralhoTesouros.descarte.includes(carta))
+            if (this.baralhoTesouros.descarteTemCarta(carta))
                 return;
-            this.baralhoTesouros.adicionarDescarte(carta);
+            this.baralhoTesouros.descartar(carta);
         }
     }
 
