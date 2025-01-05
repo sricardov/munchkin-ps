@@ -5,7 +5,7 @@ import { Jogador } from "../Jogador.class";
 export class EfeitoPercaUmNivel extends Efeito {
 
   constructor() {
-    super("Perca um nível");
+    super("Perca um nível", 0);
   }
 
   public usar(jogador: Jogador): void {

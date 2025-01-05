@@ -12,20 +12,20 @@ export class GerenciadorDeTurno {
     public jogadorAtual: Jogador;
     public etapa: Etapa;
     public contagem: number;
-    public combates: Combate[];
+    public combate: Combate | null;
 
     constructor(
         jogadorAtual: Jogador, 
         etapa: Etapa, 
         contagem: number, 
-        combates: Combate[],
+        combate: Combate | null,
         jogo: Jogo
     ) {
         this.jogo = jogo;
         this.jogadorAtual = jogadorAtual;
         this.etapa = etapa;
         this.contagem = contagem;
-        this.combates = combates;
+        this.combate = combate;
     }
 
     iniciarEtapa() {
@@ -47,7 +47,7 @@ export class GerenciadorDeTurno {
 
     _realizarCombate(monstro: Monstro): void {
         const combate = new Combate(this.jogo, this.jogadorAtual, monstro);
-        this.combates.push(combate);
+        this.combate = combate;
         //espera input dos jogadores se quiserem usar itens de uso unico (consumiveis, maldicoes, etc)
         //exemplo de jogadores e cartas jogadas (apagar depois):
         let j1 = this.jogo.jogadores[0];

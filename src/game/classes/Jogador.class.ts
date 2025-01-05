@@ -13,7 +13,7 @@ export class Jogador {
   nome: string;
   nivel: number;
   bonus: number;
-  classe: Classe;
+  classe: Classe | null;
   fuga: number;
   raca: Raca | null;
   mao: Mao;
@@ -25,7 +25,7 @@ export class Jogador {
     nome: string,
     nivel: 1,
     bonus: 0,
-    classe: Classe,
+    classe: Classe | null,
     fuga: 0,
     raca: Raca | null,
     mao: Mao,
@@ -110,7 +110,10 @@ export class Jogador {
     this.raca = raca;
   }
 
-  definirClasse(classe: Classe): void {
+  definirClasse(classe: Classe | null): void {
+    if (this.classe) {
+      this.descartarCarta(this.classe);
+    }
     this.classe = classe;
   }
 
@@ -128,7 +131,7 @@ export class Jogador {
     return this.raca;
   }
 
-  getClasse(): Classe {
+  getClasse(): Classe | null {
     return this.classe;
   }
 
