@@ -23,13 +23,13 @@ export abstract class Carta {
     }
   }
 
-  adicionarEfeito(jogador: Jogador) {
-    if (this.efeitos.length > 0)
-      jogador.adicionarEfeito(this.efeitos);
-  }
+  // adicionarEfeito(jogador: Jogador) {
+  //   if (this.efeitos.length > 0)
+  //     jogador.adicionarEfeito(this.efeitos);
+  // }
 
-  removerEfeito(jogador: Jogador) {
-    if (this.efeitos.length > 0)
-      jogador.removerEfeito(this.efeitos);
-  }
+  // removerEfeito(jogador: Jogador) {
+  //   if (this.efeitos.length > 0)
+  //     jogador.removerEfeito(this.efeitos);
+  // }
 }

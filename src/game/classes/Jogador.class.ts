@@ -6,6 +6,7 @@ import { Raca } from "./Raca.class";
 import { Mao } from "./Mao.class";
 import { Inventario } from "./Inventario.class";
 import { Jogo } from "./Jogo.class";
+import { CartaTesouro } from "./CartaTesouro.class";
 
 export class Jogador {
 
@@ -14,7 +15,7 @@ export class Jogador {
   bonus: number;
   classe: Classe;
   fuga: number;
-  raca: Raca;
+  raca: Raca | null;
   mao: Mao;
   inventario: Inventario;
   jogo: Jogo;
@@ -26,7 +27,7 @@ export class Jogador {
     bonus: 0,
     classe: Classe,
     fuga: 0,
-    raca: Raca,
+    raca: Raca | null,
     mao: Mao,
     inventario: Inventario,
     efeitosAtivos: Efeito[] = [],
@@ -48,31 +49,64 @@ export class Jogador {
     this.nivel += nivel;
   }
 
-  ganharTesouros(tesouros: number): void {
-    for (let i = 0; i < tesouros; i++){
-      this.mao.adicionarCarta(this.jogo.baralhoTesouros.comprar());
+  receberTesouro(tesouro: CartaTesouro): void {
+    this.mao.adicionarCarta(tesouro);
+  }
+
+  colocarNaMao(carta: Carta) {
+    if (this.mao.verificarCartasNaMao() < 5) {
+      this.mao.adicionarCarta(carta);
+    } else {
+      console.log("A mão está cheia");
+    }
+  }
+
+  tirarDaMao(carta: Carta) {
+    if (carta instanceof Item) {
+      this.mao.removerCarta(carta);
+      this.inventario.guardarItem(carta);
+    }
+    else {
+      console.log(`Carta ${carta.nome} não é um item, logo não pode ser guardado do inventario e permanece na mão.`);
     }
     
   }
 
-  jogarCarta(carta: Carta) {
-    this.mao.usarCarta(carta, this.jogo, this);
+  descartarCarta(carta: Carta) {
+    // se tiver na mao ou no inventario, remove e descarta pra pilha
+    if (this.mao.verCartas().includes(carta)) {
+      this.mao.removerCarta(carta);
+    }
+    if (carta instanceof Item && this.inventario.temCarta(carta)) {
+      this.desequiparItem(carta);
+      this.inventario.descartarItem(carta);
+    }
+    this.jogo.descartar(carta);
   }
 
   equiparItem(item: Item) {
-    this.mao.descartar(item);
-    this.inventario.equiparItem(item);
+    let equipou = this.inventario.equiparItem(item);
+    if (equipou) {
+      this.tirarDaMao(item);
+      this.bonus += item.getBonus();
+    }
   }
 
   desequiparItem(item: Item) {
-    this.inventario.desequiparItem(item);
+    let desequipou = this.inventario.desequiparItem(item);
+    if (desequipou) {
+      this.bonus -= item.getBonus();
+    }
   }
 
   morrer(): void {
     this.nivel = Math.floor(this.nivel / 2);
-  } // alterar o nivel do jogar
+  }
 
-  definirRaca(raca: Raca): void {
+  definirRaca(raca: Raca | null): void {
+    if (this.raca) {
+      this.descartarCarta(this.raca);
+    }
     this.raca = raca;
   }
 
@@ -90,7 +124,7 @@ export class Jogador {
     );
   }
 
-  getRaca(): Raca {
+  getRaca(): Raca | null{
     return this.raca;
   }
 

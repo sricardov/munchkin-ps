@@ -1,3 +1,5 @@
+import { Carta } from "./Carta.class";
+import { Consumivel } from "./Consumivel.class";
 import { Equipamento } from "./Equipamento.class";
 import { EquipamentoCabeca } from "./EquipamentoCabeca.class";
 import { EquipamentoCorpo } from "./EquipamentoCorpo.class";
@@ -38,6 +40,14 @@ export class Inventario {
     this.itensEquipados = itensE;
   }
 
+  temCarta(carta: Carta) {
+    if (carta instanceof Item) {
+      if (this.itensEquipados.includes(carta)) return true;
+      if (this.itensGuardados.includes(carta)) return true;
+    }
+    return false
+  }
+
   getItensEquipados() {
     return this.itensEquipados;
   }
@@ -47,12 +57,17 @@ export class Inventario {
   }
 
   guardarItem(item: Item) {
-    this.itensGuardados.push(item);
+    if (!this.itensGuardados.includes(item))
+      this.itensGuardados.push(item);
+    else
+      console.log("Item já está no inventário.");
+      
   }
 
   descartarItem(item: Item) {
     if (this.itensEquipados.includes(item)) {
       this.desequiparItem(item);
+      this.jogador.jogo.descartar(item);
     }
     if (this.itensGuardados.includes(item)) {
       this.itensGuardados = this.itensGuardados.filter(guardado => guardado !== item);

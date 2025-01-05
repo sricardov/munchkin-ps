@@ -33,13 +33,34 @@ export abstract class Item extends CartaTesouro { // OK
     if (this.restricoesClasse.includes(jogador.getClasse()))
       return false;
 
-    if (this.restricoesRaca.includes(jogador.getRaca()))
+    let racaJogador = jogador.getRaca()
+    if (racaJogador && this.restricoesRaca.includes(racaJogador))
       return false;
 
     return true;
   }
 
-  desequipar(jogador: Jogador): boolean {
-    return true;
+  // desequipar(jogador: Jogador): boolean {
+  //   return true;
+  // }
+
+  getBonus() {
+    return this.bonus;
+  }
+
+  getValor() {
+    return this.valor;
+  }
+
+  getNome() {
+    return this.nome;
+  }
+
+  getDescricao() {
+    return this.descricao;
+  }
+
+  getEfeitos() {
+    return this.efeitos;
   }
 }

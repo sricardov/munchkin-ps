@@ -38,19 +38,19 @@ export class Combate {
         }
         else {
             //aplicar coisa ruim do monstro no jogador
-            monstro.aplicarCoisaRuim(this.jogo, jogador);
+            monstro.aplicarCoisaRuim(jogador);
         }
 
     }
-    public resolucaodeCombate(): void {
-        if (this.calcularResultado()) {
-            this.lutas[0].monstros.forEach(monstro => this.lutas[0].jogador.ganharNivel(monstro.experiencia));
-            this.lutas[0].monstros.forEach(monstro => this.lutas[0].jogador.ganharTesouros(monstro.tesouros));
-        }
-        else {
-            this.lutas.forEach(luta => luta.monstros.forEach(monstro => this.tentarFugir(luta.jogador, monstro))); 
-        }
-    }
+    // public resolucaodeCombate(): void {
+    //     if (this.calcularResultado()) {
+    //         this.lutas[0].monstros.forEach(monstro => this.lutas[0].jogador.ganharNivel(monstro.experiencia));
+    //         this.lutas[0].monstros.forEach(monstro => this.lutas[0].jogador.receberTesouro(monstro.tesouros));
+    //     }
+    //     else {
+    //         this.lutas.forEach(luta => luta.monstros.forEach(monstro => this.tentarFugir(luta.jogador, monstro))); 
+    //     }
+    // }
 
     public pedirAjuda(jogador: Jogador, barganha: number): void {
         //solicitar ao jogador ajuda, numero aleatório que resulta em sim ou nao

@@ -14,7 +14,7 @@ export class Classe extends CartaPorta {
 
   public override usar(jogador: Jogador): void {
     jogador.definirClasse(this);
-    this.adicionarEfeito(jogador);
+    //this.adicionarEfeito(jogador);
   }
 
   adicionarHabilidade(habilidade: Habilidade): void { // OK

@@ -41,16 +41,31 @@ export class GerenciadorDeTurno {
     }
 
     _descartarCartaJogadorAtual(carta: Carta) {
-        this.jogadorAtual.mao.descartar(carta);
+        this.jogadorAtual.mao.removerCarta(carta);
         this.jogo.descartar(carta);
     }
 
     _realizarCombate(monstro: Monstro): void {
         const combate = new Combate(this.jogo, this.jogadorAtual, monstro);
+        this.combates.push(combate);
+        //espera input dos jogadores se quiserem usar itens de uso unico (consumiveis, maldicoes, etc)
+        //exemplo de jogadores e cartas jogadas (apagar depois):
+        let j1 = this.jogo.jogadores[0];
+        let j2 = this.jogo.jogadores[1];
+        let c1 = this.jogo.baralhoTesouros.baralho[2];
+        let c2 = this.jogo.baralhoTesouros.baralho[3];
+        let c3 = this.jogo.baralhoTesouros.baralho[5]
+        const cartasUtilizadas: [Jogador, Carta][] = [[j1,c1],[j1,c2],[j2,c3]]
+        
+        for (const [jogador, carta] of cartasUtilizadas) {
+            jogador.descartarCarta(carta);
+            carta.usar(this.jogadorAtual);
+        }
+
         const ganhou = combate.calcularResultado()
         if (ganhou) {
             this._resgatarRecompensas(monstro, this.jogadorAtual)
-            this.jogadorAtual.nivel += 1; // sobe o jogador de nível
+            this.jogadorAtual.ganharNivel(1); // sobe o jogador de nível
         } else {
             monstro.aplicarCoisaRuim(this.jogadorAtual);
         }
@@ -60,7 +75,7 @@ export class GerenciadorDeTurno {
         for (let i = 0; i < monstro.tesouros; i++) {
             const tesouro = this.jogo.baralhoTesouros.comprar();
             if (tesouro) {
-                jogador.mao.adicionarCarta(tesouro); // metodo ainda nao existe em Mao
+                jogador.receberTesouro(tesouro);
             }
         }
     }
