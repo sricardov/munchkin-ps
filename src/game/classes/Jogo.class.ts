@@ -15,24 +15,13 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     baralhoTesouros: BaralhoTesouros;
     baralhoPortas: BaralhoPortas;
     dado: Dado;
-    UI: Interface;
     fimDeJogo: boolean;
 
     constructor(
-        numJogadores: number, 
         jogadores: Jogador[], 
-        gerenciadorTurno: GerenciadorDeTurno, 
-        baralhoTesouros: BaralhoTesouros, 
-        baralhoPortas: BaralhoPortas, 
-        dado: Dado,
-        UI: Interface
     ) {
-        if (numJogadores !== jogadores.length) {
-            throw new Error("O número de jogadores não corresponde à lista de jogadores fornecida.");
-        }
-
         this.numJogadores = jogadores.length;
-        this.jogadores = jogadores;
+        this.jogadores = [];
         this.gerenciadorTurno = new GerenciadorDeTurno(
             jogadores[0], 
             Etapa.ABRIR_PORTA, 
@@ -42,9 +31,8 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
         this.baralhoTesouros = new BaralhoTesouros([],[]);
         this.baralhoPortas = new BaralhoPortas([],[]);
         this.dado = new Dado();
-        this.UI = UI;
         this.fimDeJogo = false;
-        this.gameLoop();
+        // this.gameLoop();
     }
 
     public descartar(carta: Carta) {

@@ -10,18 +10,22 @@ import { CartaTesouro } from "./CartaTesouro.class";
 
 export class Jogador {
 
+  private _mao: Mao;
+  private _inventario: Inventario;
+
   constructor(
     private _nome: string,
     private _nivel: number = 1,
     private _bonus: number = 0,
-    private _classe: Classe | null,
+    private _classe: Classe | null = null,
     private _fuga: number = 0,
-    private _raca: Raca | null,
-    private _mao: Mao,
-    private _inventario: Inventario,
+    private _raca: Raca | null = null,
     private _efeitosAtivos: Efeito[] = [],
-    private _jogo: Jogo
-  ) { }
+    private _jogo?: Jogo
+  ) {
+    this._mao = new Mao();
+    this._inventario = new Inventario();
+  }
 
   get nome(): string {
     return this._nome;
@@ -59,7 +63,7 @@ export class Jogador {
     return this._efeitosAtivos;
   }
 
-  get jogo(): Jogo {
+  get jogo(): Jogo | undefined {
     return this._jogo;
   }
 
@@ -91,6 +95,7 @@ export class Jogador {
   }
 
   descartarCarta(carta: Carta) {
+    if (!this.jogo) throw new Error("Game is not defined.");
     // se tiver na mao ou no inventario, remove e descarta pra pilha
     if (this._mao.verCartas().includes(carta)) {
       this._mao.removerCarta(carta);
@@ -99,7 +104,7 @@ export class Jogador {
       this.desequiparItem(carta);
       this._inventario.descartarItem(carta);
     }
-    this._jogo.descartar(carta);
+    this.jogo.descartar(carta);
   }
 
   equiparItem(item: Item) {
