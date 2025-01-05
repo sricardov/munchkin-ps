@@ -1,4 +1,4 @@
-import { Etapa } from "../enums/Etapa.enum";
+import { Etapa } from "./Etapa.class";
 import { Carta } from "./Carta.class";
 import { Combate } from "./Combate.class";
 import { Jogador } from "./Jogador.class";
@@ -7,29 +7,60 @@ import { Jogo } from "./Jogo.class";
 import { Monstro } from "./Monstro.class";
 
 export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a cada turno
+    private _combate: Combate | null;
+    private _etapa: Etapa; 
 
     constructor(
         private _jogadorAtual: Jogador, 
-        private _etapa: Etapa, 
         private _contagem: number, 
-        private _combate: Combate | null,
         private _jogo: Jogo
-    ) { }
-
-    iniciarEtapa() {
-        if (this._etapa = Etapa.ABRIR_PORTA) {
-            this.etapaAbrirPorta();
-        } else if (this._etapa = Etapa.PROCURAR_ENCRENCA) {
-            this.etapaProcurarEncrenca();
-        } else if (this._etapa = Etapa.SAQUEAR_SALA) {
-            this.etapaSaquearSala();
-        } else if (this._etapa = Etapa.CARIDADE){
-            this.etapaFazerCaridade();
-        }
+    ) { 
+        this._combate = null;
+        this._etapa = Etapa.ABRIR_PORTA;
     }
 
-    _descartarCarta(carta: Carta) {
-        this._jogadorAtual.mao.descartar(carta);
+    get jogadorAtual(): Jogador {
+        return this._jogadorAtual;
+    }
+
+    get contagem(): number {
+        return this._contagem;
+    }
+
+    get jogo(): Jogo {
+        return this._jogo;
+    }
+
+    get etapa(): Etapa {
+        return this._etapa;
+    }
+
+    set combate(combate: Combate) {
+        this._combate = combate;
+    }
+
+    get combate(): Combate | null {
+        return this._combate;
+    }
+
+    iniciarEtapa() {
+        this._etapa.executarEtapa();
+    }
+
+    comprarCartaPorta(): Carta {
+        return this._jogadorAtual.comprarCartaPorta();
+    }
+
+    comprarCartaTesouro(): Carta {
+        return this._jogadorAtual.comprarCartaTesouro();
+    }
+
+    colocarNaMao(carta: Carta) {
+        this._jogadorAtual.colocarNaMao(carta);
+    }
+
+    descartarCarta(carta: Carta) {
+        this._jogadorAtual.descartarCarta(carta);
     }
 
     // _realizarCombate(monstro: Monstro): void {

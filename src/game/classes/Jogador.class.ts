@@ -72,11 +72,7 @@ export class Jogador {
   }
 
   colocarNaMao(carta: Carta) {
-    if (this._mao.verificarCartasNaMao() < 5) {
-      this._mao.adicionarCarta(carta);
-    } else {
-      console.log("A mão está cheia");
-    }
+    this._mao.adicionarCarta(carta);
   }
 
   tirarDaMao(carta: Carta) {
@@ -88,6 +84,14 @@ export class Jogador {
       console.log(`Carta ${carta.nome} não é um item, logo não pode ser guardado do inventario e permanece na mão.`);
     }
 
+  }
+
+  comprarCartaPorta(): Carta {
+    return this._jogo.comprarCartaPorta();
+  }
+
+  comprarCartaTesouro(): Carta {
+    return this._jogo.comprarCartaTesouro();
   }
 
   descartarCarta(carta: Carta) {

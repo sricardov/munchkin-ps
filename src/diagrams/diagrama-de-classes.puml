@@ -66,11 +66,28 @@ abstract class Efeito {
   + usar(jogador: Jogador)
 }
 
-enum Etapa {
-  ABRIR_PORTA
-  PROCURAR_ENCRENCA
-  SAQUEAR_SALA
-  CARIDADE
+interface EtapaState {
+  + rodar()
+}
+
+class AbrirPorta {
+  + rodar()
+}
+
+class ProcurarEncrenca {
+  + rodar()
+}
+
+class SaquearSala {
+  + rodar()
+}
+
+class Caridade {
+  + rodar()
+}
+
+class Etapa {
+  + executarEtapa()
 }
 
 abstract class Carta {
@@ -127,7 +144,6 @@ class EquipamentoUmaMao extends EquipamentoMaos {
 class EquipamentoDuasMaos extends EquipamentoMaos {
 
 }
-
 
 class Consumivel extends Item {
 
@@ -186,6 +202,7 @@ Jogo "1" --> "1" BaralhoTesouros : baralhoTesouros
 Jogador "0..1" --> "0..1" Mao
 Jogador "0..1" --> "0..1" Inventario
 GerenciadorDeTurno "1" -- "0..1" Combate
+GerenciadorDeTurno "1" -- "1" Etapa
 Mao "0..1" --> "0..5" Carta
 Carta "0..*" --> "0..*" Efeito
 Jogador "0..*" --> "0..2" Raca
@@ -193,4 +210,10 @@ Jogador "0..*" --> "0..2" Classe
 Classe "*" --> "*" Habilidade
 BaralhoPortas "1" o-- "0..*" CartaPorta : deck
 BaralhoTesouros "1" o-- "0..*" CartaTesouro : deck
+Etapa o-- EtapaState
+EtapaState -- AbrirPorta
+EtapaState -- ProcurarEncrenca
+EtapaState -- SaquearSala
+EtapaState -- Caridade
+
 @enduml
