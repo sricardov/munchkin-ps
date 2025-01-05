@@ -2,7 +2,12 @@ import { Carta } from "./Carta.class";
 import { Efeito } from "./Efeito.class";
 
 export class CartaTesouro extends Carta {
-  constructor(nome: string, descricao: string, imagem: string, efeitos: Efeito[] = []) {
-    super(nome, descricao, imagem, efeitos);
+  constructor(
+    _nome: string, 
+    _descricao: string, 
+    _imagem: string, 
+    _efeitos: Efeito[] = []
+  ) {
+    super(_nome, _descricao, _imagem, _efeitos);
   }
 } // OK

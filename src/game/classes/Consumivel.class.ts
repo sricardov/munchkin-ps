@@ -5,8 +5,17 @@ import { Efeito } from "./Efeito.class";
 
 export class Consumivel extends Item { // OK
 
-    constructor(nome: string, descricao: string, valor: number, bonus: number, restricoesRaca: Raca[], restricoesClasse: Classe[], efeitos: Efeito[] = []) {
-        super(nome, descricao, valor, bonus, restricoesRaca, restricoesClasse, efeitos);
+    constructor(
+        _nome: string, 
+        _descricao: string, 
+        _imagem: string,
+        _efeitos: Efeito[] = [],
+        _valor: number, 
+        _bonus: number, 
+        _restricoesRaca: Raca[], 
+        _restricoesClasse: Classe[], 
+    ) {
+        super(_nome, _descricao, _imagem, _efeitos, _valor, _bonus, _restricoesRaca, _restricoesClasse);
     }
 
 }

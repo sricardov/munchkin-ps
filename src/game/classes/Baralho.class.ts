@@ -5,7 +5,7 @@ export abstract class Baralho {
   protected baralho: Carta[] = [];
   protected descarte: Carta[] = [];
 
-  constructor( ) {
+  constructor() {
     this.iniciarDeck();
   }
 
@@ -35,13 +35,13 @@ export abstract class Baralho {
     this.descarte.push(carta);
   }
 
-  descarteTemCarta(carta: Carta): boolean {
-    return this.descarte.includes(carta);
-  }
+  // descarteTemCarta(carta: Carta): boolean {
+  //   return this.descarte.includes(carta);
+  // }
 
-  baralhoTemCarta(carta: Carta): boolean {
-    return this.baralho.includes(carta);
-  }
+  // baralhoTemCarta(carta: Carta): boolean {
+  //   return this.baralho.includes(carta);
+  // }
 
   verTopoDescarte(): Carta | null { // OK
     if (this.descarte.length > 0) {

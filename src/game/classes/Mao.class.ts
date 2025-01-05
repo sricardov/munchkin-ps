@@ -8,20 +8,21 @@ import { Jogo } from "./Jogo.class";
 import { Monstro } from "./Monstro.class";
 
 export class Mao {
-  private cartasNaMao: Carta[];
 
-  constructor(cartasNaMao: Carta) {
-    this.cartasNaMao = [];
-    //this.baralho = baralho
+  constructor(
+    private _jogador: Jogador,
+    private _cartas: Carta[] = [],
+  ) {
+
   }
 
   adicionarCarta(carta: Carta) {
-    this.cartasNaMao.push(carta);
+    this._cartas.push(carta);
     console.log("Carta adicionada.");
   }
 
   usarCarta(carta: Carta, jogador: Jogador): void {  
-    if (this.cartasNaMao.includes(carta)) {
+    if (this._cartas.includes(carta)) {
       this.removerCarta(carta);
       carta.usar(jogador);
     } else {
@@ -30,29 +31,40 @@ export class Mao {
   }
 
   removerCarta(carta: Carta): void {
-    const index = this.cartasNaMao.indexOf(carta);
+    const index = this._cartas.indexOf(carta);
     
     if (index !== -1) {
-      this.cartasNaMao.splice(index, 1);
+      this._cartas.splice(index, 1);
       console.log(`Carta ${carta.nome} removida da mao.`);
     } else {
       console.error("A carta não está na mão.");
     }
   }
 
+  descartarCarta(carta: CartaPorta | CartaTesouro): void {
+    this.removerCarta(carta);
+    if (carta instanceof CartaPorta) {
+      this._jogador.jogo.baralhoPortas.descartar(carta);
+    } else {
+      this._jogador.jogo.baralhoTesouros.descartar(carta);
+    }
+    console.log(`Carta ${carta.nome} descartada.`);
+  }
+
+
   verificarCartasNaMao(): number {
-    if (this.cartasNaMao.length === 0) {
+    if (this._cartas.length === 0) {
       console.log("A mão está vazia.");
     } else {
       console.log("Cartas na mão:");
-      this.cartasNaMao.forEach((carta) => {
+      this._cartas.forEach((carta) => {
         console.log(`${carta.nome}`);
       });
     }
-    return this.cartasNaMao.length;
+    return this._cartas.length;
   }
 
   verCartas(): Carta[] {
-    return this.cartasNaMao;
+    return this._cartas;
   }
 }

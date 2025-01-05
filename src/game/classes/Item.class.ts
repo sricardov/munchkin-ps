@@ -1,4 +1,3 @@
-import { TipoCarta } from "../enums/TipoCarta.enum";
 import { CartaTesouro } from "./CartaTesouro.class";
 import { Jogador } from "./Jogador.class";
 import { Raca } from "./Raca.class";
@@ -7,35 +6,27 @@ import { Efeito } from "./Efeito.class";
 
 
 export abstract class Item extends CartaTesouro { // OK
-  private valor: number;
-  private bonus: number;
-  private restricoesRaca: Raca[];
-  private restricoesClasse: Classe[];
 
   constructor(
-    nome: string,
-    descricao: string,
-    valor: number,
-    bonus: number,
-    restricoesRaca: Raca[],
-    restricoesClasse: Classe[],
-    efeitos: Efeito[] = []
+    _nome: string,
+    _descricao: string,
+    _imagem: string,
+    _efeitos: Efeito[] = [],
+    protected _valor: number,
+    protected _bonus: number,
+    protected _restricoesRaca: Raca[],
+    protected _restricoesClasse: Classe[],
   ) {
-    super(nome, descricao, TipoCarta.ITEM);
-    this.valor = valor;
-    this.bonus = bonus;
-    this.restricoesRaca = restricoesRaca;
-    this.restricoesClasse = restricoesClasse;
-    this.efeitos = efeitos;
+    super(_nome, _descricao, _imagem, _efeitos);
   }
 
   verificaRestricoes(jogador: Jogador): boolean {
     let classeJogador = jogador.getClasse();
-    if (classeJogador && this.restricoesClasse.includes(classeJogador))
+    if (classeJogador && this._restricoesClasse.includes(classeJogador))
       return false;
 
     let racaJogador = jogador.getRaca();
-    if (racaJogador && this.restricoesRaca.includes(racaJogador))
+    if (racaJogador && this._restricoesRaca.includes(racaJogador))
       return false;
 
     return true;
@@ -45,23 +36,11 @@ export abstract class Item extends CartaTesouro { // OK
   //   return true;
   // }
 
-  getBonus() {
-    return this.bonus;
+  get bonus() {
+    return this._bonus;
   }
 
-  getValor() {
-    return this.valor;
-  }
-
-  getNome() {
-    return this.nome;
-  }
-
-  getDescricao() {
-    return this.descricao;
-  }
-
-  getEfeitos() {
-    return this.efeitos;
+  get valor() {
+    return this._valor;
   }
 }

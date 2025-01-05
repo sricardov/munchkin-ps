@@ -11,7 +11,7 @@ export abstract class Carta {
     protected _efeitos: Efeito[] = []
   ) { }
 
-  public usar(jogador: Jogador): void { // OK
+  usar(jogador: Jogador): void { // OK
     console.log(`Usando a carta: ${this._nome}`);
 
     if (this._efeitos.length > 0) {
@@ -24,6 +24,18 @@ export abstract class Carta {
 
   get nome(): string { // OK
     return this._nome;
+  }
+
+  get descricao(): string { // OK
+    return this._descricao;
+  }
+
+  get imagem(): string { // OK
+    return this._imagem;
+  }
+
+  get efeitos(): Efeito[] { // OK
+    return this._efeitos;
   }
 
   // adicionarEfeito(jogador: Jogador) {
