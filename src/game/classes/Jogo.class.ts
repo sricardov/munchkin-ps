@@ -42,16 +42,12 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     comprarCartaTesouro(): Carta {
         return this.baralhoTesouros.comprar();
     }
-    
+
     descartarCarta(carta: Carta) {
         if (carta instanceof CartaPorta) {
-            if (this.baralhoPortas.descarteTemCarta(carta))
-                return;
             this.baralhoPortas.descartar(carta);
         }
         else {
-            if (this.baralhoTesouros.descarteTemCarta(carta))
-                return;
             this.baralhoTesouros.descartar(carta);
         }
     }
@@ -64,7 +60,7 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
                 this.fimDeJogo = true;
             }
             else {
-                this.gerenciadorTurno.iniciarEtapa();
+                this.gerenciadorTurno.iniciarTurno();
             }
         }
         // desconectar jogadores e ir para o menu
