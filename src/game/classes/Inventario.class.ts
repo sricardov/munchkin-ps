@@ -11,36 +11,19 @@ import { Item } from "./Item.class";
 import { Jogador } from "./Jogador.class";
 
 export class Inventario {
-  jogador: Jogador
-  cabeca: EquipamentoCabeca | null;
-  corpo: EquipamentoCorpo | null;
-  pes: EquipamentoPes | null;
-  maoEsquerda: EquipamentoMaos | null;
-  maoDireita: EquipamentoMaos | null;
+  jogador?: Jogador;
+  cabeca: EquipamentoCabeca | null = null;
+  corpo: EquipamentoCorpo | null = null;
+  pes: EquipamentoPes | null = null;
+  maoEsquerda: EquipamentoMaos | null = null;
+  maoDireita: EquipamentoMaos | null = null;
 
   private itensGuardados: Item[] = [];
   private itensEquipados: Item[] = [];
 
-  constructor(
-    jogador: Jogador,
-    cabeca: EquipamentoCabeca | null, 
-    corpo: EquipamentoCorpo | null, 
-    pes: EquipamentoPes | null, 
-    maoEsquerda: EquipamentoMaos | null, 
-    maoDireita: EquipamentoMaos | null, 
-    itensG: Item[],
-    itensE: Item[]) {
-    this.cabeca = cabeca;
-    this.jogador = jogador;
-    this.corpo = corpo;
-    this.pes = pes;
-    this.maoEsquerda = maoEsquerda;
-    this.maoDireita = maoDireita;
-    this.itensGuardados = itensG;
-    this.itensEquipados = itensE;
-  }
+  constructor() {}
 
-  temCarta(carta: Carta) {
+  temCarta(carta: Carta): boolean {
     if (carta instanceof Item) {
       if (this.itensEquipados.includes(carta)) return true;
       if (this.itensGuardados.includes(carta)) return true;
@@ -65,6 +48,10 @@ export class Inventario {
   }
 
   descartarItem(item: Item) {
+    if (!this.jogador) {
+      throw new Error("Player is not defined.");
+    }
+
     if (this.itensEquipados.includes(item)) {
       this.desequiparItem(item);
       this.jogador.jogo.descartar(item);

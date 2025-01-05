@@ -9,10 +9,10 @@ import { Monstro } from "./Monstro.class";
 
 export class Mao {
 
-  private _cartas: Carta[];
+  private _jogador?: Jogador;
 
   constructor(
-    private _jogador: Jogador,
+    private _cartas: Carta[] = [],
   ) {
     this._cartas = [];
   }
@@ -43,11 +43,13 @@ export class Mao {
   }
 
   descartarCarta(carta: CartaPorta | CartaTesouro): void {
+    if (!this._jogador) throw new Error("Jogador não definido.");
+
     this.removerCarta(carta);
     if (carta instanceof CartaPorta) {
-      this._jogador.jogo.baralhoPortas.descartar(carta);
+      this._jogador.jogo!.baralhoPortas.descartar(carta);
     } else {
-      this._jogador.jogo.baralhoTesouros.descartar(carta);
+      this._jogador.jogo!.baralhoTesouros.descartar(carta);
     }
     console.log(`Carta ${carta.nome} descartada.`);
   }

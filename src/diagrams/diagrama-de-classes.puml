@@ -1,5 +1,6 @@
 @startuml
 class Interface {
+  + jogo: Jogo
   + desenhaTelaInicial()
   + desenhaMesa()
   + desenhaMenu()
@@ -8,6 +9,15 @@ class Interface {
 
 class Jogo {
   - numJogadores: int
+  - jogadores: Jogador[]
+  - baralhoPortas: BaralhoPortas
+  - baralhoTesouros: BaralhoTesouros
+  - gerenciadorDeTurno: GerenciadorDeTurno
+  - dado: Dado
+  - interface: Interface
+  - fimDeJogo: boolean
+  + descartarCarta(carta: Carta)
+  + gameLoop()
   + verificarVencedor(): Jogador
   + encerrarJogo(vencedor: Jogador)
 }
@@ -19,10 +29,26 @@ class Dado {
 class Jogador {
   - nome: String
   - nivel: int
-  + efeitosAtivos: Carta[]
-  + jogarCarta(carta: Carta)
-  + vender(jogador: Jogador): boolean
+  - bonus: int
+  - classe: Classe
+  - fuga: int
+  - raca: Raca
+  - mao: Mao
+  - inventario: Inventario
+  - efeitosAtivos: Efeito[]
+  - jogo: Jogo
+  + ganharNivel(nivel: int)
+  + receberTesouro(tesouro: CartaTesouro)
+  + colocarNaMao(carta: Carta)
+  + tirarDaMao(carta: Carta)
+  + descartarCarta(carta: Carta)
+  + equiparItem(item: Item)
+  + desequiparItem(item: Item)
   + morrer()
+  + definirRaca(raca: Raca)
+  + definirClasse(classe: Classe)
+  + adicionarEfeito(efeito: Efeito[])
+  + removerEfeito(efeito: Efeito[])
 }
 
 class GerenciadorDeTurno {
@@ -30,18 +56,25 @@ class GerenciadorDeTurno {
   - etapa: Etapa
   - contagem: int
   - combate: Combate[]
+  - jogo: Jogo
   + terminarTurno()
   + saquearSala(): Carta
   + fazerCaridade()
 }
 
 class Mao {
-  + usarCarta(carta : Carta)
-  + descartar(carta: Carta)
-  + verificarCartas()
+  - cartas: Carta[]
+  - jogador: Jogador
+  + adicionarCarta(carta : Carta)
+  + usarCarta(carta : Carta, jogador: Jogador)
+  + removerCarta(carta: Carta)
+  + descartarCarta(carta: CartaPorta | CartaTesouro)
+  + verificarCartasNaMao(): int
+  + verCartas(): Carta[]
 }
 
 class Inventario {
+  - jogador: Jogador
   - cabeca: EquipamentoCabeca
   - corpo: EquipamentoCorpo
   - pes: EquipamentoPes
@@ -49,8 +82,23 @@ class Inventario {
   - maoDireita: EquipamentoMaos
   - itensEquipados: Item[]
   - itensGuardados: Item[]
-  + equiparItem(item: Item)
-  + desequiparItem(item: Item)
+  + temCarta(carta: Carta): boolean
+  + guardaItem(item: Item)
+  + descartarItem(item: Item)
+  + equiparItem(item: Item): boolean
+  + desequiparItem(item: Item): boolean
+  + equipaCabeca(item: EquipamentoCabeca): boolean
+  + desequipaCabeca(): boolean
+  + equipaCorpo(item: EquipamentoCorpo): boolean
+  + desequipaCorpo(): boolean
+  + equipaPes(item: EquipamentoPes): boolean
+  + desequipaPes(): boolean
+  + equipaUmaMao(item: EquipamentoUmaMao): boolean
+  + desequipaUmaMao(item: EquipamentoUmaMao): boolean
+  + equipaDuasMaos(item: EquipamentoDuasMaos): boolean
+  + desequipaDuasMaos(): boolean
+  + desequipaMaoDireita(): boolean
+  + desequipaMaoEsquerda(): boolean
 }
 
 class Combate {
@@ -59,10 +107,13 @@ class Combate {
   + calcularResultado(): boolean
   + tentarFugir(jogador: Jogador, monstro: Monstro)
   + pedirAjuda(jogador: Jogador, barganha: int)
+  + resolucaoDeCombate()
+  + iniciarCombate()
 }
 
 abstract class Efeito {
   - nome: string
+  - valor: int
   + usar(jogador: Jogador)
 }
 
@@ -93,28 +144,31 @@ class Etapa {
 abstract class Carta {
   - nome: String
   - descricao: String
-  - tipo: TipoCarta
-  + usar()
+  - imagem: String
+  - efeitos: Efeito[]
+  + usar(jogador: Jogador)
 }
 
 class Monstro extends CartaPorta {
   - nivel: int
-  - tesouros: int
+  - bonus: int
+  - experiencia: int
+  - tesouros: CartaTesouro
   - coisaRuim: String
+  - efeitos: Efeito[]
   + aplicarCoisaRuim(jogador: Jogador)
 }
 
 class Maldicao extends CartaPorta {
-  + sofrerMaldicao()
   + aplicarMaldicao(jogador: Jogador)
 }
 
 abstract class Item extends CartaTesouro {
-  - nome: string
   - valor: int
   - bonus: int
   - restricoesRaca: Raca[]
   - restricoesClasse: Classe[]
+  + verificaRestricoes(jogador: Jogador): boolean
 }
 
 class Equipamento extends Item {
@@ -150,6 +204,8 @@ class Consumivel extends Item {
 }
 
 abstract class Baralho {
+  - baralho: Carta[]
+  - descarte: Carta[]
   + iniciarDeck()
   + embaralhar(baralho: Carta[])
   + comprar(): Carta
@@ -161,11 +217,11 @@ abstract class Baralho {
 }
 
 class BaralhoPortas extends Baralho {
-  - descarte: Porta[]
+  + iniciarDeck()
 }
 
 class BaralhoTesouros extends Baralho {
-  - descarte: Tesouro[]
+  + iniciarDeck()
 }
 
 class CartaPorta extends Carta {
@@ -177,20 +233,20 @@ class CartaTesouro extends Carta {
 }
 
 class Raca extends CartaPorta {
-
+  + usar(jogador: Jogador)
 }
 
 class Classe extends CartaPorta {
-  - nome: String
+  - habilidades: Habilidade[]
+  + usar(jogador: Jogador)
   + adicionarHabilidade(habilidade: Habilidade)
   + listarHabilidades(): Habilidade[]
-  + getNome(): string
 }
 
 class Habilidade {
   - nome: String
-  - efeito: String
-  + usar()
+  - efeito: Efeito
+  + usar(jogador: Jogador)
 }
 
 Interface "1" -- "1" Jogo
