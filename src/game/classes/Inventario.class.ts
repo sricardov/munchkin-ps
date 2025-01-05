@@ -40,7 +40,7 @@ export class Inventario {
     this.itensEquipados = itensE;
   }
 
-  temCarta(carta: Carta) {
+  temCarta(carta: Carta): boolean {
     if (carta instanceof Item) {
       if (this.itensEquipados.includes(carta)) return true;
       if (this.itensGuardados.includes(carta)) return true;

@@ -52,11 +52,7 @@ export abstract class Baralho {
     console.log("A pilha de descarte está vazia.");
     return null;
   }
-
-  estaVazio(): boolean { // OK
-    return this.baralho.length === 0;
-  }
-
+  
   verTopoBaralho(): Carta | null { // OK
     if (this.baralho.length > 0) {
       const card = this.baralho[this.baralho.length - 1]
@@ -64,6 +60,10 @@ export abstract class Baralho {
       return card;
     }
     return null;
+  }
+  
+  estaVazio(): boolean { // OK
+    return this.baralho.length === 0;
   }
 
   limparPilha(): boolean { //OK
