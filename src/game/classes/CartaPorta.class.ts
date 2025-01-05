@@ -1,10 +1,14 @@
 import { Carta } from "./Carta.class";
 import { Efeito } from "./Efeito.class";
-import { TipoCarta } from "../enums/TipoCarta.enum";
 
 export class CartaPorta extends Carta {
-  constructor(nome: string, descricao: string, tipo: TipoCarta, efeitos: Efeito[] = []) {
-    super(nome, descricao, tipo, efeitos);
+  constructor(
+    _nome: string, 
+    _descricao: string, 
+    _imagem: string, 
+    _efeitos: Efeito[] = []
+  ) {
+    super(_nome, _descricao, _imagem, _efeitos);
   }
 
   // public override guardarNaMao(): void {

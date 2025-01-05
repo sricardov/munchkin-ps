@@ -4,13 +4,9 @@ import { Jogo } from "./Jogo.class";
 import { Monstro } from "./Monstro.class";
 
 export class Combate {
-    public jogo: Jogo;
-    public lutas: {jogador: Jogador, monstros: Monstro[] } []=[];
+    public lutas: {jogador: Jogador, monstros: (Monstro | null)[]} []=[];
 
-
-    constructor(jogo: Jogo, jogador: Jogador, monstro: Monstro) {
-        this.jogo = jogo;
-
+    constructor(jogador: Jogador, monstro: Monstro) {
         this.lutas.push({jogador: jogador, monstros: [monstro]});
     };
 
@@ -25,16 +21,17 @@ export class Combate {
         let nivelJogadores = 0
         let nivelMonstros = 0;
         this.lutas.forEach(luta => { nivelJogadores += luta.jogador.nivel + luta.jogador.bonus })
-        this.lutas[0].monstros.forEach(monstro => nivelMonstros +=monstro.nivel+monstro.bonus)
+        this.lutas[0].monstros.forEach(monstro => { if (monstro) nivelMonstros +=monstro.nivel+monstro.bonus })
         
         return nivelJogadores > nivelMonstros;   //se retornar true jogadores venceram
         
     }
+
     public tentarFugir(jogador: Jogador, monstro: Monstro): void {
         let resultado = new Dado().rolar();
         let index = this.lutas.findIndex(luta => luta.jogador === jogador);
         if (resultado + jogador.fuga > 4){
-            this.lutas[index].monstros.forEach(m => {if (m === monstro) {m= new Monstro("","",0,0,0,0,"")}}); //remover monstro da luta
+            this.lutas[index].monstros.forEach(m => {if (m === monstro) {m = null}}); //remover monstro da luta
         }
         else {
             //aplicar coisa ruim do monstro no jogador
