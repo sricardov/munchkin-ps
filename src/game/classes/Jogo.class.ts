@@ -15,7 +15,6 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     baralhoTesouros: BaralhoTesouros;
     baralhoPortas: BaralhoPortas;
     dado: Dado;
-    UI: Interface;
     fimDeJogo: boolean;
 
     constructor(
@@ -25,7 +24,6 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
         baralhoTesouros: BaralhoTesouros, 
         baralhoPortas: BaralhoPortas, 
         dado: Dado,
-        UI: Interface
     ) {
         if (numJogadores !== jogadores.length) {
             throw new Error("O número de jogadores não corresponde à lista de jogadores fornecida.");

@@ -9,40 +9,21 @@ import { Jogo } from "./Jogo.class";
 import { CartaTesouro } from "./CartaTesouro.class";
 
 export class Jogador {
-
-  nome: string;
-  nivel: number;
-  bonus: number;
-  classe: Classe | null;
-  fuga: number;
-  raca: Raca | null;
+  nivel: number = 1;
+  bonus: number = 0;
+  classe: Classe | null = null;
+  fuga: number = 0;
+  raca: Raca | null = null;
   mao: Mao;
   inventario: Inventario;
-  jogo: Jogo;
+  jogo?: Jogo;
   efeitosAtivos: Efeito[] = [];
 
   constructor(
-    nome: string,
-    nivel: 1,
-    bonus: 0,
-    classe: Classe | null,
-    fuga: 0,
-    raca: Raca | null,
-    mao: Mao,
-    inventario: Inventario,
-    efeitosAtivos: Efeito[] = [],
-    jogo: Jogo
+    private nome: string,
   ) {
-    this.nome = nome;
-    this.nivel = nivel;
-    this.bonus = bonus;
-    this.classe = classe;
-    this.raca = raca;
-    this.fuga = fuga;
-    this.mao = mao;
-    this.inventario = inventario;
-    this.jogo = jogo
-    this.efeitosAtivos = efeitosAtivos;
+    this.mao = new Mao();
+    this.inventario = new Inventario();
   }
 
   ganharNivel(nivel: number): void {
@@ -73,6 +54,7 @@ export class Jogador {
   }
 
   descartarCarta(carta: Carta) {
+    if (!this.jogo) throw new Error("Game is not defined.");
     // se tiver na mao ou no inventario, remove e descarta pra pilha
     if (this.mao.verCartas().includes(carta)) {
       this.mao.removerCarta(carta);

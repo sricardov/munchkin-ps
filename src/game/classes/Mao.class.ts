@@ -10,9 +10,8 @@ import { Monstro } from "./Monstro.class";
 export class Mao {
   private cartasNaMao: Carta[];
 
-  constructor(cartasNaMao: Carta) {
+  constructor() {
     this.cartasNaMao = [];
-    //this.baralho = baralho
   }
 
   adicionarCarta(carta: Carta) {
