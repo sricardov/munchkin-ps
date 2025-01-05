@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Jogo } from '../../../game/classes/Jogo.class';
+import { PlayerService } from '../player/player.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class GameService {
-  private game: Jogo;
+  private game?: Jogo;
 
-  constructor() { }
+  constructor(private playerService: PlayerService) { }
 
-  public initGame(
-    numJogadores: number, 
-    jogadores: Jogador[], 
-    gerenciadorTurno: GerenciadorDeTurno, 
-    baralhoTesouros: BaralhoTesouros, 
-    baralhoPortas: BaralhoPortas, 
-    dado: Dado,
-  ) {
-    this.game = new Jogo();
+  public initGame(): void {
+    this.game = new Jogo(this.playerService.getPlayers());
+  }
+
+  public getGame(): Jogo | undefined {
+    return this.game;
   }
 }

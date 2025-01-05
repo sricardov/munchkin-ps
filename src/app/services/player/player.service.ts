@@ -16,4 +16,8 @@ export class PlayerService {
     const player = new Jogador(nome);
     this.players.push(player);
   }
+
+  public getPlayers(): Jogador[] {
+    return this.players;
+  }
 }
