@@ -35,6 +35,14 @@ export abstract class Baralho {
     this.descarte.push(carta);
   }
 
+  descarteTemCarta(carta: Carta): boolean {
+    return this.descarte.includes(carta);
+  }
+
+  baralhoTemCarta(carta: Carta): boolean {
+    return this.baralho.includes(carta);
+  }
+
   verTopoDescarte(): Carta | null { // OK
     if (this.descarte.length > 0) {
       const card = this.descarte[this.descarte.length - 1];
@@ -64,5 +72,13 @@ export abstract class Baralho {
     this.embaralhar(this.baralho);
     this.descarte = [];
     return true;
+  }
+
+  getBaralho() {
+    return this.baralho;
+  }
+
+  getDescarte() {
+    return this.descarte;
   }
 }
