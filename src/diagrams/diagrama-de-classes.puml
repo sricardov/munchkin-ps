@@ -59,9 +59,10 @@ class Luta {
 }
 
 class Combate {
-  - lutas: Lutas[]
-  + calcularResultado(): boolean
+  - lutas: Jogador[Monstro[]]
   + pedirAjuda(jogador: Jogador, barganha: int): boolean
+  + calcularResultado(): boolean
+  + fugir(): boolean
 }
 
 abstract class Efeito {
@@ -80,6 +81,8 @@ abstract class Carta {
   - descricao: String
   - tipo: TipoCarta
   + usar()
+  + adicionarEfeito()
+  + removerEfeito()
 }
 
 class Monstro extends CartaPorta {
@@ -137,10 +140,13 @@ class Consumivel extends Item {
 }
 
 abstract class Baralho {
-  + reiniciarDeck()
+  + iniciarDeck()
+  + embaralhar(baralho: Carta[])
   + comprar(): Carta
+  + descartar(carta: Carta)
+  + verTopoDescarte(): Carta | null
+  + verTopoBaralho(): Carta | null
   + estaVazio(): boolean
-  + pegarPrimeiraCarta(): Carta
   + limparPilha(): boolean
 }
 
