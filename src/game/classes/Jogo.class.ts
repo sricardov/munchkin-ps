@@ -37,7 +37,7 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
             jogadores[0], 
             Etapa.ABRIR_PORTA, 
             0,
-            [],
+            null,
             this);
         this.baralhoTesouros = new BaralhoTesouros([],[]);
         this.baralhoPortas = new BaralhoPortas([],[]);
