@@ -16,20 +16,20 @@ export class EquipamentoCorpo extends Equipamento { // OK
     super(nome, descricao, grande, valor, bonus, restricoesRaca, restricoesClasse);
   }
 
-  override usar(jogador: Jogador): void {
-    if (!this.verificaRestricoes(jogador))
-      return;
+  // override usar(jogador: Jogador): void {
+  //   if (!this.verificaRestricoes(jogador))
+  //     return;
 
-    const inventario = jogador.getInventario();
-    inventario.equipaCorpo(this);
-    this.adicionarEfeito(jogador);
-  }
+  //   const inventario = jogador.getInventario();
+  //   inventario.equipaCorpo(this);
+  //   this.adicionarEfeito(jogador);
+  // }
 
-  override desequipar(jogador: Jogador): boolean {
-    const retorno = jogador.getInventario().desequipaCorpo();
-    if (retorno)
-      this.removerEfeito(jogador);
+  // override desequipar(jogador: Jogador): boolean {
+  //   const retorno = jogador.getInventario().desequipaCorpo();
+  //   if (retorno)
+  //     this.removerEfeito(jogador);
 
-    return retorno;
-  }
+  //   return retorno;
+  // }
 }

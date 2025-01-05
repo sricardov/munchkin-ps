@@ -11,6 +11,6 @@ export class Raca extends CartaPorta { // OK
 
   override usar(jogador: Jogador): void {
     jogador.definirRaca(this);
-    this.adicionarEfeito(jogador);
+    //this.adicionarEfeito(jogador);
   }
 }

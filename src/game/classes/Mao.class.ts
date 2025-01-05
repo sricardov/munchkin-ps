@@ -9,11 +9,10 @@ import { Monstro } from "./Monstro.class";
 
 export class Mao {
   private cartasNaMao: Carta[];
-  private baralho: Baralho;
 
-  constructor(cartasNaMao: Carta, baralho: Baralho) {
+  constructor(cartasNaMao: Carta) {
     this.cartasNaMao = [];
-    this.baralho = baralho
+    //this.baralho = baralho
   }
 
   adicionarCarta(carta: Carta) {
@@ -21,34 +20,21 @@ export class Mao {
     console.log("Carta adicionada.");
   }
 
-  usarCarta(carta: Carta, jogo: Jogo, jogador: Jogador): void {
-    const index = this.cartasNaMao.indexOf(carta);
-  
-    if (index !== -1) {
-      this.cartasNaMao.splice(index, 1);
+  usarCarta(carta: Carta, jogador: Jogador): void {  
+    if (this.cartasNaMao.includes(carta)) {
+      this.removerCarta(carta);
       carta.usar(jogador);
-  
-      if (carta instanceof CartaPorta) {
-        this.baralho.adicionarDescarte(carta);
-        console.log(`Carta Porta ${carta.nome} usada e descartada.`);
-      } else if (carta instanceof Item) {
-        jogador.inventario.equiparItem(carta);
-        console.log(`Carta Tesouro ${carta.nome} usada e adicionada ao inventário.`);
-      } else {
-        console.error("Tipo de carta não suportado.");
-      }
     } else {
       console.error("A carta não está na mão.");
     }
   }
 
-  descartar(carta: Carta): void {
+  removerCarta(carta: Carta): void {
     const index = this.cartasNaMao.indexOf(carta);
     
     if (index !== -1) {
       this.cartasNaMao.splice(index, 1);
-      this.baralho.adicionarDescarte(carta);
-      console.log(`Carta ${carta.nome} descartada e adicionada ao baralho de descarte.`);
+      console.log(`Carta ${carta.nome} removida da mao.`);
     } else {
       console.error("A carta não está na mão.");
     }
