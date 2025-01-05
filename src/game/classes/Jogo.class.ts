@@ -35,7 +35,15 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
         // this.gameLoop();
     }
 
-    public descartar(carta: Carta) {
+    comprarCartaPorta(): Carta {
+        return this.baralhoPortas.comprar();
+    }
+
+    comprarCartaTesouro(): Carta {
+        return this.baralhoTesouros.comprar();
+    }
+    
+    descartarCarta(carta: Carta) {
         if (carta instanceof CartaPorta) {
             if (this.baralhoPortas.descarteTemCarta(carta))
                 return;

@@ -4,3 +4,4 @@ export enum Etapa {
     SAQUEAR_SALA,
     CARIDADE
 }
+

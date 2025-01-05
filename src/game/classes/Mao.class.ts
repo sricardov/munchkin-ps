@@ -14,7 +14,7 @@ export class Mao {
   constructor(
     private _cartas: Carta[] = [],
   ) {
-
+    this._cartas = [];
   }
 
   adicionarCarta(carta: Carta) {
@@ -22,7 +22,7 @@ export class Mao {
     console.log("Carta adicionada.");
   }
 
-  usarCarta(carta: Carta, jogador: Jogador): void {  
+  usarCarta(carta: Carta, jogador: Jogador): void {
     if (this._cartas.includes(carta)) {
       this.removerCarta(carta);
       carta.usar(jogador);
@@ -33,7 +33,7 @@ export class Mao {
 
   removerCarta(carta: Carta): void {
     const index = this._cartas.indexOf(carta);
-    
+
     if (index !== -1) {
       this._cartas.splice(index, 1);
       console.log(`Carta ${carta.nome} removida da mao.`);
