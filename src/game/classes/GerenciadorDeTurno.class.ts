@@ -52,9 +52,9 @@ export class GerenciadorDeTurno {
         //exemplo de jogadores e cartas jogadas (apagar depois):
         let j1 = this.jogo.jogadores[0];
         let j2 = this.jogo.jogadores[1];
-        let c1 = this.jogo.baralhoTesouros.baralho[2];
-        let c2 = this.jogo.baralhoTesouros.baralho[3];
-        let c3 = this.jogo.baralhoTesouros.baralho[5]
+        let c1 = this.jogo.baralhoTesouros.getBaralho()[2];
+        let c2 = this.jogo.baralhoTesouros.getBaralho()[3];
+        let c3 = this.jogo.baralhoTesouros.getBaralho()[5];
         const cartasUtilizadas: [Jogador, Carta][] = [[j1,c1],[j1,c2],[j2,c3]]
         
         for (const [jogador, carta] of cartasUtilizadas) {
