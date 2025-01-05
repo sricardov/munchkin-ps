@@ -2,15 +2,10 @@ import { Carta } from "./Carta.class";
 
 export abstract class Baralho {
 
-  protected baralho: Carta[];
-  protected descarte: Carta[];
+  protected baralho: Carta[] = [];
+  protected descarte: Carta[] = [];
 
-  constructor(
-    baralho: Carta[],
-    descarte: Carta[]
-  ) {
-    this.baralho = baralho;
-    this.descarte = descarte;
+  constructor( ) {
     this.iniciarDeck();
   }
 

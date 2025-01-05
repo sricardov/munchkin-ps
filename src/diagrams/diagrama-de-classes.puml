@@ -29,6 +29,7 @@ class GerenciadorDeTurno {
   - jogadorAtual: Jogador
   - etapa: Etapa
   - contagem: int
+  - combate: Combate[]
   + terminarTurno()
   + saquearSala(): Carta
   + fazerCaridade()
@@ -52,21 +53,17 @@ class Inventario {
   + desequiparItem(item: Item)
 }
 
-class Luta {
-  - monstro: Monstro
-  - jogador: Jogador
-  + fugir(): boolean
-}
-
 class Combate {
   - lutas: Jogador[Monstro[]]
-  + pedirAjuda(jogador: Jogador, barganha: int): boolean
+  + adicionarMonstro(monstro: Monstro)
   + calcularResultado(): boolean
-  + fugir(): boolean
+  + tentarFugir(jogador: Jogador, monstro: Monstro)
+  + pedirAjuda(jogador: Jogador, barganha: int)
 }
 
 abstract class Efeito {
- + usar():
+  - nome: string
+  + usar(jogador: Jogador)
 }
 
 enum Etapa {
@@ -81,8 +78,6 @@ abstract class Carta {
   - descricao: String
   - tipo: TipoCarta
   + usar()
-  + adicionarEfeito()
-  + removerEfeito()
 }
 
 class Monstro extends CartaPorta {
@@ -107,8 +102,7 @@ abstract class Item extends CartaTesouro {
 
 class Equipamento extends Item {
   - grande: boolean
-  + equipar(): boolean
-  + desequipar()
+  + getGrande(): boolean
 }
 
 class EquipamentoCabeça extends Equipamento {
@@ -172,6 +166,9 @@ class Raca extends CartaPorta {
 
 class Classe extends CartaPorta {
   - nome: String
+  + adicionarHabilidade(habilidade: Habilidade)
+  + listarHabilidades(): Habilidade[]
+  + getNome(): string
 }
 
 class Habilidade {
@@ -189,7 +186,6 @@ Jogo "1" --> "1" BaralhoTesouros : baralhoTesouros
 Jogador "0..1" --> "0..1" Mao
 Jogador "0..1" --> "0..1" Inventario
 GerenciadorDeTurno "1" -- "0..1" Combate
-Combate "0..1" --> "0..*" Luta
 Mao "0..1" --> "0..5" Carta
 Carta "0..*" --> "0..*" Efeito
 Jogador "0..*" --> "0..2" Raca

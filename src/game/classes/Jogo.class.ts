@@ -37,7 +37,7 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
             jogadores[0], 
             Etapa.ABRIR_PORTA, 
             0,
-            [],
+            null,
             this);
         this.baralhoTesouros = new BaralhoTesouros();
         this.baralhoPortas = new BaralhoPortas();
@@ -51,12 +51,12 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
         if (carta instanceof CartaPorta) {
             if (this.baralhoPortas.descarte.includes(carta))
                 return;
-            this.baralhoPortas.adicionarDescarte(carta);
+            this.baralhoPortas.descartar(carta);
         }
         else {
             if (this.baralhoTesouros.descarte.includes(carta))
                 return;
-            this.baralhoTesouros.adicionarDescarte(carta);
+            this.baralhoTesouros.descartar(carta);
         }
     }
 

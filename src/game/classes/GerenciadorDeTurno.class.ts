@@ -1,31 +1,29 @@
 import { Etapa } from "../enums/Etapa.enum";
 import { Carta } from "./Carta.class";
-import { CartaPorta } from "./CartaPorta.class";
 import { Combate } from "./Combate.class";
 import { Jogador } from "./Jogador.class";
 import { Jogo } from "./Jogo.class";
-import { Maldicao } from "./Maldicao.class";
+// import { Maldicao } from "./Maldicao.class";
 import { Monstro } from "./Monstro.class";
 
-export class GerenciadorDeTurno {
-    public jogo: Jogo;
-    public jogadorAtual: Jogador;
-    public etapa: Etapa;
-    public contagem: number;
-    public combates: Combate[];
+export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a cada turno
+    // // public jogo: Jogo;
+    // public jogadorAtual: Jogador;
+    // public etapa: Etapa;
+    // public contagem: number;
+    // public combate: Combate;
 
     constructor(
-        jogadorAtual: Jogador, 
-        etapa: Etapa, 
-        contagem: number, 
-        combates: Combate[],
-        jogo: Jogo
+        private jogadorAtual: Jogador, 
+        private etapa: Etapa, 
+        private contagem: number, 
+        private combate: Combate | null,
+        private jogo: Jogo
     ) {
-        this.jogo = jogo;
-        this.jogadorAtual = jogadorAtual;
-        this.etapa = etapa;
-        this.contagem = contagem;
-        this.combates = combates;
+        // this.jogadorAtual = jogadorAtual;
+        // this.etapa = etapa;
+        // this.contagem = contagem;
+        // this.combate = combate;
     }
 
     iniciarEtapa() {
@@ -40,45 +38,45 @@ export class GerenciadorDeTurno {
         }
     }
 
-    _descartarCartaJogadorAtual(carta: Carta) {
-        this.jogadorAtual.mao.removerCarta(carta);
-        this.jogo.descartar(carta);
-    }
+    // _descartarCarta() {
+    //     this.jogadorAtual.mao.removerCarta();
+    //     this.jogo.descartar(carta);
+    // }
 
-    _realizarCombate(monstro: Monstro): void {
-        const combate = new Combate(this.jogo, this.jogadorAtual, monstro);
-        this.combates.push(combate);
-        //espera input dos jogadores se quiserem usar itens de uso unico (consumiveis, maldicoes, etc)
-        //exemplo de jogadores e cartas jogadas (apagar depois):
-        let j1 = this.jogo.jogadores[0];
-        let j2 = this.jogo.jogadores[1];
-        let c1 = this.jogo.baralhoTesouros.baralho[2];
-        let c2 = this.jogo.baralhoTesouros.baralho[3];
-        let c3 = this.jogo.baralhoTesouros.baralho[5]
-        const cartasUtilizadas: [Jogador, Carta][] = [[j1,c1],[j1,c2],[j2,c3]]
+    // _realizarCombate(monstro: Monstro): void {
+    //     const combate = new Combate(this.jogadorAtual, monstro);
+    //     this.combates.push(combate);
+    //     //espera input dos jogadores se quiserem usar itens de uso unico (consumiveis, maldicoes, etc)
+    //     //exemplo de jogadores e cartas jogadas (apagar depois):
+    //     let j1 = this.jogo.jogadores[0];
+    //     let j2 = this.jogo.jogadores[1];
+    //     let c1 = this.jogo.baralhoTesouros.baralho[2];
+    //     let c2 = this.jogo.baralhoTesouros.baralho[3];
+    //     let c3 = this.jogo.baralhoTesouros.baralho[5]
+    //     const cartasUtilizadas: [Jogador, Carta][] = [[j1,c1],[j1,c2],[j2,c3]]
         
-        for (const [jogador, carta] of cartasUtilizadas) {
-            jogador.descartarCarta(carta);
-            carta.usar(this.jogadorAtual);
-        }
+    //     for (const [jogador, carta] of cartasUtilizadas) {
+    //         jogador.descartarCarta(carta);
+    //         carta.usar(this.jogadorAtual);
+    //     }
 
-        const ganhou = combate.calcularResultado()
-        if (ganhou) {
-            this._resgatarRecompensas(monstro, this.jogadorAtual)
-            this.jogadorAtual.ganharNivel(1); // sobe o jogador de nível
-        } else {
-            monstro.aplicarCoisaRuim(this.jogadorAtual);
-        }
-    }
+    //     const ganhou = combate.calcularResultado()
+    //     if (ganhou) {
+    //         this._resgatarRecompensas(monstro, this.jogadorAtual)
+    //         this.jogadorAtual.ganharNivel(1); // sobe o jogador de nível
+    //     } else {
+    //         monstro.aplicarCoisaRuim(this.jogadorAtual);
+    //     }
+    // }
 
-    _resgatarRecompensas(monstro: Monstro, jogador: Jogador): void {
-        for (let i = 0; i < monstro.tesouros; i++) {
-            const tesouro = this.jogo.baralhoTesouros.comprar();
-            if (tesouro) {
-                jogador.receberTesouro(tesouro);
-            }
-        }
-    }
+    // _resgatarRecompensas(monstro: Monstro, jogador: Jogador): void {
+    //     for (let i = 0; i < monstro.tesouros; i++) {
+    //         const tesouro = this.jogo.baralhoTesouros.comprar();
+    //         if (tesouro) {
+    //             jogador.receberTesouro(tesouro);
+    //         }
+    //     }
+    // }
 
     etapaAbrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.
         const cartaTopo = this.jogo.baralhoPortas.comprar()
