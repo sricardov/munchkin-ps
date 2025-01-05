@@ -1,19 +1,21 @@
 import { Classe } from "./Classe.class";
+import { Efeito } from "./Efeito.class";
 import { Equipamento } from "./Equipamento.class";
-import { Jogador } from "./Jogador.class";
 import { Raca } from "./Raca.class";
 
 export class EquipamentoCorpo extends Equipamento { // OK
   constructor(
-    nome: string,
-    descricao: string,
-    valor: number,
-    bonus: number,
-    restricoesRaca: Raca[],
-    restricoesClasse: Classe[],
-    grande: boolean,
+    _nome: string,
+    _descricao: string,
+    _imagem: string,
+    _efeitos: Efeito[] = [],
+    _valor: number,
+    _bonus: number,
+    _restricoesRaca: Raca[],
+    _restricoesClasse: Classe[],
+    _grande: boolean,
   ) {
-    super(nome, descricao, grande, valor, bonus, restricoesRaca, restricoesClasse);
+    super(_nome, _descricao, _imagem, _efeitos, _valor, _bonus, _restricoesRaca, _restricoesClasse, _grande);
   }
 
   // override usar(jogador: Jogador): void {

@@ -7,41 +7,30 @@ import { Jogo } from "./Jogo.class";
 import { Monstro } from "./Monstro.class";
 
 export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a cada turno
-    // // public jogo: Jogo;
-    // public jogadorAtual: Jogador;
-    // public etapa: Etapa;
-    // public contagem: number;
-    // public combate: Combate;
 
     constructor(
-        private jogadorAtual: Jogador, 
-        private etapa: Etapa, 
-        private contagem: number, 
-        private combate: Combate | null,
-        private jogo: Jogo
-    ) {
-        // this.jogadorAtual = jogadorAtual;
-        // this.etapa = etapa;
-        // this.contagem = contagem;
-        // this.combate = combate;
-    }
+        private _jogadorAtual: Jogador, 
+        private _etapa: Etapa, 
+        private _contagem: number, 
+        private _combate: Combate | null,
+        private _jogo: Jogo
+    ) { }
 
     iniciarEtapa() {
-        if (this.etapa = Etapa.ABRIR_PORTA) {
+        if (this._etapa = Etapa.ABRIR_PORTA) {
             this.etapaAbrirPorta();
-        } else if (this.etapa = Etapa.PROCURAR_ENCRENCA) {
+        } else if (this._etapa = Etapa.PROCURAR_ENCRENCA) {
             this.etapaProcurarEncrenca();
-        } else if (this.etapa = Etapa.SAQUEAR_SALA) {
+        } else if (this._etapa = Etapa.SAQUEAR_SALA) {
             this.etapaSaquearSala();
-        } else if (this.etapa = Etapa.CARIDADE){
+        } else if (this._etapa = Etapa.CARIDADE){
             this.etapaFazerCaridade();
         }
     }
 
-    // _descartarCarta() {
-    //     this.jogadorAtual.mao.removerCarta();
-    //     this.jogo.descartar(carta);
-    // }
+    _descartarCarta(carta: Carta) {
+        this._jogadorAtual.mao.descartar(carta);
+    }
 
     // _realizarCombate(monstro: Monstro): void {
     //     const combate = new Combate(this.jogadorAtual, monstro);
@@ -79,19 +68,20 @@ export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a ca
     // }
 
     etapaAbrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.
-        const cartaTopo = this.jogo.baralhoPortas.comprar()
-        this.jogadorAtual.mao.adicionarCarta(cartaTopo);
+        const cartaTopo = this._jogadorAtual.jogo.baralhoPortas.comprar();
 
         if (cartaTopo instanceof Monstro) {
-            this._realizarCombate(cartaTopo);
-            this._descartarCartaJogadorAtual(cartaTopo);
+            this._combate = new Combate(this._jogadorAtual, cartaTopo);
+            this._combate.iniciarCombate();
+
+            this._descartarCarta(cartaTopo);
         }
         else if (cartaTopo instanceof Maldicao) {
             cartaTopo.aplicarMaldicao(this.jogadorAtual);
             this._descartarCartaJogadorAtual(cartaTopo);
         }
         else {
-            this.jogadorAtual.mao.adicionarCarta(cartaTopo);
+            this._jogadorAtual.mao.adicionarCarta(cartaTopo);
             //esperar input do jogador se ele quiser jogar a carta que recebeu
             const querJogar = true
             if (querJogar) {

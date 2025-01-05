@@ -2,10 +2,9 @@ import { Habilidade } from "./Habilidade.class";
 import { CartaPorta } from "./CartaPorta.class";
 import { Efeito } from "./Efeito.class";
 import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
 
 export class Classe extends CartaPorta {
-  private habilidades: Habilidade[] = [];
+  private _habilidades: Habilidade[] = [];
 
   constructor(
     _nome: string, 
@@ -16,18 +15,22 @@ export class Classe extends CartaPorta {
     super(_nome, _descricao, _imagem, _efeitos);
   }
 
-  public override usar(jogador: Jogador): void {
+  override usar(jogador: Jogador): void {
     jogador.definirClasse(this);
     //this.adicionarEfeito(jogador);
   }
 
   adicionarHabilidade(habilidade: Habilidade): void { // OK
-    this.habilidades.push(habilidade);
+    this._habilidades.push(habilidade);
     console.log(`Habilidade "${habilidade.nome}" adicionada à classe "${this.nome}".`);
   }
 
   listarHabilidades(): Habilidade[] { // OK
-    return this.habilidades;
+    return this._habilidades;
+  }
+
+  get habilidades(): Habilidade[] { // OK
+    return this._habilidades;
   }
 
 }
