@@ -1,4 +1,4 @@
-import { Etapa } from "./Etapa.class";
+import { AbrirPorta, Etapa } from "./Etapa.class";
 import { Carta } from "./Carta.class";
 import { Combate } from "./Combate.class";
 import { Jogador } from "./Jogador.class";
@@ -6,25 +6,33 @@ import { Jogo } from "./Jogo.class";
 // import { Maldicao } from "./Maldicao.class";
 import { Monstro } from "./Monstro.class";
 
-export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a cada turno
+export class GerenciadorDeTurno {
     private _combate: Combate | null;
     private _etapa: Etapa; 
+    private _turno: number = 0; 
 
     constructor(
         private _jogadorAtual: Jogador, 
-        private _contagem: number, 
         private _jogo: Jogo
     ) { 
         this._combate = null;
-        this._etapa = Etapa.ABRIR_PORTA;
+        this._etapa = new Etapa(this, new AbrirPorta());
     }
 
     get jogadorAtual(): Jogador {
         return this._jogadorAtual;
     }
 
+    set jogadorAtual(jogador: Jogador) {
+        this._jogadorAtual = jogador;
+    }
+
     get contagem(): number {
-        return this._contagem;
+        return this._turno;
+    }
+
+    incrementaContagemTurno(): void {
+        this._turno++;  
     }
 
     get jogo(): Jogo {
@@ -43,7 +51,7 @@ export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a ca
         return this._combate;
     }
 
-    iniciarEtapa() {
+    iniciarTurno() {
         this._etapa.executarEtapa();
     }
 
@@ -98,126 +106,15 @@ export class GerenciadorDeTurno { // Gerenciador é instanciado e destruido a ca
     //     }
     // }
 
-    etapaAbrirPorta(): Carta { // olhar carta de cima do baralho e ver o que é, se não for combate ou maldição, compra a carta. se for, faz o efeito.
-        const cartaTopo = this._jogadorAtual.jogo.baralhoPortas.comprar();
-
-        if (cartaTopo instanceof Monstro) {
-            this._combate = new Combate(this._jogadorAtual, cartaTopo);
-            this._combate.iniciarCombate();
-
-            this._descartarCarta(cartaTopo);
-        }
-        else if (cartaTopo instanceof Maldicao) {
-            cartaTopo.aplicarMaldicao(this.jogadorAtual);
-            this._descartarCartaJogadorAtual(cartaTopo);
-        }
-        else {
-            this._jogadorAtual.mao.adicionarCarta(cartaTopo);
-            //esperar input do jogador se ele quiser jogar a carta que recebeu
-            const querJogar = true
-            if (querJogar) {
-                this._descartarCartaJogadorAtual(cartaTopo);
-                cartaTopo.usar(this.jogadorAtual)
-            }
-        }
-        
-        if (cartaTopo instanceof Monstro) this.etapa = Etapa.CARIDADE
-        else this.etapa = Etapa.PROCURAR_ENCRENCA
-
-        return cartaTopo;
-    }
-
-    etapaProcurarEncrenca(): void {
-        let temMonstro = false
-        let indexMonstro = 0
-        let cartas = this.jogadorAtual.mao.verCartas()
-        for (let i = 0; i < cartas.length; i++) {
-            if (cartas[i] instanceof Monstro) {
-                indexMonstro = i;
-                temMonstro = true;
-            }
-        }
-
-        if (temMonstro) {
-            //esperar input do jogador caso ele queira jogar carta Monstro na mão (procurar encrenca)
-            const querJogar = true
-            const cartaMonstro = cartas[indexMonstro]; // escolha do jogador
-            if (querJogar && cartaMonstro instanceof Monstro) {
-                this._descartarCartaJogadorAtual(cartaMonstro);
-                this._realizarCombate(cartaMonstro);
-            }
-        }
-
-        this.etapa = Etapa.SAQUEAR_SALA;
-    } // se não combateu ou sofreu maldição, usar uma carta de monstro da mão e iniciar combate com ela
-
-    etapaSaquearSala(): Carta { // se não combateu, comprar carta de porta
-        const cartaTopo = this.jogo.baralhoPortas.comprar()
-        this.jogadorAtual.mao.adicionarCarta(cartaTopo);
-        this.etapa = Etapa.CARIDADE;
-        return cartaTopo;
-    }
-
-    etapaFazerCaridade(): void {
-        let numCartas = this.jogadorAtual.mao.verificarCartasNaMao()
-        if (numCartas <= 5) {
-            this.terminarTurno()
-            return;
-        }
-        // espera input do jogador se ele quiser usar cartas ou distribuir
-        const cartasExtras = this.jogadorAtual.mao.verCartas().slice(5); // escolha do jogador
-
-        if (cartasExtras.length > 0) {
-            cartasExtras.forEach(carta => {
-                carta.usar(this.jogadorAtual);
-                this._descartarCartaJogadorAtual(carta);
-            });
-        }
-
-        if (cartasExtras.length == 0) {
-            this.terminarTurno()
-            return;
-        }
-
-        const outrosJogadores = this.jogo.jogadores.filter(jogador => jogador !== this.jogadorAtual);
-
-        // acha jogadores com menor nivel e distribui as cartas
-        const menorNivel = Math.min(...outrosJogadores.map(jogador => jogador.nivel));
-        const jogadoresDeMenorNivel = outrosJogadores.filter(jogador => jogador.nivel === menorNivel);
-
-        if (this.jogadorAtual.nivel === menorNivel) {
-            for (const carta of cartasExtras) {
-                this._descartarCartaJogadorAtual(carta);
-            }
-            console.log("Cartas descartadas por ser jogador de menor nível.");
-        }
-
-        let index = 0;
-        for (const carta of cartasExtras) {
-            const jogador = jogadoresDeMenorNivel[index];
-            if (jogador.mao.verificarCartasNaMao() < 5)
-                jogador.mao.adicionarCarta(carta);
-            index = (index + 1) % jogadoresDeMenorNivel.length;
-        }
-
-        for (const carta of cartasExtras) {
-            this._descartarCartaJogadorAtual(carta);
-        }
-
-        console.log("Cartas distribuídas entre os jogadores de menor nível.");
-        this.terminarTurno()
-        return;
-    } // chamar metodo de Mao para ver se está dentro do limite, se nao estiver, precisa dar as cartsas e tals
-
     terminarTurno(): void {
-        this.etapa = Etapa.ABRIR_PORTA;
-        this.contagem++;
+        this.incrementaContagemTurno();
 
         const nextPlayerIndex = this.contagem % this.jogo.jogadores.length;
         this.jogadorAtual = this.jogo.jogadores[nextPlayerIndex];
-
-
         console.log(`Turno terminado. Próximo jogador: ${this.jogadorAtual.nome}. Turno atual: ${this.contagem}`);
+
+        this.iniciarTurno();
+
     } // troca o jogadorAtual, reseta a etapa e incrementa a contagem
 
 }
