@@ -22,14 +22,9 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     ) {
         this.numJogadores = jogadores.length;
         this.jogadores = [];
-        this.gerenciadorTurno = new GerenciadorDeTurno(
-            jogadores[0], 
-            Etapa.ABRIR_PORTA, 
-            0,
-            null,
-            this);
-        this.baralhoTesouros = new BaralhoTesouros([],[]);
-        this.baralhoPortas = new BaralhoPortas([],[]);
+        this.gerenciadorTurno = new GerenciadorDeTurno(jogadores[0], this);
+        this.baralhoTesouros = new BaralhoTesouros();
+        this.baralhoPortas = new BaralhoPortas();
         this.dado = new Dado();
         this.fimDeJogo = false;
         // this.gameLoop();

@@ -54,11 +54,9 @@ export class Inventario {
 
     if (this.itensEquipados.includes(item)) {
       this.desequiparItem(item);
-      this.jogador.jogo.descartar(item);
     }
     if (this.itensGuardados.includes(item)) {
       this.itensGuardados = this.itensGuardados.filter(guardado => guardado !== item);
-      this.jogador.jogo.descartar(item);
     }
   }
 

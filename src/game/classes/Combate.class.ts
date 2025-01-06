@@ -93,6 +93,9 @@ export class Combate {
         // vai pedir ajuda?
         // se sim, pedir ajuda
 
+        // jogadores podem usar consumiveis ou modificadores de monstros
+        // aplicar efeitos das cartas utilizadas
+
         // resolucao de combate
             // calcular resultado
             // se jogadores venceram, ganhar nivel e tesouro
