@@ -1,6 +1,5 @@
 import { Efeito } from "./Efeito.class";
 import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
 
 export abstract class Carta {
 

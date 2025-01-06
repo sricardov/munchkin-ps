@@ -3,14 +3,14 @@ import { Jogador } from "../Jogador.class";
 
 export class EfeitoPercaClasse extends Efeito {
 
-  constructor() {
-    super("Perca a sua raça e se torne humano.", 0);
+  constructor(
+    _nome: string = "Perca a sua classe.",
+    _valor: number,
+  ) {
+    super(_nome, _valor);
   }
 
   public usar(jogador: Jogador): void {
-    jogador.definirClasse(null);
-    let classe = jogador.getClasse();
-    if (classe)
-      jogador.descartarCarta(classe);
+    jogador.classe = null;
   }
 }
