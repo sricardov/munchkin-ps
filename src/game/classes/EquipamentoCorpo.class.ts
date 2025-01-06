@@ -1,6 +1,7 @@
 import { Classe } from "./Classe.class";
 import { Efeito } from "./Efeito.class";
 import { Equipamento } from "./Equipamento.class";
+import { Jogador } from "./Jogador.class";
 import { Raca } from "./Raca.class";
 
 export class EquipamentoCorpo extends Equipamento { // OK
@@ -18,20 +19,20 @@ export class EquipamentoCorpo extends Equipamento { // OK
     super(_nome, _descricao, _imagem, _efeitos, _valor, _bonus, _restricoesRaca, _restricoesClasse, _grande);
   }
 
-  // override usar(jogador: Jogador): void {
-  //   if (!this.verificaRestricoes(jogador))
-  //     return;
+  override usar(jogador: Jogador): void {
+    if (!this.verificaRestricoes(jogador))
+      return;
 
-  //   const inventario = jogador.getInventario();
-  //   inventario.equipaCorpo(this);
-  //   this.adicionarEfeito(jogador);
-  // }
+    const inventario = jogador.inventario;
+    inventario.equipaCorpo(this);
+    this.adicionarEfeito(jogador);
+  }
 
-  // override desequipar(jogador: Jogador): boolean {
-  //   const retorno = jogador.getInventario().desequipaCorpo();
-  //   if (retorno)
-  //     this.removerEfeito(jogador);
+  override desequipar(jogador: Jogador): boolean {
+    const retorno = jogador.inventario.desequipaCorpo();
+    if (retorno)
+      this.removerEfeito(jogador);
 
-  //   return retorno;
-  // }
+    return retorno;
+  }
 }

@@ -21,7 +21,7 @@ export class Inventario {
   private _itensGuardados: Item[] = [];
   private _itensEquipados: Item[] = [];
 
-  constructor() {}
+  constructor() { }
 
   temCarta(carta: Carta): boolean {
     if (carta instanceof Item) {
@@ -44,7 +44,7 @@ export class Inventario {
       this._itensGuardados.push(item);
     else
       console.log("Item já está no inventário.");
-      
+
   }
 
   descartarItem(item: Item) {
@@ -61,66 +61,18 @@ export class Inventario {
     }
   }
 
-  equiparItem(item: Item): boolean {  
-    let equipado = false;
-    if (!(item instanceof Equipamento)) {
-      console.log(`Item ${item.nome} não é um equipamento.`);
-      equipado = false;
-    }
-    if (item instanceof EquipamentoCabeca) {
-      equipado = this.equipaCabeca(item);
-    }
-    else if (item instanceof EquipamentoCorpo) {
-      equipado = this.equipaCorpo(item);
-    }
-    else if (item instanceof EquipamentoPes) {
-      equipado = this.equipaPes(item);
-    }
-    else if (item instanceof EquipamentoMaos) {
-      if (item instanceof EquipamentoDuasMaos) {
-        equipado = this.equipaDuasMaos(item);
-      }
-      else if (item instanceof EquipamentoUmaMao) {
-        equipado = this.equipaUmaMao(item);
-      }
-    }
-
-    if (equipado) {
-      this._itensGuardados = this._itensGuardados.filter(guardado => guardado !== item);
-      this._itensEquipados.push(item);
-      console.log(`Equipando ${item.nome}.`);
-    }
-    
-    return equipado;
+  equiparItem(item: Item) {
+    item.usar(this._jogador!);
+    this._itensGuardados = this.itensGuardados.filter(guardado => guardado !== item);
+    this._itensEquipados.push(item);
+    console.log(`Equipando ${item.nome}.`);
   }
 
-  desequiparItem(item: Item): boolean {
-    if (item instanceof EquipamentoCabeca && this._cabeca === item) {
-      this.desequipaCabeca();
-    } 
-    else if (item instanceof EquipamentoCorpo && this._corpo === item) {
-      this.desequipaCorpo();
-    } 
-    else if (item instanceof EquipamentoPes && this._pes === item) {
-      this.desequipaPes();
-    } 
-    else if (item instanceof EquipamentoUmaMao && this._maoEsquerda === item) {
-      this.desequipaMaoEsquerda();
-    } 
-    else if (item instanceof EquipamentoUmaMao && this._maoDireita === item) {
-      this.desequipaMaoDireita();
-    } 
-    else if (item instanceof EquipamentoDuasMaos && this._maoEsquerda === item && this._maoDireita === item) {
-      this.desequipaDuasMaos();
-    } 
-    else {
-      console.log(`O item ${item.nome} não está equipado em nenhum slot.`);
-      return false;
-    }
+  desequiparItem(item: Item) {
+    item.desequipar(this._jogador!)
     this._itensGuardados.push(item);
-    this._itensEquipados = this._itensEquipados.filter(equipado => equipado !== item);
+    this._itensEquipados = this.itensEquipados.filter(equipado => equipado !== item);
     console.log(`Desequipando ${item.nome} do inventário.`);
-    return true;
   }
 
   equipaCabeca(item: EquipamentoCabeca): boolean {
