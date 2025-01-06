@@ -14,7 +14,7 @@ export class AbrirPorta implements EtapaState {
 
         if (cartaTopo instanceof Monstro) {
             contexto.gerenciadorDeTurno.combate = new Combate(contexto.gerenciadorDeTurno.jogadorAtual, cartaTopo);
-            // contexto.gerenciadorDeTurno.combate.iniciarCombate();
+            contexto.gerenciadorDeTurno.combate.iniciarCombate();
 
             contexto.gerenciadorDeTurno.descartarCarta(cartaTopo);
             contexto.etapa = new Caridade();
@@ -47,7 +47,8 @@ export class ProcurarEncrenca implements EtapaState {
     rodar(contexto: Etapa): void {
         let temMonstro = false
         let indexMonstro = 0
-        let cartas = this.jogadorAtual.mao.verCartas()
+        let cartas = contexto.gerenciadorDeTurno.jogadorAtual.mao.verCartas()
+        //checa se tem monstro
         for (let i = 0; i < cartas.length; i++) {
             if (cartas[i] instanceof Monstro) {
                 indexMonstro = i;
@@ -55,17 +56,24 @@ export class ProcurarEncrenca implements EtapaState {
             }
         }
 
-        if (temMonstro) {
-            //esperar input do jogador caso ele queira jogar carta Monstro na mão (procurar encrenca)
-            const querJogar = true
+        let querJogar = true; //esperar input do jogador caso ele queira jogar carta Monstro na mão (procurar encrenca)
+
+        if (temMonstro && querJogar) {
             const cartaMonstro = cartas[indexMonstro]; // escolha do jogador
-            if (querJogar && cartaMonstro instanceof Monstro) {
-                this._descartarCartaJogadorAtual(cartaMonstro);
-                this._realizarCombate(cartaMonstro);
+            if (cartaMonstro instanceof Monstro) {
+                contexto.gerenciadorDeTurno.combate = new Combate(contexto.gerenciadorDeTurno.jogadorAtual, cartaMonstro);
+                contexto.gerenciadorDeTurno.combate.iniciarCombate();
+
+                contexto.gerenciadorDeTurno.descartarCarta(cartaMonstro);
+                contexto.etapa = new Caridade();
+                contexto.executarEtapa();
             }
         }
+        else {
+            contexto.etapa = new SaquearSala();
+            contexto.executarEtapa();
+        }
 
-        this.etapa = Etapa.SAQUEAR_SALA;
     }
 
 }
@@ -73,10 +81,10 @@ export class ProcurarEncrenca implements EtapaState {
 export class SaquearSala implements EtapaState {
 
     rodar(contexto: Etapa): void {
-        const cartaTopo = this.jogo.baralhoPortas.comprar()
-        this.jogadorAtual.mao.adicionarCarta(cartaTopo);
-        this.etapa = Etapa.CARIDADE;
-        return cartaTopo;
+        const cartaTopo = contexto.gerenciadorDeTurno.comprarCartaPorta();
+        contexto.gerenciadorDeTurno.jogadorAtual.mao.adicionarCarta(cartaTopo);
+        contexto.etapa = new Caridade();
+        contexto.executarEtapa();
     }
 
 }
@@ -84,35 +92,37 @@ export class SaquearSala implements EtapaState {
 export class Caridade implements EtapaState {
 
     rodar(contexto: Etapa): void {
-        let numCartas = this.jogadorAtual.mao.verificarCartasNaMao()
+        let numCartas = contexto.gerenciadorDeTurno.jogadorAtual.mao.verificarCartasNaMao()
         if (numCartas <= 5) {
-            this.terminarTurno()
+            contexto.etapa = new AbrirPorta();
+            contexto.gerenciadorDeTurno.terminarTurno();
             return;
         }
         // espera input do jogador se ele quiser usar cartas ou distribuir
-        const cartasExtras = this.jogadorAtual.mao.verCartas().slice(5); // escolha do jogador
+        const cartasExtras = contexto.gerenciadorDeTurno.jogadorAtual.mao.verCartas().slice(5); // escolha do jogador
 
         if (cartasExtras.length > 0) {
             cartasExtras.forEach(carta => {
-                carta.usar(this.jogadorAtual);
-                this._descartarCartaJogadorAtual(carta);
+                carta.usar(contexto.gerenciadorDeTurno.jogadorAtual);
+                contexto.gerenciadorDeTurno.descartarCarta(carta);
             });
         }
 
         if (cartasExtras.length == 0) {
-            this.terminarTurno()
+            contexto.etapa = new AbrirPorta();
+            contexto.gerenciadorDeTurno.terminarTurno();
             return;
         }
 
-        const outrosJogadores = this.jogo.jogadores.filter(jogador => jogador !== this.jogadorAtual);
+        const outrosJogadores = contexto.gerenciadorDeTurno.jogo.jogadores.filter(jogador => jogador !== contexto.gerenciadorDeTurno.jogadorAtual);
 
         // acha jogadores com menor nivel e distribui as cartas
         const menorNivel = Math.min(...outrosJogadores.map(jogador => jogador.nivel));
         const jogadoresDeMenorNivel = outrosJogadores.filter(jogador => jogador.nivel === menorNivel);
 
-        if (this.jogadorAtual.nivel === menorNivel) {
+        if (contexto.gerenciadorDeTurno.jogadorAtual.nivel === menorNivel) {
             for (const carta of cartasExtras) {
-                this._descartarCartaJogadorAtual(carta);
+                contexto.gerenciadorDeTurno.descartarCarta(carta);
             }
             console.log("Cartas descartadas por ser jogador de menor nível.");
         }
@@ -126,11 +136,12 @@ export class Caridade implements EtapaState {
         }
 
         for (const carta of cartasExtras) {
-            this._descartarCartaJogadorAtual(carta);
+            contexto.gerenciadorDeTurno.descartarCarta(carta);
         }
 
         console.log("Cartas distribuídas entre os jogadores de menor nível.");
-        this.terminarTurno()
+        contexto.etapa = new AbrirPorta();
+        contexto.gerenciadorDeTurno.terminarTurno();
         return;
     }
 

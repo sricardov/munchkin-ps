@@ -90,6 +90,10 @@ export class Jogador {
   get jogo(): Jogo | undefined {
     return this._jogo;
   }
+  
+  set jogo(jogo: Jogo) {
+    this._jogo = jogo;
+  }
 
   ganharNivel(nivel: number): void {
     this._nivel += nivel;

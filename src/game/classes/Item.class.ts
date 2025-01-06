@@ -21,11 +21,11 @@ export abstract class Item extends CartaTesouro { // OK
   }
 
   verificaRestricoes(jogador: Jogador): boolean {
-    let classeJogador = jogador.getClasse();
+    let classeJogador = jogador.classe;
     if (classeJogador && this._restricoesClasse.includes(classeJogador))
       return false;
 
-    let racaJogador = jogador.getRaca();
+    let racaJogador = jogador.raca;
     if (racaJogador && this._restricoesRaca.includes(racaJogador))
       return false;
 
