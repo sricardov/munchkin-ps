@@ -1,6 +1,5 @@
 import { Dado } from "./Dado.class";
 import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
 import { Monstro } from "./Monstro.class";
 
 export class Combate {

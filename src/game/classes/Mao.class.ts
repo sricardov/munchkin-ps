@@ -1,11 +1,7 @@
-import { Baralho } from "./Baralho.class";
 import { Carta } from "./Carta.class";
 import { CartaPorta } from "./CartaPorta.class";
 import { CartaTesouro } from "./CartaTesouro.class";
-import { Item } from "./Item.class";
 import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
-import { Monstro } from "./Monstro.class";
 
 export class Mao {
 
@@ -44,13 +40,8 @@ export class Mao {
 
   descartarCarta(carta: CartaPorta | CartaTesouro): void {
     if (!this._jogador) throw new Error("Jogador não definido.");
-
     this.removerCarta(carta);
-    if (carta instanceof CartaPorta) {
-      this._jogador.jogo!.baralhoPortas.descartar(carta);
-    } else {
-      this._jogador.jogo!.baralhoTesouros.descartar(carta);
-    }
+    this._jogador.jogo!.descartarCarta(carta);
     console.log(`Carta ${carta.nome} descartada.`);
   }
 

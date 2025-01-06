@@ -1,10 +1,12 @@
 @startuml
 class Interface {
-  + jogo: Jogo
+  # jogo: Jogo | null
+  # jogadores: Jogador[]
   + desenhaTelaInicial()
   + desenhaMesa()
   + desenhaMenu()
   + desenhaConfig()
+  + iniciarJogo()
 }
 
 class Jogo {
@@ -14,9 +16,7 @@ class Jogo {
   - baralhoTesouros: BaralhoTesouros
   - gerenciadorDeTurno: GerenciadorDeTurno
   - dado: Dado
-  - interface: Interface
   - fimDeJogo: boolean
-  + descartarCarta(carta: Carta)
   + gameLoop()
   + verificarVencedor(): Jogador
   + encerrarJogo(vencedor: Jogador)
@@ -45,8 +45,6 @@ class Jogador {
   + equiparItem(item: Item)
   + desequiparItem(item: Item)
   + morrer()
-  + definirRaca(raca: Raca)
-  + definirClasse(classe: Classe)
   + adicionarEfeito(efeito: Efeito[])
   + removerEfeito(efeito: Efeito[])
 }
@@ -54,12 +52,12 @@ class Jogador {
 class GerenciadorDeTurno {
   - jogadorAtual: Jogador
   - etapa: Etapa
-  - contagem: int
+  - turno: int
   - combate: Combate[]
   - jogo: Jogo
+  + incrementaContagemTurno()
+  + iniciarTurno()
   + terminarTurno()
-  + saquearSala(): Carta
-  + fazerCaridade()
 }
 
 class Mao {
@@ -103,6 +101,7 @@ class Inventario {
 
 class Combate {
   - lutas: Jogador[Monstro[]]
+  + getMonstros(jogador: Jogador): Monstro[]
   + adicionarMonstro(monstro: Monstro)
   + calcularResultado(): boolean
   + tentarFugir(jogador: Jogador, monstro: Monstro)
@@ -112,8 +111,30 @@ class Combate {
 }
 
 abstract class Efeito {
-  - nome: string
-  - valor: int
+  # nome: string
+  # valor: int
+  + usar(alvo: Jogador | Monstro)
+}
+
+class EfeitoAlterarNivel extends Efeito {
+  # alteracao: number
+  + usar(jogador: Jogador)
+}
+
+class EfeitoAlterarBonusMonstro extends Efeito {
+  # alteracao: number
+  + usar(monstro: Monstro)
+}
+
+class EfeitoPercaArmadura extends Efeito {
+  + usar(jogador: Jogador)
+}
+
+class EfeitoPercaClasse extends Efeito {
+  + usar(jogador: Jogador)
+}
+
+class EfeitoPercaRaca extends Efeito {
   + usar(jogador: Jogador)
 }
 
@@ -138,24 +159,28 @@ class Caridade {
 }
 
 class Etapa {
+  - etapa: EtapaState
+  - gerenciadorDeTurno: GerenciadorDeTurno
   + executarEtapa()
 }
 
 abstract class Carta {
-  - nome: String
-  - descricao: String
-  - imagem: String
-  - efeitos: Efeito[]
+  # nome: String
+  # descricao: String
+  # imagem: String
+  # efeitos: Efeito[]
   + usar(jogador: Jogador)
 }
 
 class Monstro extends CartaPorta {
-  - nivel: int
-  - bonus: int
-  - experiencia: int
-  - tesouros: CartaTesouro
-  - coisaRuim: String
-  - efeitos: Efeito[]
+  # nivel: int
+  # bonus: int
+  # experiencia: int
+  # tesouros: CartaTesouro
+  # coisaRuim: String
+  # efeitos: Efeito[]
+  + ganharBonus(bonus: int)
+  + perderBonus(bonus: int)
   + aplicarCoisaRuim(jogador: Jogador)
 }
 
@@ -164,16 +189,15 @@ class Maldicao extends CartaPorta {
 }
 
 abstract class Item extends CartaTesouro {
-  - valor: int
-  - bonus: int
-  - restricoesRaca: Raca[]
-  - restricoesClasse: Classe[]
+  # valor: int
+  # bonus: int
+  # restricoesRaca: Raca[]
+  # restricoesClasse: Classe[]
   + verificaRestricoes(jogador: Jogador): boolean
 }
 
 class Equipamento extends Item {
-  - grande: boolean
-  + getGrande(): boolean
+  # grande: boolean
 }
 
 class EquipamentoCabeça extends Equipamento {
@@ -204,8 +228,8 @@ class Consumivel extends Item {
 }
 
 abstract class Baralho {
-  - baralho: Carta[]
-  - descarte: Carta[]
+  # baralho: Carta[]
+  # descarte: Carta[]
   + iniciarDeck()
   + embaralhar(baralho: Carta[])
   + comprar(): Carta
@@ -240,7 +264,6 @@ class Classe extends CartaPorta {
   - habilidades: Habilidade[]
   + usar(jogador: Jogador)
   + adicionarHabilidade(habilidade: Habilidade)
-  + listarHabilidades(): Habilidade[]
 }
 
 class Habilidade {

@@ -1,7 +1,6 @@
 import { CartaPorta } from "./CartaPorta.class";
 import { Jogador } from "./Jogador.class";
 import { Efeito } from "./Efeito.class";
-import { Jogo } from "./Jogo.class";
 import { CartaTesouro } from "./CartaTesouro.class";
 
 export class Monstro extends CartaPorta {
@@ -11,12 +10,12 @@ export class Monstro extends CartaPorta {
         _nome: string,
         _descricao: string,
         _imagem: string,
+        _efeitos: Efeito[] = [],
         protected _nivel: number,
         protected _bonus: number,
         protected _experiencia: number,
         protected _tesouros: CartaTesouro,
         protected _coisaRuim: string,
-        _efeitos: Efeito[] = []
     ) {
         super(_nome, _descricao, _imagem, _efeitos);
     }
@@ -39,6 +38,14 @@ export class Monstro extends CartaPorta {
 
     get coisaRuim(): string {
         return this._coisaRuim;
+    }
+
+    ganharBonus(bonus: number): void {
+        this._bonus += bonus;
+    }
+
+    perderBonus(bonus: number): void {
+        this._bonus -= bonus;
     }
 
     aplicarCoisaRuim(jogador: Jogador): void { // chamar metodo usar do efeito

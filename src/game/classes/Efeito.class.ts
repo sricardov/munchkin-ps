@@ -1,11 +1,11 @@
 import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
+import { Monstro } from "./Monstro.class";
 
 export abstract class Efeito {
 
   constructor(
-    private _nome: string, 
-    private _valor: number
+    protected _nome: string, 
+    protected _valor: number
   ) { }
 
   get nome() {
@@ -16,5 +16,5 @@ export abstract class Efeito {
     return this._valor;
   }
 
-  abstract usar(jogador: Jogador): void; // OK
+  abstract usar(alvo: Jogador | Monstro): void; // OK
 }
