@@ -1,0 +1,298 @@
+@startuml
+class Interface {
+  # jogo: Jogo | null
+  # jogadores: Jogador[]
+  + desenhaTelaInicial()
+  + desenhaMesa()
+  + desenhaMenu()
+  + desenhaConfig()
+  + iniciarJogo()
+}
+
+class Jogo {
+  - numJogadores: int
+  - jogadores: Jogador[]
+  - baralhoPortas: BaralhoPortas
+  - baralhoTesouros: BaralhoTesouros
+  - gerenciadorDeTurno: GerenciadorDeTurno
+  - dado: Dado
+  - fimDeJogo: boolean
+  + gameLoop()
+  + verificarVencedor(): Jogador
+  + encerrarJogo(vencedor: Jogador)
+}
+
+class Dado {
+  + rolar(): int
+}
+
+class Jogador {
+  - nome: String
+  - nivel: int
+  - bonus: int
+  - classe: Classe
+  - fuga: int
+  - raca: Raca
+  - mao: Mao
+  - inventario: Inventario
+  - efeitosAtivos: Efeito[]
+  - jogo: Jogo
+  + ganharNivel(nivel: int)
+  + receberTesouro(tesouro: CartaTesouro)
+  + colocarNaMao(carta: Carta)
+  + tirarDaMao(carta: Carta)
+  + descartarCarta(carta: Carta)
+  + equiparItem(item: Item)
+  + desequiparItem(item: Item)
+  + morrer()
+  + adicionarEfeito(efeito: Efeito[])
+  + removerEfeito(efeito: Efeito[])
+}
+
+class GerenciadorDeTurno {
+  - jogadorAtual: Jogador
+  - etapa: Etapa
+  - turno: int
+  - combate: Combate[]
+  - jogo: Jogo
+  + incrementaContagemTurno()
+  + iniciarTurno()
+  + terminarTurno()
+}
+
+class Mao {
+  - cartas: Carta[]
+  - jogador: Jogador
+  + adicionarCarta(carta : Carta)
+  + usarCarta(carta : Carta, jogador: Jogador)
+  + removerCarta(carta: Carta)
+  + descartarCarta(carta: CartaPorta | CartaTesouro)
+  + verificarCartasNaMao(): int
+  + verCartas(): Carta[]
+}
+
+class Inventario {
+  - jogador: Jogador
+  - cabeca: EquipamentoCabeca
+  - corpo: EquipamentoCorpo
+  - pes: EquipamentoPes
+  - maoEsquerda: EquipamentoMaos
+  - maoDireita: EquipamentoMaos
+  - itensEquipados: Item[]
+  - itensGuardados: Item[]
+  + temCarta(carta: Carta): boolean
+  + guardaItem(item: Item)
+  + descartarItem(item: Item)
+  + equiparItem(item: Item): boolean
+  + desequiparItem(item: Item): boolean
+  + equipaCabeca(item: EquipamentoCabeca): boolean
+  + desequipaCabeca(): boolean
+  + equipaCorpo(item: EquipamentoCorpo): boolean
+  + desequipaCorpo(): boolean
+  + equipaPes(item: EquipamentoPes): boolean
+  + desequipaPes(): boolean
+  + equipaUmaMao(item: EquipamentoUmaMao): boolean
+  + desequipaUmaMao(item: EquipamentoUmaMao): boolean
+  + equipaDuasMaos(item: EquipamentoDuasMaos): boolean
+  + desequipaDuasMaos(): boolean
+  + desequipaMaoDireita(): boolean
+  + desequipaMaoEsquerda(): boolean
+}
+
+class Combate {
+  - lutas: Jogador[Monstro[]]
+  + getMonstros(jogador: Jogador): Monstro[]
+  + adicionarMonstro(monstro: Monstro)
+  + calcularResultado(): boolean
+  + tentarFugir(jogador: Jogador, monstro: Monstro)
+  + pedirAjuda(jogador: Jogador, barganha: int)
+  + resolucaoDeCombate()
+  + iniciarCombate()
+}
+
+abstract class Efeito {
+  # nome: string
+  # valor: int
+  + usar(alvo: Jogador | Monstro)
+}
+
+class EfeitoAlterarNivel extends Efeito {
+  # alteracao: number
+  + usar(jogador: Jogador)
+}
+
+class EfeitoAlterarBonusMonstro extends Efeito {
+  # alteracao: number
+  + usar(monstro: Monstro)
+}
+
+class EfeitoPercaArmadura extends Efeito {
+  + usar(jogador: Jogador)
+}
+
+class EfeitoPercaClasse extends Efeito {
+  + usar(jogador: Jogador)
+}
+
+class EfeitoPercaRaca extends Efeito {
+  + usar(jogador: Jogador)
+}
+
+interface EtapaState {
+  + rodar()
+}
+
+class AbrirPorta {
+  + rodar()
+}
+
+class ProcurarEncrenca {
+  + rodar()
+}
+
+class SaquearSala {
+  + rodar()
+}
+
+class Caridade {
+  + rodar()
+}
+
+class Etapa {
+  - etapa: EtapaState
+  - gerenciadorDeTurno: GerenciadorDeTurno
+  + executarEtapa()
+}
+
+abstract class Carta {
+  # nome: String
+  # descricao: String
+  # imagem: String
+  # efeitos: Efeito[]
+  + usar(jogador: Jogador)
+}
+
+class Monstro extends CartaPorta {
+  # nivel: int
+  # bonus: int
+  # experiencia: int
+  # tesouros: CartaTesouro
+  # coisaRuim: String
+  # efeitos: Efeito[]
+  + ganharBonus(bonus: int)
+  + perderBonus(bonus: int)
+  + aplicarCoisaRuim(jogador: Jogador)
+}
+
+class Maldicao extends CartaPorta {
+  + aplicarMaldicao(jogador: Jogador)
+}
+
+abstract class Item extends CartaTesouro {
+  # valor: int
+  # bonus: int
+  # restricoesRaca: Raca[]
+  # restricoesClasse: Classe[]
+  + verificaRestricoes(jogador: Jogador): boolean
+}
+
+class Equipamento extends Item {
+  # grande: boolean
+}
+
+class EquipamentoCabeça extends Equipamento {
+
+}
+
+class EquipamentoCorpo extends Equipamento {
+
+}
+
+class EquipamentoPes extends Equipamento {
+
+}
+
+class EquipamentoMaos extends Equipamento {
+
+}
+class EquipamentoUmaMao extends EquipamentoMaos {
+
+}
+
+class EquipamentoDuasMaos extends EquipamentoMaos {
+
+}
+
+class Consumivel extends Item {
+
+}
+
+abstract class Baralho {
+  # baralho: Carta[]
+  # descarte: Carta[]
+  + iniciarDeck()
+  + embaralhar(baralho: Carta[])
+  + comprar(): Carta
+  + descartar(carta: Carta)
+  + verTopoDescarte(): Carta | null
+  + verTopoBaralho(): Carta | null
+  + estaVazio(): boolean
+  + limparPilha(): boolean
+}
+
+class BaralhoPortas extends Baralho {
+  + iniciarDeck()
+}
+
+class BaralhoTesouros extends Baralho {
+  + iniciarDeck()
+}
+
+class CartaPorta extends Carta {
+
+}
+
+class CartaTesouro extends Carta {
+
+}
+
+class Raca extends CartaPorta {
+  + usar(jogador: Jogador)
+}
+
+class Classe extends CartaPorta {
+  - habilidades: Habilidade[]
+  + usar(jogador: Jogador)
+  + adicionarHabilidade(habilidade: Habilidade)
+}
+
+class Habilidade {
+  - nome: String
+  - efeito: Efeito
+  + usar(jogador: Jogador)
+}
+
+Interface "1" -- "1" Jogo
+Jogo "1" -- "3..6" Jogador
+Jogo "1" -- "1" Dado
+Jogo "1" -- "1" GerenciadorDeTurno
+Jogo "1" --> "1" BaralhoPortas : baralhoPortas
+Jogo "1" --> "1" BaralhoTesouros : baralhoTesouros
+Jogador "0..1" --> "0..1" Mao
+Jogador "0..1" --> "0..1" Inventario
+GerenciadorDeTurno "1" -- "0..1" Combate
+GerenciadorDeTurno "1" -- "1" Etapa
+Mao "0..1" --> "0..5" Carta
+Carta "0..*" --> "0..*" Efeito
+Jogador "0..*" --> "0..2" Raca
+Jogador "0..*" --> "0..2" Classe
+Classe "*" --> "*" Habilidade
+BaralhoPortas "1" o-- "0..*" CartaPorta : deck
+BaralhoTesouros "1" o-- "0..*" CartaTesouro : deck
+Etapa o-- EtapaState
+EtapaState -- AbrirPorta
+EtapaState -- ProcurarEncrenca
+EtapaState -- SaquearSala
+EtapaState -- Caridade
+
+@enduml

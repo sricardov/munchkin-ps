@@ -1,0 +1,20 @@
+[
+    {
+        "nome": "CartaTesouro",
+        "descricao": "descricao",
+        "imagem": "TipoCarta",
+        "efeitos": []
+    },
+    {
+        "nome": "CartaTesouro2",
+        "descricao": "descricao",
+        "imagem": "TipoCarta",
+        "efeitos": []
+    },
+    {
+        "nome": "CartaTesouro3",
+        "descricao": "descricao",
+        "imagem": "TipoCarta",
+        "efeitos": []
+    }
+]
