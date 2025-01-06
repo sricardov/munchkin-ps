@@ -16,13 +16,17 @@ export class Classe extends CartaPorta {
   }
 
   override usar(jogador: Jogador): void {
-    jogador.definirClasse(this);
+    jogador.classe = this;
     //this.adicionarEfeito(jogador);
   }
 
   adicionarHabilidade(habilidade: Habilidade): void { // OK
     this._habilidades.push(habilidade);
     console.log(`Habilidade "${habilidade.nome}" adicionada à classe "${this.nome}".`);
+  }
+
+  listarHabilidades(): Habilidade[] { // OK
+    return this._habilidades;
   }
 
   get habilidades(): Habilidade[] { // OK
