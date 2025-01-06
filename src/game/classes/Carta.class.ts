@@ -1,6 +1,5 @@
 import { Efeito } from "./Efeito.class";
 import { Jogador } from "./Jogador.class";
-import { Jogo } from "./Jogo.class";
 
 export abstract class Carta {
 
@@ -38,13 +37,13 @@ export abstract class Carta {
     return this._efeitos;
   }
 
-  // adicionarEfeito(jogador: Jogador) {
-  //   if (this.efeitos.length > 0)
-  //     jogador.adicionarEfeito(this.efeitos);
-  // }
+  adicionarEfeito(jogador: Jogador) {
+    if (this.efeitos.length > 0)
+      jogador.adicionarEfeito(this.efeitos);
+  }
 
-  // removerEfeito(jogador: Jogador) {
-  //   if (this.efeitos.length > 0)
-  //     jogador.removerEfeito(this.efeitos);
-  // }
+  removerEfeito(jogador: Jogador) {
+    if (this.efeitos.length > 0)
+      jogador.removerEfeito(this.efeitos);
+  }
 }
