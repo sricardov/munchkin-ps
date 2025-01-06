@@ -20,6 +20,6 @@ export class Interface {
     desenhaConfig(): void {}
 
     iniciarJogo(): void {
-      this._jogo = new Jogo(this._jogadores);
+      this._jogo = Jogo.getInstance(this._jogadores);
     }
 }

@@ -6,8 +6,10 @@ import { Dado } from "./Dado.class";
 import { GerenciadorDeTurno } from "./GerenciadorDeTurno.class";
 import { Jogador } from "./Jogador.class";
 
-export class Jogo { // falta adicionar os outros atributos (lista de cartas e tal)
-    
+export class Jogo {
+
+    private static instance: Jogo | null = null;
+
     private _numJogadores: number;
     private _gerenciadorTurno: GerenciadorDeTurno;
     private _baralhoTesouros: BaralhoTesouros;
@@ -15,17 +17,22 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     private _dado: Dado;
     private _fimDeJogo: boolean;
 
-    constructor(
+    private constructor(
         private _jogadores: Jogador[],
     ) {
         this._numJogadores = _jogadores.length;
-        this._jogadores = [];
         this._gerenciadorTurno = new GerenciadorDeTurno(_jogadores[0], this);
         this._baralhoTesouros = new BaralhoTesouros();
         this._baralhoPortas = new BaralhoPortas();
         this._dado = new Dado();
         this._fimDeJogo = false;
-        // this.gameLoop();
+    }
+
+    public static getInstance(jogadores: Jogador[]): Jogo {
+        if (this.instance === null) {
+            this.instance = new Jogo(jogadores);
+        }
+        return this.instance;
     }
 
     get jogadores(): Jogador[] {
@@ -68,10 +75,7 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
                 this._gerenciadorTurno.iniciarTurno();
             }
         }
-        // desconectar jogadores e ir para o menu
-        return;
     }
-
 
     private verificarVencedor(): Jogador | null {
         for (const jogador of this._jogadores) {
@@ -83,8 +87,6 @@ export class Jogo { // falta adicionar os outros atributos (lista de cartas e ta
     }
 
     private encerrarJogo(vencedor: Jogador) {
-        // animacao de encerramento de jogo na tela
         console.log(`${vencedor.nome} ganhou o jogo!`);
-
     }
 }
