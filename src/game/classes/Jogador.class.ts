@@ -43,12 +43,36 @@ export class Jogador {
     return this._classe;
   }
 
+  set classe(classe: Classe | null) {
+    if (this._classe) {
+      this.removerEfeito(this._classe.efeitos);
+      this.descartarCarta(this._classe);
+    }
+    this._classe = classe;
+    if (classe) {
+      this.adicionarEfeito(classe.efeitos);
+      this.descartarCarta(classe);
+    }
+  }
+
   get fuga(): number {
     return this._fuga;
   }
 
   get raca(): Raca | null {
     return this._raca;
+  }
+  
+  set raca(raca: Raca | null) {
+    if (this._raca) {
+      this.removerEfeito(this._raca.efeitos);
+      this.descartarCarta(this._raca);
+    }
+    this._raca = raca;
+    if (raca) {
+      this.adicionarEfeito(raca.efeitos);
+      this.descartarCarta(raca);
+    }
   }
 
   get mao(): Mao {
@@ -73,6 +97,11 @@ export class Jogador {
 
   ganharNivel(nivel: number): void {
     this._nivel += nivel;
+  }
+
+  perderNivel(nivel: number): void {
+    this._nivel -= nivel;
+    if (this._nivel < 1) this._nivel = 1;
   }
 
   receberTesouro(tesouro: CartaTesouro | null): void {
@@ -112,7 +141,7 @@ export class Jogador {
       this.desequiparItem(carta);
       this._inventario.descartarItem(carta);
     }
-    this.jogo.gerenciadorTurno.descartarCarta(carta);
+    this.jogo.descartarCarta(carta);
   }
 
   equiparItem(item: Item) {
@@ -132,24 +161,6 @@ export class Jogador {
 
   morrer(): void {
     this._nivel = Math.floor(this._nivel / 2);
-  }
-
-  definirRaca(raca: Raca | null): void {
-    if (this._raca) {
-      this.removerEfeito(this._raca.efeitos);
-      this.descartarCarta(this._raca);
-    }
-    this._raca = raca;
-    if (raca) this.adicionarEfeito(raca.efeitos);
-  }
-
-  definirClasse(classe: Classe | null): void {
-    if (this._classe) {
-      this.removerEfeito(this._classe.efeitos);
-      this.descartarCarta(this._classe);
-    }
-    this._classe = classe;
-    if (classe) this.adicionarEfeito(classe.efeitos);
   }
 
   adicionarEfeito(efeitos: Efeito[]): void {

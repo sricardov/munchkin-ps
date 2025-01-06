@@ -3,12 +3,15 @@ import { Jogador } from "../Jogador.class";
 
 export class EfeitoPercaArmadura extends Efeito {
 
-  constructor() {
-    super("Perca a armadura que estiver usando", 0);
+  constructor(
+    _nome: string = "Perca a armadura que estiver usando",
+    _valor: number,
+  ) {
+    super(_nome, _valor);
   }
 
-  public usar(jogador: Jogador): void {
-    let equipamentos = jogador.inventario.getItensEquipados();
+  usar(jogador: Jogador): void {
+    let equipamentos = jogador.inventario.itensEquipados;
     for (let equip of equipamentos) {
       jogador.desequiparItem(equip);
       jogador.descartarCarta(equip);

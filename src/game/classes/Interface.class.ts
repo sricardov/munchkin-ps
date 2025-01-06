@@ -1,12 +1,15 @@
+import { Jogador } from "./Jogador.class";
 import { Jogo } from "./Jogo.class";
 
 export class Interface {
-    public jogo: Jogo;
+  
+  protected _jogo: Jogo | null = null;
+  protected _jogadores: Jogador[] = [];
     
-    constructor(jogo: Jogo) {
-        this.jogo = jogo;
+  constructor(
+    ) {
+
       }
-    
 
     desenhaTelaInicial(): void {}
 
@@ -15,4 +18,8 @@ export class Interface {
     desenhaMenu(): void {}
 
     desenhaConfig(): void {}
+
+    iniciarJogo(): void {
+      this._jogo = new Jogo(this._jogadores);
+    }
 }

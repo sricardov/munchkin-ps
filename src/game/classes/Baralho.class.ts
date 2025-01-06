@@ -2,8 +2,8 @@ import { Carta } from "./Carta.class";
 
 export abstract class Baralho {
 
-  protected baralho: Carta[] = [];
-  protected descarte: Carta[] = [];
+  protected _baralho: Carta[] = [];
+  protected _descarte: Carta[] = [];
 
   constructor() {
     this.iniciarDeck();
@@ -32,7 +32,7 @@ export abstract class Baralho {
    */
   descartar(carta: Carta): void { // OK
     console.log(`Carta movida para a pilha de descarte: ${carta.nome}`);
-    this.descarte.push(carta);
+    this._descarte.push(carta);
   }
 
   // descarteTemCarta(carta: Carta): boolean {
@@ -44,8 +44,8 @@ export abstract class Baralho {
   // }
 
   verTopoDescarte(): Carta | null { // OK
-    if (this.descarte.length > 0) {
-      const card = this.descarte[this.descarte.length - 1];
+    if (this._descarte.length > 0) {
+      const card = this._descarte[this._descarte.length - 1];
       console.log(`Carta no topo da pilha de descarte: ${card.nome}`);
       return card;
     }
@@ -68,17 +68,17 @@ export abstract class Baralho {
 
   limparPilha(): boolean { //OK
     console.log("Limpando pilha de descarte e juntando ao baralho...");
-    this.baralho.push(...this.descarte);
+    this.baralho.push(...this._descarte);
     this.embaralhar(this.baralho);
-    this.descarte = [];
+    this._descarte = [];
     return true;
   }
 
-  getBaralho() {
-    return this.baralho;
+  get baralho() {
+    return this._baralho;
   }
 
-  getDescarte() {
-    return this.descarte;
+  get descarte() {
+    return this._descarte;
   }
 }

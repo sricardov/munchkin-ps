@@ -25,10 +25,6 @@ export class Classe extends CartaPorta {
     console.log(`Habilidade "${habilidade.nome}" adicionada à classe "${this.nome}".`);
   }
 
-  listarHabilidades(): Habilidade[] { // OK
-    return this._habilidades;
-  }
-
   get habilidades(): Habilidade[] { // OK
     return this._habilidades;
   }

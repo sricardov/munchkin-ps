@@ -1,4 +1,3 @@
-import { Carta } from "./Carta.class";
 import { Baralho } from "./Baralho.class";
 import { CartaTesouro } from "./CartaTesouro.class";
 import tesouros from "../../database/tesouros.json"

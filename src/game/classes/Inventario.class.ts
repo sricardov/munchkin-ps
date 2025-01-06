@@ -11,52 +11,53 @@ import { Item } from "./Item.class";
 import { Jogador } from "./Jogador.class";
 
 export class Inventario {
-  jogador?: Jogador;
-  cabeca: EquipamentoCabeca | null = null;
-  corpo: EquipamentoCorpo | null = null;
-  pes: EquipamentoPes | null = null;
-  maoEsquerda: EquipamentoMaos | null = null;
-  maoDireita: EquipamentoMaos | null = null;
+  private _jogador?: Jogador;
+  private _cabeca: EquipamentoCabeca | null = null;
+  private _corpo: EquipamentoCorpo | null = null;
+  private _pes: EquipamentoPes | null = null;
+  private _maoEsquerda: EquipamentoMaos | null = null;
+  private _maoDireita: EquipamentoMaos | null = null;
 
-  private itensGuardados: Item[] = [];
-  private itensEquipados: Item[] = [];
+  private _itensGuardados: Item[] = [];
+  private _itensEquipados: Item[] = [];
 
   constructor() {}
 
   temCarta(carta: Carta): boolean {
     if (carta instanceof Item) {
-      if (this.itensEquipados.includes(carta)) return true;
-      if (this.itensGuardados.includes(carta)) return true;
+      if (this._itensEquipados.includes(carta)) return true;
+      if (this._itensGuardados.includes(carta)) return true;
     }
     return false
   }
 
-  getItensEquipados() {
-    return this.itensEquipados;
+  get itensEquipados() {
+    return this._itensEquipados;
   }
 
-  getItensGuardados() {
-    return this.itensGuardados;
+  get itensGuardados() {
+    return this._itensGuardados;
   }
 
   guardarItem(item: Item) {
-    if (!this.itensGuardados.includes(item))
-      this.itensGuardados.push(item);
+    if (!this._itensGuardados.includes(item))
+      this._itensGuardados.push(item);
     else
       console.log("Item já está no inventário.");
       
   }
 
   descartarItem(item: Item) {
-    if (!this.jogador) {
+    if (!this._jogador) {
       throw new Error("Player is not defined.");
     }
 
-    if (this.itensEquipados.includes(item)) {
+    if (this._itensEquipados.includes(item)) {
       this.desequiparItem(item);
+      this._jogador.jogo!.descartarCarta(item);
     }
-    if (this.itensGuardados.includes(item)) {
-      this.itensGuardados = this.itensGuardados.filter(guardado => guardado !== item);
+    if (this._itensGuardados.includes(item)) {
+      this._itensGuardados = this._itensGuardados.filter(guardado => guardado !== item);
     }
   }
 
@@ -85,8 +86,8 @@ export class Inventario {
     }
 
     if (equipado) {
-      this.itensGuardados = this.itensGuardados.filter(guardado => guardado !== item);
-      this.itensEquipados.push(item);
+      this._itensGuardados = this._itensGuardados.filter(guardado => guardado !== item);
+      this._itensEquipados.push(item);
       console.log(`Equipando ${item.nome}.`);
     }
     
@@ -94,88 +95,88 @@ export class Inventario {
   }
 
   desequiparItem(item: Item): boolean {
-    if (item instanceof EquipamentoCabeca && this.cabeca === item) {
+    if (item instanceof EquipamentoCabeca && this._cabeca === item) {
       this.desequipaCabeca();
     } 
-    else if (item instanceof EquipamentoCorpo && this.corpo === item) {
+    else if (item instanceof EquipamentoCorpo && this._corpo === item) {
       this.desequipaCorpo();
     } 
-    else if (item instanceof EquipamentoPes && this.pes === item) {
+    else if (item instanceof EquipamentoPes && this._pes === item) {
       this.desequipaPes();
     } 
-    else if (item instanceof EquipamentoUmaMao && this.maoEsquerda === item) {
+    else if (item instanceof EquipamentoUmaMao && this._maoEsquerda === item) {
       this.desequipaMaoEsquerda();
     } 
-    else if (item instanceof EquipamentoUmaMao && this.maoDireita === item) {
+    else if (item instanceof EquipamentoUmaMao && this._maoDireita === item) {
       this.desequipaMaoDireita();
     } 
-    else if (item instanceof EquipamentoDuasMaos && this.maoEsquerda === item && this.maoDireita === item) {
+    else if (item instanceof EquipamentoDuasMaos && this._maoEsquerda === item && this._maoDireita === item) {
       this.desequipaDuasMaos();
     } 
     else {
       console.log(`O item ${item.nome} não está equipado em nenhum slot.`);
       return false;
     }
-    this.itensGuardados.push(item);
-    this.itensEquipados = this.itensEquipados.filter(equipado => equipado !== item);
+    this._itensGuardados.push(item);
+    this._itensEquipados = this._itensEquipados.filter(equipado => equipado !== item);
     console.log(`Desequipando ${item.nome} do inventário.`);
     return true;
   }
 
   equipaCabeca(item: EquipamentoCabeca): boolean {
-    if (!this.cabeca === null)
+    if (!this._cabeca === null)
       return false;
 
-    this.cabeca = item;
+    this._cabeca = item;
     return true;
   }
 
   desequipaCabeca(): boolean {
-    if (this.cabeca === null)
+    if (this._cabeca === null)
       return false
 
-    this.cabeca === null
+    this._cabeca === null
     return true;
   }
 
   equipaCorpo(item: EquipamentoCorpo): boolean {
-    if (!this.corpo === null)
+    if (!this._corpo === null)
       return false;
 
-    this.corpo = item;
+    this._corpo = item;
     return true;
   }
 
   desequipaCorpo(): boolean {
-    if (this.corpo === null)
+    if (this._corpo === null)
       return false
 
-    this.corpo === null
+    this._corpo === null
     return true;
   }
 
   equipaPes(item: EquipamentoPes): boolean {
-    if (!this.pes === null)
+    if (!this._pes === null)
       return false;
 
-    this.pes = item;
+    this._pes = item;
     return true;
   }
 
   desequipaPes(): boolean {
-    if (this.pes === null)
+    if (this._pes === null)
       return false
 
-    this.pes === null
+    this._pes === null
     return true;
   }
 
   equipaUmaMao(item: EquipamentoUmaMao): boolean {
-    if (this.maoEsquerda === null)
-      this.maoEsquerda = item;
+    if (this._maoEsquerda === null)
+      this._maoEsquerda = item;
 
-    else if (this.maoDireita === null)
-      this.maoDireita = item;
+    else if (this._maoDireita === null)
+      this._maoDireita = item;
 
     else
       return false;
@@ -184,11 +185,11 @@ export class Inventario {
   }
 
   desequipaUmaMao(item: EquipamentoUmaMao): boolean {
-    if (this.maoDireita === item)
-      this.maoDireita = null;
+    if (this._maoDireita === item)
+      this._maoDireita = null;
 
-    else if (this.maoEsquerda === item)
-      this.maoEsquerda = null;
+    else if (this._maoEsquerda === item)
+      this._maoEsquerda = null;
 
     else
       return false;
@@ -197,26 +198,26 @@ export class Inventario {
   }
 
   desequipaMaoDireita(): boolean {
-    if (this.maoDireita === null) {
+    if (this._maoDireita === null) {
       return false;
     }
 
-    this.maoDireita = null;
+    this._maoDireita = null;
     return true;
   }
 
   desequipaMaoEsquerda(): boolean {
-    if (this.maoEsquerda === null) {
+    if (this._maoEsquerda === null) {
       return false;
     }
 
-    this.maoEsquerda = null;
+    this._maoEsquerda = null;
     return true;
   }
 
   equipaDuasMaos(item: EquipamentoDuasMaos): boolean {
-    if (this.maoEsquerda === null && this.maoDireita === null) {
-      this.maoDireita = this.maoEsquerda = item;
+    if (this._maoEsquerda === null && this._maoDireita === null) {
+      this._maoDireita = this._maoEsquerda = item;
       return true;
     }
 
@@ -224,7 +225,7 @@ export class Inventario {
   }
 
   desequipaDuasMaos(): boolean {
-    this.maoDireita = this.maoEsquerda = null;
+    this._maoDireita = this._maoEsquerda = null;
     return true;
   }
 }
