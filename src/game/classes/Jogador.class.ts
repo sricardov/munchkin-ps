@@ -66,6 +66,10 @@ export class Jogador {
   get jogo(): Jogo | undefined {
     return this._jogo;
   }
+  
+  set jogo(jogo: Jogo) {
+    this._jogo = jogo;
+  }
 
   ganharNivel(nivel: number): void {
     this._nivel += nivel;
@@ -91,11 +95,11 @@ export class Jogador {
   }
 
   comprarCartaPorta(): Carta {
-    return this._jogo.comprarCartaPorta();
+    return this._jogo!.comprarCartaPorta();
   }
 
   comprarCartaTesouro(): Carta {
-    return this._jogo.comprarCartaTesouro();
+    return this._jogo!.comprarCartaTesouro();
   }
 
   descartarCarta(carta: Carta) {
@@ -108,7 +112,7 @@ export class Jogador {
       this.desequiparItem(carta);
       this._inventario.descartarItem(carta);
     }
-    this.jogo.descartar(carta);
+    this.jogo.gerenciadorTurno.descartarCarta(carta);
   }
 
   equiparItem(item: Item) {
